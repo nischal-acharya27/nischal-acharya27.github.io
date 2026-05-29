@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nischal Acharya | Data Scientist & Machine Learning</title>
+    <meta name="description"
+        content="Nischal Acharya - PhD Data Scientist specializing in machine learning, Bayesian inference, and quantitative research. Based in Madrid.">
+    <meta name="keywords" content="data science, machine learning, quantitative research, Python, astronomy">
+    <meta property="og:title" content="Nischal Acharya | Data Scientist & Machine Learning">
+    <meta property="og:description"
+        content="PhD Data Scientist with 7+ years experience turning massive data into reproducible models.">
+    <meta property="og:type" content="website">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #1AC8ED;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --success: #06A77D;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--dark);
+            background: var(--light);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a2a4a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(26, 200, 237, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            animation: slideInUp 0.8s ease;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            animation: slideInUp 0.8s ease 0.2s both;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            animation: slideInUp 0.8s ease 0.4s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            animation: slideInUp 0.8s ease 0.6s both;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about {
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .experience-item {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .experience-item:hover {
+            transform: translateX(5px);
+        }
+
+        .experience-item h4 {
+            color: var(--secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .experience-item .role {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-item .date {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Projects Section */
+        .projects {
+            background: var(--light);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 2rem;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .project-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-body {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-description {
+            color: #555;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-tag {
+            background: var(--light);
+            color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .project-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a2a4a 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .contact h2 {
+            color: white;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .cv-download {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .cv-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">NA</div>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Nischal Acharya, PhD</h1>
+            <p class="subtitle">Data Scientist • Machine Learning • Quantitative Research</p>
+            <p>PhD-trained data scientist with 7+ years experience turning massive, noisy, high-dimensional data into
+                reproducible models and business-ready insights. Comfortable owning problems end-to-end — from ingestion
+                and feature engineering to deployment and stakeholder communication.</p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Background</h3>
+                <p>PhD in Astronomy with expertise in machine learning, Bayesian inference, and large-scale data
+                    analysis. Marie-Curie Fellow based in Madrid with 7+ years spanning geospatial, financial, and
+                    scientific domains.</p>
+                <p>Currently seeking data science, quantitative research, and machine learning roles with organizations
+                    that value analytical rigor and reproducible science. Strong publication record and experience
+                    translating complex technical work for diverse audiences.</p>
+
+                <h3 style="margin-top: 2rem;">Technical Skills</h3>
+                <div class="skills">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">R</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">Machine Learning</span>
+                    <span class="skill-tag">Statistical Analysis</span>
+                    <span class="skill-tag">Data Visualization</span>
+                    <span class="skill-tag">Pandas</span>
+                    <span class="skill-tag">Scikit-learn</span>
+                    <span class="skill-tag">TensorFlow</span>
+                    <span class="skill-tag">Git</span>
+                </div>
+            </div>
+
+            <div>
+                <h3>Education & Experience</h3>
+
+                <div class="experience-item">
+                    <h4>PhD in Astronomy (Marie-Curie Fellow)</h4>
+                    <p class="date">2020 – 2025</p>
+                    <p>Donostia International Physics Center, San Sebastián. Large-scale survey data, Bayesian
+                        modelling, statistical inference, reproducible Python pipelines. Published in peer-reviewed
+                        journals (A&A, ApJ).</p>
+                </div>
+
+                <div class="experience-item">
+                    <h4>MSc in Astronomy & Space Physics</h4>
+                    <p class="date">2020</p>
+                    <p>University of Turku, Finland. Statistical analysis of 200,000+ galaxies, feature engineering,
+                        hypothesis testing, MCMC methods.</p>
+                </div>
+
+                <div class="experience-item">
+                    <h4>Current Role: Postdoctoral Researcher & Data Analyst</h4>
+                    <p class="date">Feb 2025 – Present</p>
+                    <p>CEFCA, Teruel. Leading end-to-end analysis of 100,000+ multi-wavelength sources. Classification,
+                        probabilistic models, scientific storytelling.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <!-- Spikewatch Project -->
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>⚡ Spikewatch</h3>
+                    <p>Real-time Performance Analytics</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">A comprehensive platform for tracking and analyzing athlete
+                        performance metrics in real-time. Built with modern tech stack to provide actionable insights
+                        for training optimization and competitive analysis.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Data Analytics</span>
+                        <span class="project-tag">Real-time Processing</span>
+                        <span class="project-tag">Visualization</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/nischal-acharya27" rel="noopener noreferrer"
+                            target="_blank">GitHub</a>
+                        <a href="#contact">Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Project 1 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>📊 Data Analysis Pipeline</h3>
+                    <p>Scalable ETL Solution</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">End-to-end data pipeline for processing and analyzing large-scale
+                        datasets. Implements best practices in data engineering with automated validation and error
+                        handling.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">SQL</span>
+                        <span class="project-tag">ETL</span>
+                        <span class="project-tag">Data Engineering</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#contact">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Project 2 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>🤖 ML Classification Model</h3>
+                    <p>Predictive Analytics</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">Advanced machine learning model for classification tasks with
+                        comprehensive feature engineering and hyperparameter optimization. Achieved high accuracy on
+                        real-world datasets.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Machine Learning</span>
+                        <span class="project-tag">Scikit-learn</span>
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Statistics</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#contact">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="contact-content">
+            <p>I'm interested in data science, quantitative research, and machine learning roles. Let's discuss how I
+                can contribute to your team.</p>
+            <div class="contact-links">
+                <a href="mailto:remember.tomorrow02@gmail.com" class="contact-link" rel="noopener noreferrer">Email</a>
+                <a href="https://github.com/nischalsrandomthoughts" class="contact-link" rel="noopener noreferrer"
+                    target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/nischal-acharya27/" class="contact-link" rel="noopener noreferrer"
+                    target="_blank">LinkedIn</a>
+                <a href="https://orcid.org/0000-0001-9738-3594" class="contact-link" rel="noopener noreferrer"
+                    target="_blank">ORCID</a>
+                <a href="https://www.instagram.com/nischalsrandomthoughts/" class="contact-link"
+                    rel="noopener noreferrer" target="_blank">Instagram</a>
+            </div>
+            <a href="Nischal_Acharya_CV.pdf" class="cv-download" download="Nischal_Acharya_CV.pdf">📄 Download CV
+                (PDF)</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Nischal Acharya. Built with passion. | <a
+                href="https://github.com/nischalsrandomthoughts/nischal-acharya.github.io" rel="noopener noreferrer"
+                target="_blank">Source Code</a></p>
+    </footer>
+</body>
+
+</html>
