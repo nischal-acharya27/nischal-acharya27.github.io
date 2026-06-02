@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nischal Acharya, PhD — Data Scientist & Quantitative Researcher</title>
+    <title>Nischal Acharya, PhD — Data Scientist & Machine Learning Engineer</title>
     <meta name="description"
         content="Nischal Acharya, PhD — Data Scientist & Quantitative Researcher in Madrid. 7+ years turning massive, high-dimensional data into reproducible models and business-ready insight. Machine learning, Bayesian inference, large-scale pipelines.">
     <meta name="keywords"
@@ -19,7 +19,11 @@
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
             --bg: #07070d;
@@ -30,17 +34,23 @@
             --text: #eef0f7;
             --muted: #9aa0b5;
             --faint: #6a7090;
-            --c1: #7c5cff;   /* violet */
-            --c2: #2dd4bf;   /* teal   */
-            --c3: #ff5d8f;   /* pink   */
-            --c4: #4cc3ff;   /* cyan   */
+            --c1: #7c5cff;
+            /* violet */
+            --c2: #2dd4bf;
+            /* teal   */
+            --c3: #ff5d8f;
+            /* pink   */
+            --c4: #4cc3ff;
+            /* cyan   */
             --grad: linear-gradient(120deg, var(--c1), var(--c4) 45%, var(--c2));
             --grad-warm: linear-gradient(120deg, var(--c3), var(--c1));
             --radius: 18px;
             --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
         }
 
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Inter', system-ui, sans-serif;
@@ -51,140 +61,730 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, .logo, .stat-num { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
+        h1,
+        h2,
+        h3,
+        .logo,
+        .stat-num {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
 
         /* ---------- Animated cosmic background ---------- */
-        #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        #stars {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .aurora {
-            position: fixed; z-index: 0; pointer-events: none; filter: blur(90px); opacity: 0.5;
+            position: fixed;
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(90px);
+            opacity: 0.5;
             border-radius: 50%;
         }
-        .aurora.a1 { width: 50vw; height: 50vw; top: -15%; right: -10%; background: radial-gradient(circle, var(--c1), transparent 65%); animation: drift 22s ease-in-out infinite; }
-        .aurora.a2 { width: 45vw; height: 45vw; bottom: -20%; left: -10%; background: radial-gradient(circle, var(--c2), transparent 65%); animation: drift 28s ease-in-out infinite reverse; }
-        .aurora.a3 { width: 35vw; height: 35vw; top: 40%; left: 30%; background: radial-gradient(circle, var(--c3), transparent 65%); animation: drift 26s ease-in-out infinite; opacity: 0.3; }
-        @keyframes drift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(4vw,-3vw) scale(1.12); } }
 
-        .wrap { position: relative; z-index: 2; }
+        .aurora.a1 {
+            width: 50vw;
+            height: 50vw;
+            top: -15%;
+            right: -10%;
+            background: radial-gradient(circle, var(--c1), transparent 65%);
+            animation: drift 22s ease-in-out infinite;
+        }
+
+        .aurora.a2 {
+            width: 45vw;
+            height: 45vw;
+            bottom: -20%;
+            left: -10%;
+            background: radial-gradient(circle, var(--c2), transparent 65%);
+            animation: drift 28s ease-in-out infinite reverse;
+        }
+
+        .aurora.a3 {
+            width: 35vw;
+            height: 35vw;
+            top: 40%;
+            left: 30%;
+            background: radial-gradient(circle, var(--c3), transparent 65%);
+            animation: drift 26s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes drift {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(4vw, -3vw) scale(1.12);
+            }
+        }
+
+        .wrap {
+            position: relative;
+            z-index: 2;
+        }
 
         /* ---------- Nav ---------- */
         nav {
-            position: fixed; top: 0; width: 100%; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 1.1rem clamp(1.2rem, 5vw, 4rem);
-            background: rgba(7, 7, 13, 0.55); backdrop-filter: blur(14px);
-            border-bottom: 1px solid transparent; transition: border-color .4s, background .4s;
+            background: rgba(7, 7, 13, 0.55);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: border-color .4s, background .4s;
         }
-        nav.scrolled { border-bottom: 1px solid var(--border); background: rgba(7,7,13,.8); }
-        .logo { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: .55rem; }
-        .logo .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 16px var(--c1); }
-        nav ul { display: flex; gap: clamp(1rem, 3vw, 2.2rem); list-style: none; align-items: center; }
-        nav a { color: var(--muted); text-decoration: none; font-size: .92rem; font-weight: 500; transition: color .25s; }
-        nav a:hover { color: var(--text); }
-        .nav-cta { padding: .5rem 1.1rem; border: 1px solid var(--border); border-radius: 999px; color: var(--text) !important; }
-        .nav-cta:hover { background: var(--surface-2); border-color: var(--c1); }
-        @media (max-width: 680px) { .nav-links { display: none; } }
+
+        nav.scrolled {
+            border-bottom: 1px solid var(--border);
+            background: rgba(7, 7, 13, .8);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+        }
+
+        .logo .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--grad);
+            box-shadow: 0 0 16px var(--c1);
+        }
+
+        nav ul {
+            display: flex;
+            gap: clamp(1rem, 3vw, 2.2rem);
+            list-style: none;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: .92rem;
+            font-weight: 500;
+            transition: color .25s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        .nav-cta {
+            padding: .5rem 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--text) !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--surface-2);
+            border-color: var(--c1);
+        }
+
+        @media (max-width: 680px) {
+            .nav-links {
+                display: none;
+            }
+        }
 
         /* ---------- Hero ---------- */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 7rem clamp(1.2rem, 6vw, 6rem) 4rem; max-width: 1200px; margin: 0 auto; }
-        .badge {
-            display: inline-flex; align-items: center; gap: .5rem; align-self: flex-start;
-            padding: .45rem .9rem; border: 1px solid var(--border); border-radius: 999px;
-            background: var(--surface); font-size: .82rem; color: var(--muted); margin-bottom: 1.8rem;
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 7rem clamp(1.2rem, 6vw, 6rem) 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .badge .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--c2); box-shadow: 0 0 0 0 var(--c2); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(45,212,191,.5);} 70%{ box-shadow: 0 0 0 9px rgba(45,212,191,0);} 100%{ box-shadow:0 0 0 0 rgba(45,212,191,0);} }
 
-        .hero h1 { font-size: clamp(2.6rem, 7vw, 5.2rem); line-height: 1.02; font-weight: 700; margin-bottom: 1.4rem; }
-        .hero h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero .lede { font-size: clamp(1.05rem, 2vw, 1.3rem); color: var(--muted); max-width: 680px; margin-bottom: 2.4rem; }
-        .hero .lede strong { color: var(--text); font-weight: 600; }
-        .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3.4rem; }
-        .btn { padding: .85rem 1.7rem; border-radius: 999px; font-size: .98rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: transform .25s, box-shadow .25s, background .25s; display: inline-flex; align-items: center; gap: .5rem; border: 1px solid transparent; }
-        .btn-primary { background: var(--grad); color: #07070d; box-shadow: 0 14px 40px -12px var(--c1); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 22px 50px -12px var(--c1); }
-        .btn-ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
-        .btn-ghost:hover { background: var(--surface-2); transform: translateY(-3px); border-color: var(--c2); }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            align-self: flex-start;
+            padding: .45rem .9rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--surface);
+            font-size: .82rem;
+            color: var(--muted);
+            margin-bottom: 1.8rem;
+        }
 
-        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 760px; }
-        .stat { padding: 1.2rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
-        .stat-num { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .stat-label { font-size: .78rem; color: var(--faint); margin-top: .2rem; }
-        @media (max-width: 620px){ .stats{ grid-template-columns: repeat(2,1fr);} }
+        .badge .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--c2);
+            box-shadow: 0 0 0 0 var(--c2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(45, 212, 191, .5);
+            }
+
+            70% {
+                box-shadow: 0 0 0 9px rgba(45, 212, 191, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(45, 212, 191, 0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 7vw, 5.2rem);
+            line-height: 1.02;
+            font-weight: 700;
+            margin-bottom: 1.4rem;
+        }
+
+        .hero h1 .grad {
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero .lede {
+            font-size: clamp(1.05rem, 2vw, 1.3rem);
+            color: var(--muted);
+            max-width: 680px;
+            margin-bottom: 2.4rem;
+        }
+
+        .hero .lede strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3.4rem;
+        }
+
+        .btn {
+            padding: .85rem 1.7rem;
+            border-radius: 999px;
+            font-size: .98rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform .25s, box-shadow .25s, background .25s;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--grad);
+            color: #07070d;
+            box-shadow: 0 14px 40px -12px var(--c1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 50px -12px var(--c1);
+        }
+
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--surface-2);
+            transform: translateY(-3px);
+            border-color: var(--c2);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 760px;
+        }
+
+        .stat {
+            padding: 1.2rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+        }
+
+        .stat-num {
+            font-size: clamp(1.5rem, 3vw, 2.1rem);
+            font-weight: 700;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: .78rem;
+            color: var(--faint);
+            margin-top: .2rem;
+        }
+
+        @media (max-width: 620px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
         /* ---------- Sections ---------- */
-        section.block { max-width: 1100px; margin: 0 auto; padding: clamp(4rem, 9vw, 7rem) clamp(1.2rem, 6vw, 4rem); }
-        .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: .8rem; color: var(--c2); text-transform: uppercase; letter-spacing: .15em; margin-bottom: .8rem; display: block; }
-        .sec-title { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 700; margin-bottom: 2.6rem; }
+        section.block {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: clamp(4rem, 9vw, 7rem) clamp(1.2rem, 6vw, 4rem);
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .8rem;
+            color: var(--c2);
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            margin-bottom: .8rem;
+            display: block;
+        }
+
+        .sec-title {
+            font-size: clamp(1.9rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 2.6rem;
+        }
 
         /* About */
-        .about-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 3rem; }
-        @media (max-width: 820px){ .about-grid{ grid-template-columns: 1fr; } }
-        .about-text p { color: var(--muted); margin-bottom: 1.1rem; font-size: 1.05rem; }
-        .about-text strong { color: var(--text); }
-        .skills-card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 1.6rem; }
-        .skills-card h4 { font-size: .82rem; color: var(--c4); text-transform: uppercase; letter-spacing: .1em; margin: 1.2rem 0 .7rem; font-family: 'JetBrains Mono', monospace; }
-        .skills-card h4:first-child { margin-top: 0; }
-        .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
-        .chip { font-size: .82rem; padding: .35rem .8rem; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); transition: border-color .25s, transform .2s; }
-        .chip:hover { border-color: var(--c1); transform: translateY(-2px); }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 3rem;
+        }
+
+        @media (max-width: 820px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .about-text p {
+            color: var(--muted);
+            margin-bottom: 1.1rem;
+            font-size: 1.05rem;
+        }
+
+        .about-text strong {
+            color: var(--text);
+        }
+
+        .skills-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            padding: 1.6rem;
+        }
+
+        .skills-card h4 {
+            font-size: .82rem;
+            color: var(--c4);
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            margin: 1.2rem 0 .7rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .skills-card h4:first-child {
+            margin-top: 0;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .chip {
+            font-size: .82rem;
+            padding: .35rem .8rem;
+            border-radius: 999px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            transition: border-color .25s, transform .2s;
+        }
+
+        .chip:hover {
+            border-color: var(--c1);
+            transform: translateY(-2px);
+        }
 
         /* Timeline */
-        .timeline { position: relative; padding-left: 2rem; }
-        .timeline::before { content: ''; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--c1), var(--c2), transparent); }
-        .tl-item { position: relative; padding-bottom: 2.4rem; }
-        .tl-item::before { content: ''; position: absolute; left: -2rem; top: 5px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--c1); box-shadow: 0 0 0 4px rgba(124,92,255,.12); }
-        .tl-item.cur::before { background: var(--grad); border-color: transparent; }
-        .tl-top { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: baseline; }
-        .tl-role { font-size: 1.2rem; font-weight: 600; font-family: 'Space Grotesk', sans-serif; }
-        .tl-org { color: var(--c2); font-weight: 500; }
-        .tl-date { font-family: 'JetBrains Mono', monospace; font-size: .82rem; color: var(--faint); white-space: nowrap; }
-        .tl-item ul { list-style: none; margin-top: .7rem; }
-        .tl-item li { color: var(--muted); padding-left: 1.2rem; position: relative; margin-bottom: .5rem; font-size: .97rem; }
-        .tl-item li::before { content: '▹'; position: absolute; left: 0; color: var(--c1); }
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: linear-gradient(var(--c1), var(--c2), transparent);
+        }
+
+        .tl-item {
+            position: relative;
+            padding-bottom: 2.4rem;
+        }
+
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--c1);
+            box-shadow: 0 0 0 4px rgba(124, 92, 255, .12);
+        }
+
+        .tl-item.cur::before {
+            background: var(--grad);
+            border-color: transparent;
+        }
+
+        .tl-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+
+        .tl-role {
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .tl-org {
+            color: var(--c2);
+            font-weight: 500;
+        }
+
+        .tl-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .82rem;
+            color: var(--faint);
+            white-space: nowrap;
+        }
+
+        .tl-item ul {
+            list-style: none;
+            margin-top: .7rem;
+        }
+
+        .tl-item li {
+            color: var(--muted);
+            padding-left: 1.2rem;
+            position: relative;
+            margin-bottom: .5rem;
+            font-size: .97rem;
+        }
+
+        .tl-item li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--c1);
+        }
 
         /* Projects */
-        .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.4rem; }
-        .proj { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 1.7rem; transition: transform .3s, border-color .3s, background .3s; position: relative; overflow: hidden; }
-        .proj::after { content: ''; position: absolute; inset: 0; background: var(--grad); opacity: 0; transition: opacity .3s; mix-blend-mode: overlay; }
-        .proj:hover { transform: translateY(-6px); border-color: var(--c1); background: var(--surface-2); }
-        .proj:hover::after { opacity: .06; }
-        .proj-icon { font-size: 1.6rem; margin-bottom: .9rem; }
-        .proj h3 { font-size: 1.18rem; margin-bottom: .6rem; }
-        .proj p { color: var(--muted); font-size: .95rem; margin-bottom: 1rem; }
-        .proj .tags { display: flex; flex-wrap: wrap; gap: .4rem; }
-        .proj-link { color: var(--c4); text-decoration: none; font-weight: 600; font-size: .9rem; transition: color .25s; }
-        .proj-link:hover { color: var(--c2); }
-        .proj .tag { font-size: .74rem; padding: .25rem .6rem; border-radius: 6px; background: var(--surface-2); color: var(--c4); font-family: 'JetBrains Mono', monospace; }
+        .proj-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.4rem;
+        }
+
+        .proj {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            padding: 1.7rem;
+            transition: transform .3s, border-color .3s, background .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proj::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--grad);
+            opacity: 0;
+            transition: opacity .3s;
+            mix-blend-mode: overlay;
+        }
+
+        .proj:hover {
+            transform: translateY(-6px);
+            border-color: var(--c1);
+            background: var(--surface-2);
+        }
+
+        .proj:hover::after {
+            opacity: .06;
+        }
+
+        .proj-icon {
+            font-size: 1.6rem;
+            margin-bottom: .9rem;
+        }
+
+        .proj h3 {
+            font-size: 1.18rem;
+            margin-bottom: .6rem;
+        }
+
+        .proj p {
+            color: var(--muted);
+            font-size: .95rem;
+            margin-bottom: 1rem;
+        }
+
+        .proj .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+        }
+
+        .proj-link {
+            color: var(--c4);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: .9rem;
+            transition: color .25s;
+        }
+
+        .proj-link:hover {
+            color: var(--c2);
+        }
+
+        .proj .tag {
+            font-size: .74rem;
+            padding: .25rem .6rem;
+            border-radius: 6px;
+            background: var(--surface-2);
+            color: var(--c4);
+            font-family: 'JetBrains Mono', monospace;
+        }
 
         /* Highlight metric row */
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 1rem; margin-top: 2.6rem; }
-        .metric { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem; background: var(--surface); text-align: center; }
-        .metric .m-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.7rem; font-weight: 700; background: var(--grad-warm); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .metric .m-lab { font-size: .8rem; color: var(--faint); margin-top: .3rem; }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2.6rem;
+        }
+
+        .metric {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.4rem;
+            background: var(--surface);
+            text-align: center;
+        }
+
+        .metric .m-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: var(--grad-warm);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metric .m-lab {
+            font-size: .8rem;
+            color: var(--faint);
+            margin-top: .3rem;
+        }
 
         /* Contact */
-        .contact-card { border: 1px solid var(--border); border-radius: 26px; background: linear-gradient(160deg, var(--surface-2), var(--surface)); padding: clamp(2.2rem, 5vw, 4rem); text-align: center; position: relative; overflow: hidden; }
-        .contact-card::before { content: ''; position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 80%; height: 200%; background: radial-gradient(circle, rgba(124,92,255,.18), transparent 60%); pointer-events: none; }
-        .contact-card h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 1rem; position: relative; }
-        .contact-card p { color: var(--muted); max-width: 540px; margin: 0 auto 2rem; position: relative; }
-        .socials { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; position: relative; }
-        .social { padding: .7rem 1.3rem; border: 1px solid var(--border); border-radius: 999px; color: var(--text); text-decoration: none; font-weight: 500; font-size: .92rem; transition: all .25s; background: rgba(0,0,0,.2); }
-        .social:hover { border-color: var(--c2); transform: translateY(-3px); color: var(--c2); }
+        .contact-card {
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            background: linear-gradient(160deg, var(--surface-2), var(--surface));
+            padding: clamp(2.2rem, 5vw, 4rem);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-        footer { text-align: center; padding: 2.5rem 1rem; color: var(--faint); font-size: .85rem; border-top: 1px solid var(--border); }
-        footer a { color: var(--muted); text-decoration: none; }
-        footer a:hover { color: var(--c2); }
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 92, 255, .18), transparent 60%);
+            pointer-events: none;
+        }
+
+        .contact-card h2 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .contact-card p {
+            color: var(--muted);
+            max-width: 540px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .socials {
+            display: flex;
+            gap: .8rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .social {
+            padding: .7rem 1.3rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: .92rem;
+            transition: all .25s;
+            background: rgba(0, 0, 0, .2);
+        }
+
+        .social:hover {
+            border-color: var(--c2);
+            transform: translateY(-3px);
+            color: var(--c2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--faint);
+            font-size: .85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--c2);
+        }
+
+        /* Hero avatar */
+        .hero-top {
+            display: flex;
+            align-items: center;
+            gap: 1.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.4rem;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid var(--c1);
+            box-shadow: 0 0 0 5px rgba(124, 92, 255, .12), 0 18px 50px -18px var(--c1);
+        }
+
+        @media (max-width: 560px) {
+            .avatar {
+                width: 92px;
+                height: 92px;
+            }
+        }
 
         /* Reveal animation */
-        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s cubic-bezier(.2,.6,.2,1), transform .7s cubic-bezier(.2,.6,.2,1); }
-        .reveal.in { opacity: 1; transform: none; }
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .7s cubic-bezier(.2, .6, .2, 1), transform .7s cubic-bezier(.2, .6, .2, 1);
+        }
 
-        ::selection { background: var(--c1); color: #fff; }
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: #20223a; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--c1); }
+        .reveal.in {
+            opacity: 1;
+            transform: none;
+        }
+
+        ::selection {
+            background: var(--c1);
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #20223a;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--c1);
+        }
     </style>
 </head>
 
@@ -207,57 +807,86 @@
 
         <!-- HERO -->
         <header class="hero">
-            <span class="badge"><span class="pulse"></span> Open to data science & quant roles · Madrid</span>
-            <h1>Turning massive, noisy data<br>into <span class="grad">reproducible insight.</span></h1>
-            <p class="lede"><strong>Nischal Acharya, PhD</strong> — data scientist and quantitative researcher with
-                7+ years across machine learning, Bayesian inference, and large-scale pipelines spanning
-                <strong>scientific, financial, and geospatial</strong> domains. I own problems end-to-end: from
-                ingestion and feature engineering to deployment, validation, and stakeholder communication.</p>
+            <div class="hero-top">
+                <img class="avatar" src="ProfilePic.jpg" alt="Nischal Acharya" />
+                <span class="badge"><span class="pulse"></span> Open to data science, ML & analytics roles ·
+                    Madrid</span>
+            </div>
+            <h1>I turn data into<br><span class="grad">models, answers & decisions.</span></h1>
+            <p class="lede"><strong>Nischal Acharya, PhD</strong> — data scientist and machine-learning engineer with
+                7+ years across <strong>analysis, forecasting, modeling, and large-scale data pipelines</strong>
+                spanning financial, scientific, and geospatial domains. I own problems end-to-end: from ingestion
+                and feature engineering to modeling, deployment, validation, and stakeholder communication.</p>
             <div class="hero-cta">
                 <a href="#projects" class="btn btn-primary">View my work →</a>
                 <a href="Nischal_Acharya_CV.pdf" download class="btn btn-ghost">↓ Download CV</a>
             </div>
             <div class="stats">
-                <div class="stat"><div class="stat-num">7+</div><div class="stat-label">Years with data</div></div>
-                <div class="stat"><div class="stat-num">100k+</div><div class="stat-label">Sources modelled</div></div>
-                <div class="stat"><div class="stat-num">9,679</div><div class="stat-label">Trades back-tested</div></div>
-                <div class="stat"><div class="stat-num">4</div><div class="stat-label">Languages spoken</div></div>
+                <div class="stat">
+                    <div class="stat-num">7+</div>
+                    <div class="stat-label">Years with data</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">100k+</div>
+                    <div class="stat-label">Sources modelled</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">9,679</div>
+                    <div class="stat-label">Trades back-tested</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">4</div>
+                    <div class="stat-label">Languages spoken</div>
+                </div>
             </div>
         </header>
 
         <!-- ABOUT -->
         <section class="block reveal" id="about">
             <span class="eyebrow">// about</span>
-            <h2 class="sec-title">From the cosmos to the trading desk.</h2>
+            <h2 class="sec-title">Wherever there's data, I find the signal.</h2>
             <div class="about-grid">
                 <div class="about-text">
                     <p>I'm a <strong>PhD-trained data scientist and Marie-Curie Fellow</strong> based in Madrid. My
                         doctoral work pushed Bayesian modelling and statistical inference across terabyte-scale survey
-                        data — the same rigour I now bring to industry problems.</p>
+                        data, the same rigour I now bring to industry problems.</p>
                     <p>Most recently I built a <strong>production algorithmic-trading stack</strong> as a quantitative
                         developer: back-testing engines, multi-exchange data feeds, and risk analytics that delivered a
                         <strong>68.5% win rate</strong> and <strong>1.12 profit factor</strong> on BTCUSDT across nearly
-                        10,000 trades.</p>
+                        10,000 trades.
+                    </p>
                     <p>Whether the data is satellite imagery, financial ticks, or 100,000 multi-wavelength sources, I
-                        care about the same things: <strong>reproducibility, sound statistics, and a clear story</strong>
+                        care about the same things: <strong>reproducibility, sound statistics, and a clear
+                            story</strong>
                         that decision-makers can act on. Fluent in English and Spanish.</p>
                 </div>
                 <aside class="skills-card">
                     <h4>Languages & Databases</h4>
                     <div class="chips">
-                        <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span><span class="chip">Bash</span><span class="chip">PostgreSQL</span><span class="chip">MySQL</span>
+                        <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span><span
+                            class="chip">Bash</span><span class="chip">PostgreSQL</span><span class="chip">MySQL</span>
                     </div>
                     <h4>ML & Statistics</h4>
                     <div class="chips">
-                        <span class="chip">scikit-learn</span><span class="chip">PyTorch</span><span class="chip">Keras</span><span class="chip">Gradient Boosting</span><span class="chip">Random Forest</span><span class="chip">SVM</span><span class="chip">Bayesian / MCMC</span><span class="chip">Clustering</span>
+                        <span class="chip">Forecasting / Time Series</span><span class="chip">XGBoost</span><span
+                            class="chip">scikit-learn</span><span class="chip">PyTorch</span><span
+                            class="chip">Keras</span><span class="chip">Random Forest</span><span
+                            class="chip">SVM</span><span class="chip">Bayesian / MCMC</span><span
+                            class="chip">Clustering</span>
                     </div>
                     <h4>Data Eng & Cloud</h4>
                     <div class="chips">
-                        <span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">SciPy</span><span class="chip">ETL</span><span class="chip">REST APIs</span><span class="chip">Docker</span><span class="chip">Git / CI</span>
+                        <span class="chip">Spark / PySpark</span><span class="chip">Databricks</span><span
+                            class="chip">Azure</span><span class="chip">Pandas</span><span
+                            class="chip">NumPy</span><span class="chip">ETL</span><span class="chip">REST
+                            APIs</span><span class="chip">Docker</span><span class="chip">MLOps / CI</span><span
+                            class="chip">GenAI / Agents</span>
                     </div>
                     <h4>Visualisation & BI</h4>
                     <div class="chips">
-                        <span class="chip">Power BI</span><span class="chip">QlikSense</span><span class="chip">Plotly</span><span class="chip">Tableau</span><span class="chip">Matplotlib</span>
+                        <span class="chip">Power BI</span><span class="chip">QlikSense</span><span
+                            class="chip">Plotly</span><span class="chip">Tableau</span><span
+                            class="chip">Matplotlib</span>
                     </div>
                 </aside>
             </div>
@@ -270,51 +899,79 @@
             <div class="timeline">
                 <div class="tl-item cur">
                     <div class="tl-top">
-                        <div><span class="tl-role">Postdoctoral Researcher & Data Analyst</span> · <span class="tl-org">CEFCA, Teruel</span></div>
+                        <div><span class="tl-role">Postdoctoral Researcher & Data Analyst</span> · <span
+                                class="tl-org">CEFCA, Teruel</span></div>
                         <span class="tl-date">Feb 2025 – Present</span>
                     </div>
                     <ul>
-                        <li>Lead end-to-end analysis of multi-wavelength survey data on 100,000+ sources with reproducible Python pipelines for ingestion, cleaning, and statistical modelling.</li>
-                        <li>Apply classification and probabilistic models to identify rare ionisation signatures (LINER AGN); turn complex spectral data into evidence-based conclusions for international stakeholders.</li>
-                        <li>Publish in peer-reviewed journals and present to non-specialist audiences — sharpening data storytelling for technical and executive audiences alike.</li>
+                        <li>Lead end-to-end analysis of multi-wavelength survey data on 100,000+ sources with
+                            reproducible Python pipelines for ingestion, cleaning, and statistical modelling.</li>
+                        <li>Apply classification and probabilistic models to identify rare ionisation signatures (LINER
+                            AGN); turn complex spectral data into evidence-based conclusions for international
+                            stakeholders.</li>
+                        <li>Publish in peer-reviewed journals and present to non-specialist audiences — sharpening data
+                            storytelling for technical and executive audiences alike.</li>
                     </ul>
                 </div>
                 <div class="tl-item">
                     <div class="tl-top">
-                        <div><span class="tl-role">Quantitative Developer & Researcher</span> · <span class="tl-org">QuantumScale, Munich (remote)</span></div>
+                        <div><span class="tl-role">Quantitative Developer & Researcher</span> · <span
+                                class="tl-org">QuantumScale, Munich (remote)</span></div>
                         <span class="tl-date">Jun 2025 – Nov 2025</span>
                     </div>
                     <ul>
-                        <li>Designed and back-tested CFD trading strategies on crypto and equities — 68.5% win rate, 1.12 profit factor, 10.3% max drawdown on BTCUSDT across 9,679 trades.</li>
-                        <li>Built a production Python app for real-time market monitoring, multi-exchange (Binance, Bitget) data ingestion, strategy back-testing, and risk management — deployed as a MetaTrader 5 portfolio.</li>
-                        <li>Engineered the full quant stack: data-feed handlers, strategy engine, equity-curve & Sharpe analytics, scalability tests, and a Qt dashboard.</li>
+                        <li>Designed and back-tested CFD trading strategies on crypto and equities — 68.5% win rate,
+                            1.12 profit factor, 10.3% max drawdown on BTCUSDT across 9,679 trades.</li>
+                        <li>Built a production Python app for real-time market monitoring, multi-exchange (Binance,
+                            Bitget) data ingestion, strategy back-testing, and risk management — deployed as a
+                            MetaTrader 5 portfolio.</li>
+                        <li>Engineered the full quant stack: data-feed handlers, strategy engine, equity-curve & Sharpe
+                            analytics, scalability tests, and a Qt dashboard.</li>
                     </ul>
                 </div>
                 <div class="tl-item">
                     <div class="tl-top">
-                        <div><span class="tl-role">Data Scientist</span> · <span class="tl-org">OmegaLambdaTec GmbH, Garching</span></div>
+                        <div><span class="tl-role">Data Scientist</span> · <span class="tl-org">OmegaLambdaTec GmbH,
+                                Garching</span></div>
                         <span class="tl-date">Jul – Sep 2022</span>
                     </div>
                     <ul>
-                        <li>Built supervised ML models (Random Forest, SVM) on EU Sentinel satellite imagery for automated land-cover classification.</li>
-                        <li>Implemented end-to-end, version-controlled pipelines (scikit-learn, pandas, rasterio); contributed to code reviews and Agile sprints.</li>
+                        <li>Built supervised ML models (Random Forest, SVM) on EU Sentinel satellite imagery for
+                            automated land-cover classification.</li>
+                        <li>Implemented end-to-end, version-controlled pipelines (scikit-learn, pandas, rasterio);
+                            contributed to code reviews and Agile sprints.</li>
                     </ul>
                 </div>
                 <div class="tl-item">
                     <div class="tl-top">
-                        <div><span class="tl-role">Quantitative Data Analyst</span> · <span class="tl-org">LMU Munich</span></div>
+                        <div><span class="tl-role">Quantitative Data Analyst</span> · <span class="tl-org">LMU
+                                Munich</span></div>
                         <span class="tl-date">Nov 2023 – Jan 2024</span>
                     </div>
                     <ul>
-                        <li>Processed terabyte-scale simulation outputs (MAGNETICUM); built Python pipelines to extract, transform, and statistically characterise structural properties, consumed by a 10+ person research group.</li>
+                        <li>Processed terabyte-scale simulation outputs (MAGNETICUM); built Python pipelines to extract,
+                            transform, and statistically characterise structural properties, consumed by a 10+ person
+                            research group.</li>
                     </ul>
                 </div>
             </div>
             <div class="metrics">
-                <div class="metric"><div class="m-num">68.5%</div><div class="m-lab">BTCUSDT win rate</div></div>
-                <div class="metric"><div class="m-num">1.12</div><div class="m-lab">Profit factor</div></div>
-                <div class="metric"><div class="m-num">10.3%</div><div class="m-lab">Max drawdown</div></div>
-                <div class="metric"><div class="m-num">TB-scale</div><div class="m-lab">Pipelines built</div></div>
+                <div class="metric">
+                    <div class="m-num">68.5%</div>
+                    <div class="m-lab">BTCUSDT win rate</div>
+                </div>
+                <div class="metric">
+                    <div class="m-num">1.12</div>
+                    <div class="m-lab">Profit factor</div>
+                </div>
+                <div class="metric">
+                    <div class="m-num">10.3%</div>
+                    <div class="m-lab">Max drawdown</div>
+                </div>
+                <div class="metric">
+                    <div class="m-num">TB-scale</div>
+                    <div class="m-lab">Pipelines built</div>
+                </div>
             </div>
         </section>
 
@@ -326,27 +983,46 @@
                 <article class="proj">
                     <div class="proj-icon">📈</div>
                     <h3>Spikewatch — Algorithmic Trading Platform</h3>
-                    <p>Multi-exchange back-testing & live-monitoring application with a strategy library, parameter sweeps, and Sharpe/drawdown reporting. Deployed as a MetaTrader 5 portfolio.</p>
-                    <div class="tags"><span class="tag">Python</span><span class="tag">Qt</span><span class="tag">WebSocket</span><span class="tag">REST</span></div>
-                    <p style="margin-top:1rem;margin-bottom:0;"><a href="#" class="proj-link">View project →</a></p>
+                    <p>Multi-exchange back-testing & live-monitoring application with a strategy library, parameter
+                        sweeps, and Sharpe/drawdown reporting. Deployed as a MetaTrader 5 portfolio.</p>
+                    <div class="tags"><span class="tag">Python</span><span class="tag">Qt</span><span
+                            class="tag">WebSocket</span><span class="tag">REST</span></div>
+                    <p style="margin-top:1rem;margin-bottom:0;"><a href="#" class="proj-link">Site coming soon →</a></p>
+                </article>
+                <article class="proj">
+                    <div class="proj-icon">🧬</div>
+                    <h3>palfitology — Python Package</h3>
+                    <p>An open-source Python package for fitting and modeling, with a documented, modular architecture.
+                        Built for reproducible, scalable analysis workflows.</p>
+                    <div class="tags"><span class="tag">Python</span><span class="tag">Package</span><span
+                            class="tag">Modeling</span></div>
+                    <p style="margin-top:1rem;margin-bottom:0;"><a
+                            href="https://nischal-acharya27.github.io/palfitology/architecture.html" class="proj-link"
+                            target="_blank" rel="noopener">View architecture →</a></p>
                 </article>
                 <article class="proj">
                     <div class="proj-icon">🔭</div>
                     <h3>miniJPAS Faint X-ray AGN Pipeline</h3>
-                    <p>End-to-end Bayesian inference pipeline filtering 100k+ sources into a high-quality scientific sample. First-author publication in <em>Astronomy &amp; Astrophysics</em>.</p>
-                    <div class="tags"><span class="tag">Bayesian</span><span class="tag">Python</span><span class="tag">MCMC</span></div>
+                    <p>End-to-end Bayesian inference pipeline filtering 100k+ sources into a high-quality scientific
+                        sample. First-author publication in <em>Astronomy &amp; Astrophysics</em>.</p>
+                    <div class="tags"><span class="tag">Bayesian</span><span class="tag">Python</span><span
+                            class="tag">MCMC</span></div>
                 </article>
                 <article class="proj">
                     <div class="proj-icon">🧩</div>
                     <h3>CIGALE — Open-Source Module</h3>
-                    <p>Co-developed and released a reusable module for probabilistic SED modelling, with version control, code review, and packaging best practices.</p>
-                    <div class="tags"><span class="tag">Open Source</span><span class="tag">Python</span><span class="tag">Packaging</span></div>
+                    <p>Co-developed and released a reusable module for probabilistic SED modelling, with version
+                        control, code review, and packaging best practices.</p>
+                    <div class="tags"><span class="tag">Open Source</span><span class="tag">Python</span><span
+                            class="tag">Packaging</span></div>
                 </article>
                 <article class="proj">
                     <div class="proj-icon">🛰️</div>
                     <h3>Satellite Land-Cover Classifier</h3>
-                    <p>Supervised ML on EU Sentinel imagery for automated land-cover classification — a reproducible rasterio + scikit-learn pipeline.</p>
-                    <div class="tags"><span class="tag">scikit-learn</span><span class="tag">rasterio</span><span class="tag">Geospatial</span></div>
+                    <p>Supervised ML on EU Sentinel imagery for automated land-cover classification — a reproducible
+                        rasterio + scikit-learn pipeline.</p>
+                    <div class="tags"><span class="tag">scikit-learn</span><span class="tag">rasterio</span><span
+                            class="tag">Geospatial</span></div>
                 </article>
             </div>
         </section>
@@ -358,21 +1034,31 @@
             <div class="timeline">
                 <div class="tl-item">
                     <div class="tl-top">
-                        <div><span class="tl-role">PhD, Astronomy</span> · <span class="tl-org">Donostia International Physics Center, San Sebastián</span></div>
+                        <div><span class="tl-role">PhD, Astronomy</span> · <span class="tl-org">Donostia International
+                                Physics Center, San Sebastián</span></div>
                         <span class="tl-date">2020 – 2025</span>
                     </div>
-                    <ul><li>Marie-Curie Fellow. Large-scale survey data, Bayesian modelling, statistical inference, reproducible Python pipelines. Published in A&A and ApJ; 7+ invited talks across Europe.</li></ul>
+                    <ul>
+                        <li>Marie-Curie Fellow. Large-scale survey data, Bayesian modelling, statistical inference,
+                            reproducible Python pipelines. Published in A&A and ApJ; 7+ invited talks across Europe.
+                        </li>
+                    </ul>
                 </div>
                 <div class="tl-item">
                     <div class="tl-top">
-                        <div><span class="tl-role">MSc, Astronomy & Space Physics</span> · <span class="tl-org">University of Turku, Finland</span></div>
+                        <div><span class="tl-role">MSc, Astronomy & Space Physics</span> · <span
+                                class="tl-org">University of Turku, Finland</span></div>
                         <span class="tl-date">2020</span>
                     </div>
-                    <ul><li>Thesis: statistical analysis of 200,000+ galaxies — feature engineering, hypothesis testing, MCMC.</li></ul>
+                    <ul>
+                        <li>Thesis: statistical analysis of 200,000+ galaxies — feature engineering, hypothesis testing,
+                            MCMC.</li>
+                    </ul>
                 </div>
                 <div class="tl-item">
                     <div class="tl-top">
-                        <div><span class="tl-role">BSc, Physics</span> · <span class="tl-org">St. Xavier's College, Kathmandu</span></div>
+                        <div><span class="tl-role">BSc, Physics</span> · <span class="tl-org">St. Xavier's College,
+                                Kathmandu</span></div>
                         <span class="tl-date">2015</span>
                     </div>
                 </div>
@@ -383,13 +1069,18 @@
         <section class="block reveal" id="contact">
             <div class="contact-card">
                 <h2>Let's build something with your data.</h2>
-                <p>I'm open to data science, quantitative research, and machine learning roles. The fastest way to reach me is email — I reply quickly.</p>
+                <p>I'm open to data science, quantitative research, and machine learning roles. The fastest way to reach
+                    me is email — I reply quickly.</p>
                 <div class="socials">
                     <a class="social" href="mailto:nischal.acharya02@gmail.com">✉ Email</a>
-                    <a class="social" href="https://www.linkedin.com/in/nischal-acharya27/" target="_blank" rel="noopener">in LinkedIn</a>
-                    <a class="social" href="https://github.com/nischal-acharya27" target="_blank" rel="noopener">⌥ GitHub</a>
-                    <a class="social" href="https://www.instagram.com/nischalsrandomthoughts/" target="_blank" rel="noopener">◎ Instagram</a>
-                    <a class="social" href="https://orcid.org/0000-0001-9738-3594" target="_blank" rel="noopener">◉ ORCID</a>
+                    <a class="social" href="https://www.linkedin.com/in/nischal-acharya27/" target="_blank"
+                        rel="noopener">in LinkedIn</a>
+                    <a class="social" href="https://github.com/nischal-acharya27" target="_blank" rel="noopener">⌥
+                        GitHub</a>
+                    <a class="social" href="https://www.instagram.com/nischalsrandomthoughts/" target="_blank"
+                        rel="noopener">◎ Instagram</a>
+                    <a class="social" href="https://orcid.org/0000-0001-9738-3594" target="_blank" rel="noopener">◉
+                        ORCID</a>
                     <a class="social" href="Nischal_Acharya_CV.pdf" download>↓ CV (PDF)</a>
                 </div>
             </div>
