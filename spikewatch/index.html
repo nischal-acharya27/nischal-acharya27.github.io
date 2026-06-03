@@ -1,528 +1,799 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>SpikeWatch — Automate &amp; backtest crypto trading strategies</title>
-<meta name="description" content="SpikeWatch is a desktop trading workbench for crypto futures: backtest strategies on real exchange data and run them live with one click." />
-<link rel="canonical" href="https://nischal-acharya27.github.io/spikewatch/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SpikeWatch — Automate &amp; backtest crypto trading strategies</title>
+  <meta name="description"
+    content="SpikeWatch is a desktop trading workbench for crypto futures: backtest strategies on real exchange data and run them live with one click." />
+  <link rel="canonical" href="https://nischal-acharya27.github.io/spikewatch/" />
 
-<!-- Open Graph / Twitter card -->
-<meta property="og:type" content="website" />
-<meta property="og:title" content="SpikeWatch — Trade on the signal, not the screen." />
-<meta property="og:description" content="A desktop trading workbench for crypto futures. Backtest strategies on real exchange data, then run them live with the same code path." />
-<meta property="og:url" content="https://nischal-acharya27.github.io/spikewatch/" />
-<meta property="og:image" content="https://nischal-acharya27.github.io/spikewatch/og.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:site_name" content="SpikeWatch" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="SpikeWatch — Trade on the signal, not the screen." />
-<meta name="twitter:description" content="Backtest crypto strategies on real exchange data, then automate them. One state machine, live + backtest, byte-for-byte." />
-<meta name="twitter:image" content="https://nischal-acharya27.github.io/spikewatch/og.png" />
+  <!-- Open Graph / Twitter card -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SpikeWatch — Trade on the signal, not the screen." />
+  <meta property="og:description"
+    content="A desktop trading workbench for crypto futures. Backtest strategies on real exchange data, then run them live with the same code path." />
+  <meta property="og:url" content="https://nischal-acharya27.github.io/spikewatch/" />
+  <meta property="og:image" content="https://nischal-acharya27.github.io/spikewatch/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="SpikeWatch" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SpikeWatch — Trade on the signal, not the screen." />
+  <meta name="twitter:description"
+    content="Backtest crypto strategies on real exchange data, then automate them. One state machine, live + backtest, byte-for-byte." />
+  <meta name="twitter:image" content="https://nischal-acharya27.github.io/spikewatch/og.png" />
 
-<!-- Favicon (inline SVG so no extra file needed) -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237dd3fc'/%3E%3Cstop offset='100%25' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1' y='1' width='26' height='26' rx='7' fill='url(%23g)' opacity='0.2' stroke='%237dd3fc'/%3E%3Cpath d='M5 18 L10 13 L13 16 L18 9 L23 14' stroke='%237dd3fc' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='18' cy='9' r='2' fill='%23f472b6'/%3E%3C/svg%3E" />
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-  :root {
-    --bg: #0b1020;
-    --panel: rgba(255,255,255,0.04);
-    --panel-2: rgba(255,255,255,0.07);
-    --line: rgba(255,255,255,0.12);
-    --txt: #e6ecff;
-    --muted: #8da0c8;
-    --accent: #7dd3fc;
-    --ui: #a78bfa;
-    --core: #f472b6;
-    --data: #34d399;
-    --ext: #fbbf24;
-    --store: #60a5fa;
-    --pure: #2dd4bf;
-    --up:  #34d399;
-    --down:#f87171;
-  }
-  html, body {
-    background:
-      radial-gradient(1200px 800px at 20% -10%, #1b254e 0%, var(--bg) 55%) fixed,
-      var(--bg);
-    color: var(--txt);
-  }
-  body {
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  }
-  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, "JetBrains Mono", monospace; }
+  <!-- Favicon (inline SVG so no extra file needed) -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237dd3fc'/%3E%3Cstop offset='100%25' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1' y='1' width='26' height='26' rx='7' fill='url(%23g)' opacity='0.2' stroke='%237dd3fc'/%3E%3Cpath d='M5 18 L10 13 L13 16 L18 9 L23 14' stroke='%237dd3fc' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='18' cy='9' r='2' fill='%23f472b6'/%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(255, 255, 255, 0.04);
+      --panel-2: rgba(255, 255, 255, 0.07);
+      --line: rgba(255, 255, 255, 0.12);
+      --txt: #e6ecff;
+      --muted: #8da0c8;
+      --accent: #7dd3fc;
+      --ui: #a78bfa;
+      --core: #f472b6;
+      --data: #34d399;
+      --ext: #fbbf24;
+      --store: #60a5fa;
+      --pure: #2dd4bf;
+      --up: #34d399;
+      --down: #f87171;
+    }
 
-  /* shared panel look from architecture.html */
-  .glass { background: var(--panel); border: 1px solid var(--line); backdrop-filter: blur(6px); }
-  .glass:hover { background: var(--panel-2); }
-  .glow-ui     { box-shadow: inset 0 0 0 1px rgba(167,139,250,.5), 0 0 0 1px rgba(167,139,250,.15); background: linear-gradient(180deg, rgba(167,139,250,.10), rgba(167,139,250,.02)); }
-  .glow-core   { box-shadow: inset 0 0 0 1px rgba(244,114,182,.5), 0 0 0 1px rgba(244,114,182,.15); background: linear-gradient(180deg, rgba(244,114,182,.10), rgba(244,114,182,.02)); }
-  .glow-data   { box-shadow: inset 0 0 0 1px rgba(52,211,153,.5),  0 0 0 1px rgba(52,211,153,.15);  background: linear-gradient(180deg, rgba(52,211,153,.10), rgba(52,211,153,.02)); }
-  .glow-store  { box-shadow: inset 0 0 0 1px rgba(96,165,250,.5),  0 0 0 1px rgba(96,165,250,.15);  background: linear-gradient(180deg, rgba(96,165,250,.10), rgba(96,165,250,.02)); }
-  .glow-pure   { box-shadow: inset 0 0 0 1px rgba(45,212,191,.5),  0 0 0 1px rgba(45,212,191,.15);  background: linear-gradient(180deg, rgba(45,212,191,.10), rgba(45,212,191,.02)); }
-  .glow-ext    { box-shadow: inset 0 0 0 1px rgba(251,191,36,.5),  0 0 0 1px rgba(251,191,36,.15);  background: linear-gradient(180deg, rgba(251,191,36,.10), rgba(251,191,36,.02)); }
+    html,
+    body {
+      background:
+        radial-gradient(1200px 800px at 20% -10%, #1b254e 0%, var(--bg) 55%) fixed,
+        var(--bg);
+      color: var(--txt);
+    }
 
-  .badge { font-size: 10px; padding: 2px 6px; border-radius: 999px; border: 1px solid var(--line); }
-  .pill-ui     { background: rgba(167,139,250,.16); color: #d6cbff; border-color: rgba(167,139,250,.4); }
-  .pill-core   { background: rgba(244,114,182,.14); color: #ffd2ec; border-color: rgba(244,114,182,.4); }
-  .pill-data   { background: rgba(52,211,153,.14); color: #c7f6e1; border-color: rgba(52,211,153,.4); }
-  .pill-pure   { background: rgba(45,212,191,.14); color: #b8fff1; border-color: rgba(45,212,191,.4); }
-  .pill-ext    { background: rgba(251,191,36,.14); color: #ffe7b3; border-color: rgba(251,191,36,.4); }
-  .kbd { font-family: ui-monospace, monospace; font-size: 10px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,0.08); border: 1px solid var(--line); }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
 
-  .grid-bg {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, "JetBrains Mono", monospace;
+    }
 
-  /* candlestick replay */
-  .candle { opacity: 0; animation: candleIn 0.35s ease-out forwards; }
-  @keyframes candleIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .price-line {
-    stroke-dasharray: 2400;
-    stroke-dashoffset: 2400;
-    animation: drawLine 24s linear forwards infinite;
-  }
-  @keyframes drawLine { 0% { stroke-dashoffset: 2400; } 100% { stroke-dashoffset: 0; } }
+    /* shared panel look from architecture.html */
+    .glass {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(6px);
+    }
 
-  .marker { opacity: 0; animation: markerPop 0.5s ease-out forwards; }
-  @keyframes markerPop { 0% { opacity: 0; transform: scale(0); } 60% { transform: scale(1.3); } 100% { opacity: 1; transform: scale(1); } }
+    .glass:hover {
+      background: var(--panel-2);
+    }
 
-  .pulse-dot {
-    fill: var(--up);
-    animation: pulseDot 1.4s ease-in-out infinite;
-  }
-  @keyframes pulseDot { 0%,100% { opacity: 0.45; } 50% { opacity: 1; } }
+    .glow-ui {
+      box-shadow: inset 0 0 0 1px rgba(167, 139, 250, .5), 0 0 0 1px rgba(167, 139, 250, .15);
+      background: linear-gradient(180deg, rgba(167, 139, 250, .10), rgba(167, 139, 250, .02));
+    }
 
-  /* dual-axis chart: price + equity animated draw */
-  .price-track {
-    stroke-dasharray: 6000;
-    stroke-dashoffset: 6000;
-  }
-  .price-track.draw { animation: drawTrack 4s ease-out forwards; }
-  .equity-track {
-    stroke-dasharray: 6000;
-    stroke-dashoffset: 6000;
-  }
-  .equity-track.draw { animation: drawTrack 4s ease-out forwards; }
-  @keyframes drawTrack { to { stroke-dashoffset: 0; } }
+    .glow-core {
+      box-shadow: inset 0 0 0 1px rgba(244, 114, 182, .5), 0 0 0 1px rgba(244, 114, 182, .15);
+      background: linear-gradient(180deg, rgba(244, 114, 182, .10), rgba(244, 114, 182, .02));
+    }
 
-  /* equity area gradient fades in alongside the line */
-  .equity-fill {
-    opacity: 0;
-  }
-  .equity-fill.draw { animation: fadeIn 4s ease-out forwards; }
-  @keyframes fadeIn { 0% { opacity: 0; } 30% { opacity: 0; } 100% { opacity: 1; } }
+    .glow-data {
+      box-shadow: inset 0 0 0 1px rgba(52, 211, 153, .5), 0 0 0 1px rgba(52, 211, 153, .15);
+      background: linear-gradient(180deg, rgba(52, 211, 153, .10), rgba(52, 211, 153, .02));
+    }
 
-  /* trade markers stagger in along with the draw */
-  .price-marker {
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-  }
-  .price-marker.draw { animation: popIn .35s ease-out forwards; }
-  @keyframes popIn {
-    0%   { opacity: 0; transform: scale(0); }
-    60%  { transform: scale(1.4); }
-    100% { opacity: 0.85; transform: scale(1); }
-  }
+    .glow-store {
+      box-shadow: inset 0 0 0 1px rgba(96, 165, 250, .5), 0 0 0 1px rgba(96, 165, 250, .15);
+      background: linear-gradient(180deg, rgba(96, 165, 250, .10), rgba(96, 165, 250, .02));
+    }
 
-  /* axis labels */
-  .axis-label { font-family: ui-monospace, monospace; font-size: 10px; fill: rgba(255,255,255,0.45); }
-  .axis-label-price  { fill: rgba(125,211,252,0.55); }
-  .axis-label-equity { fill: rgba(167,139,250,0.85); }
+    .glow-pure {
+      box-shadow: inset 0 0 0 1px rgba(45, 212, 191, .5), 0 0 0 1px rgba(45, 212, 191, .15);
+      background: linear-gradient(180deg, rgba(45, 212, 191, .10), rgba(45, 212, 191, .02));
+    }
 
-  /* live ticker */
-  .ticker {
-    display: inline-block;
-    animation: tickerScroll 35s linear infinite;
-    padding-left: 100%;
-  }
-  @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-  .ticker-wrap { overflow: hidden; white-space: nowrap; }
+    .glow-ext {
+      box-shadow: inset 0 0 0 1px rgba(251, 191, 36, .5), 0 0 0 1px rgba(251, 191, 36, .15);
+      background: linear-gradient(180deg, rgba(251, 191, 36, .10), rgba(251, 191, 36, .02));
+    }
 
-  /* gradient text */
-  .grad-text {
-    background: linear-gradient(90deg, #7dd3fc, #a78bfa, #f472b6);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
+    .badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+    }
 
-  /* nav */
-  .nav-link { color: var(--muted); }
-  .nav-link:hover { color: var(--txt); }
+    .pill-ui {
+      background: rgba(167, 139, 250, .16);
+      color: #d6cbff;
+      border-color: rgba(167, 139, 250, .4);
+    }
 
-  /* small bar (close-reason chart) */
-  .bar-fill { transition: width 1.5s ease-out; }
+    .pill-core {
+      background: rgba(244, 114, 182, .14);
+      color: #ffd2ec;
+      border-color: rgba(244, 114, 182, .4);
+    }
 
-  /* card hover */
-  .feature-card { transition: transform .25s ease, background .25s ease; }
-  .feature-card:hover { transform: translateY(-3px); background: var(--panel-2); }
+    .pill-data {
+      background: rgba(52, 211, 153, .14);
+      color: #c7f6e1;
+      border-color: rgba(52, 211, 153, .4);
+    }
 
-  /* Pricing highlight */
-  .pricing-pop {
-    box-shadow:
-      0 0 0 1px rgba(125,211,252,.45),
-      0 0 40px rgba(125,211,252,.18),
-      0 0 80px rgba(167,139,250,.15);
-  }
+    .pill-pure {
+      background: rgba(45, 212, 191, .14);
+      color: #b8fff1;
+      border-color: rgba(45, 212, 191, .4);
+    }
 
-  .scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
-  .scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 6px; }
+    .pill-ext {
+      background: rgba(251, 191, 36, .14);
+      color: #ffe7b3;
+      border-color: rgba(251, 191, 36, .4);
+    }
 
-  /* on-load fade */
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .8s, transform .8s; }
-  .reveal.in { opacity: 1; transform: translateY(0); }
+    .kbd {
+      font-family: ui-monospace, monospace;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--line);
+    }
 
-  /* ---------- Mobile (≤768px) tweaks ---------- */
-  @media (max-width: 768px) {
-    /* Hero chart shrinks gracefully */
-    #heroChart { height: 240px !important; }
-    /* Dual-axis: shrink height and let axis labels shrink */
-    #priceEqChart { height: 260px !important; }
-    #priceEqChart .axis-label,
-    #priceEqChart .axis-label-price,
-    #priceEqChart .axis-label-equity { font-size: 13px !important; }
-    /* Mid-row nav (Features / Backtest / …) hidden on phones — the side nav 'For devs' + Waitlist still show */
-    .nav-mid-links { display: none !important; }
-    /* KPI strip becomes 2 columns instead of 4 — already handled by md:grid-cols-4 */
-    /* Pricing CTA buttons get smaller padding */
-    /* Section padding tightens */
-    section { padding-top: 3rem; padding-bottom: 3rem; }
-    h1 { font-size: 2.5rem !important; line-height: 1.1; }
-    h2 { font-size: 1.875rem !important; }
-  }
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
 
-  /* Hero chart aspect — drop preserveAspectRatio so it scales uniformly */
-</style>
+    /* candlestick replay */
+    .candle {
+      opacity: 0;
+      animation: candleIn 0.35s ease-out forwards;
+    }
+
+    @keyframes candleIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .price-line {
+      stroke-dasharray: 2400;
+      stroke-dashoffset: 2400;
+      animation: drawLine 24s linear forwards infinite;
+    }
+
+    @keyframes drawLine {
+      0% {
+        stroke-dashoffset: 2400;
+      }
+
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .marker {
+      opacity: 0;
+      animation: markerPop 0.5s ease-out forwards;
+    }
+
+    @keyframes markerPop {
+      0% {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      60% {
+        transform: scale(1.3);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .pulse-dot {
+      fill: var(--up);
+      animation: pulseDot 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+
+      0%,
+      100% {
+        opacity: 0.45;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* dual-axis chart: price + equity animated draw */
+    .price-track {
+      stroke-dasharray: 6000;
+      stroke-dashoffset: 6000;
+    }
+
+    .price-track.draw {
+      animation: drawTrack 4s ease-out forwards;
+    }
+
+    .equity-track {
+      stroke-dasharray: 6000;
+      stroke-dashoffset: 6000;
+    }
+
+    .equity-track.draw {
+      animation: drawTrack 4s ease-out forwards;
+    }
+
+    @keyframes drawTrack {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* equity area gradient fades in alongside the line */
+    .equity-fill {
+      opacity: 0;
+    }
+
+    .equity-fill.draw {
+      animation: fadeIn 4s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      30% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* trade markers stagger in along with the draw */
+    .price-marker {
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .price-marker.draw {
+      animation: popIn .35s ease-out forwards;
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      60% {
+        transform: scale(1.4);
+      }
+
+      100% {
+        opacity: 0.85;
+        transform: scale(1);
+      }
+    }
+
+    /* axis labels */
+    .axis-label {
+      font-family: ui-monospace, monospace;
+      font-size: 10px;
+      fill: rgba(255, 255, 255, 0.45);
+    }
+
+    .axis-label-price {
+      fill: rgba(125, 211, 252, 0.55);
+    }
+
+    .axis-label-equity {
+      fill: rgba(167, 139, 250, 0.85);
+    }
+
+    /* live ticker */
+    .ticker {
+      display: inline-block;
+      animation: tickerScroll 35s linear infinite;
+      padding-left: 100%;
+    }
+
+    @keyframes tickerScroll {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .ticker-wrap {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* gradient text */
+    .grad-text {
+      background: linear-gradient(90deg, #7dd3fc, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* nav */
+    .nav-link {
+      color: var(--muted);
+    }
+
+    .nav-link:hover {
+      color: var(--txt);
+    }
+
+    /* small bar (close-reason chart) */
+    .bar-fill {
+      transition: width 1.5s ease-out;
+    }
+
+    /* card hover */
+    .feature-card {
+      transition: transform .25s ease, background .25s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      background: var(--panel-2);
+    }
+
+    /* Pricing highlight */
+    .pricing-pop {
+      box-shadow:
+        0 0 0 1px rgba(125, 211, 252, .45),
+        0 0 40px rgba(125, 211, 252, .18),
+        0 0 80px rgba(167, 139, 250, .15);
+    }
+
+    .scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+    }
+
+    /* on-load fade */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .8s, transform .8s;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- Mobile (≤768px) tweaks ---------- */
+    @media (max-width: 768px) {
+
+      /* Hero chart shrinks gracefully */
+      #heroChart {
+        height: 240px !important;
+      }
+
+      /* Dual-axis: shrink height and let axis labels shrink */
+      #priceEqChart {
+        height: 260px !important;
+      }
+
+      #priceEqChart .axis-label,
+      #priceEqChart .axis-label-price,
+      #priceEqChart .axis-label-equity {
+        font-size: 13px !important;
+      }
+
+      /* Mid-row nav (Features / Backtest / …) hidden on phones — the side nav 'For devs' + Waitlist still show */
+      .nav-mid-links {
+        display: none !important;
+      }
+
+      /* KPI strip becomes 2 columns instead of 4 — already handled by md:grid-cols-4 */
+      /* Pricing CTA buttons get smaller padding */
+      /* Section padding tightens */
+      section {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+      }
+
+      h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.1;
+      }
+
+      h2 {
+        font-size: 1.875rem !important;
+      }
+    }
+
+    /* Hero chart aspect — drop preserveAspectRatio so it scales uniformly */
+  </style>
 </head>
+
 <body class="min-h-screen">
 
-<!-- ============================================================ NAV -->
-<nav class="px-6 lg:px-10 py-5 flex items-center justify-between relative z-20">
-  <a href="#top" class="flex items-center gap-2">
-    <svg width="28" height="28" viewBox="0 0 28 28">
-      <defs>
-        <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#7dd3fc"/>
-          <stop offset="100%" stop-color="#a78bfa"/>
-        </linearGradient>
-      </defs>
-      <rect x="1" y="1" width="26" height="26" rx="7" fill="url(#logoGrad)" opacity="0.18" stroke="url(#logoGrad)" />
-      <path d="M5 18 L10 13 L13 16 L18 9 L23 14" stroke="url(#logoGrad)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="18" cy="9" r="2" fill="#f472b6"/>
-    </svg>
-    <span class="text-lg font-semibold tracking-tight">SpikeWatch</span>
-    <span class="badge pill-pure ml-1">v0.2</span>
-  </a>
-  <div class="nav-mid-links hidden md:flex items-center gap-7 text-sm">
-    <a href="#features" class="nav-link">Features</a>
-    <a href="#backtest" class="nav-link">Backtest</a>
-    <a href="#strategies" class="nav-link">Strategies</a>
-    <a href="#pricing" class="nav-link">Pricing</a>
-    <a href="#faq" class="nav-link">FAQ</a>
-    <a href="./architecture.html" class="nav-link mono text-xs">architecture →</a>
-  </div>
-  <div class="flex items-center gap-3">
-    <a href="./architecture.html" class="hidden md:inline-block text-sm nav-link">For devs</a>
-    <button type="button" data-waitlist class="text-sm bg-white text-slate-900 hover:bg-slate-100 px-4 py-2 rounded-lg font-medium">Join waitlist</button>
-  </div>
-</nav>
-
-<!-- ============================================================ HERO -->
-<header id="top" class="relative px-6 lg:px-10 pt-6 pb-24 overflow-hidden">
-  <div class="grid-bg" style="opacity:.5"></div>
-  <div class="relative grid lg:grid-cols-12 gap-10 items-center max-w-7xl mx-auto">
-    <div class="lg:col-span-6">
-      <div class="inline-flex items-center gap-2 glass rounded-full px-3 py-1.5 text-xs text-slate-300 mb-6">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        Live on Binance &amp; Bitget USDT-M futures
-      </div>
-      <h1 class="text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight">
-        Trade on the signal,
-        <br/><span class="grad-text">not the screen.</span>
-      </h1>
-      <p class="mt-6 text-lg text-slate-300 max-w-xl">
-        SpikeWatch is a desktop trading workbench for crypto futures.
-        Backtest your strategies on real exchange data, then run them
-        live with the same code path — TP, SL, trailing stops included.
-      </p>
-
-      <div class="mt-8 flex flex-wrap items-center gap-3">
-        <button type="button" data-waitlist class="bg-white text-slate-900 hover:bg-slate-100 px-5 py-3 rounded-lg font-medium">
-          Get early access
-        </button>
-        <a href="#backtest" class="glass hover:bg-white/10 px-5 py-3 rounded-lg font-medium">
-          See the BTC backtest →
-        </a>
-      </div>
-
-      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-400">
-        <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> 87 tests passing</span>
-        <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Paper-trading only · no API keys</span>
-        <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Open architecture · bring your own strategy</span>
-      </div>
+  <!-- ============================================================ NAV -->
+  <nav class="px-6 lg:px-10 py-5 flex items-center justify-between relative z-20">
+    <a href="#top" class="flex items-center gap-2">
+      <svg width="28" height="28" viewBox="0 0 28 28">
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#7dd3fc" />
+            <stop offset="100%" stop-color="#a78bfa" />
+          </linearGradient>
+        </defs>
+        <rect x="1" y="1" width="26" height="26" rx="7" fill="url(#logoGrad)" opacity="0.18" stroke="url(#logoGrad)" />
+        <path d="M5 18 L10 13 L13 16 L18 9 L23 14" stroke="url(#logoGrad)" stroke-width="2" fill="none"
+          stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="18" cy="9" r="2" fill="#f472b6" />
+      </svg>
+      <span class="text-lg font-semibold tracking-tight">SpikeWatch</span>
+      <span class="badge pill-pure ml-1">v0.2</span>
+    </a>
+    <div class="nav-mid-links hidden md:flex items-center gap-7 text-sm">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#backtest" class="nav-link">Backtest</a>
+      <a href="#strategies" class="nav-link">Strategies</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="./architecture.html" class="nav-link mono text-xs">architecture →</a>
     </div>
+    <div class="flex items-center gap-3">
+      <a href="./architecture.html" class="hidden md:inline-block text-sm nav-link">For devs</a>
+      <button type="button" data-waitlist
+        class="text-sm bg-white text-slate-900 hover:bg-slate-100 px-4 py-2 rounded-lg font-medium">Join
+        waitlist</button>
+    </div>
+  </nav>
 
-    <!-- ANIMATED CANDLESTICK CHART -->
-    <div class="lg:col-span-6">
-      <div class="glass rounded-2xl p-4 relative">
-        <div class="flex items-center justify-between mb-3 text-xs">
-          <div class="flex items-center gap-2">
-            <span class="badge pill-data">LIVE REPLAY</span>
-            <span class="mono text-slate-300">BTCUSDT · 1m · Mean Reversion</span>
-          </div>
-          <div class="flex items-center gap-2 mono text-slate-400">
-            <svg width="6" height="6"><circle cx="3" cy="3" r="3" class="pulse-dot"/></svg>
-            <span id="lastPrice">—</span>
-          </div>
+  <!-- ============================================================ HERO -->
+  <header id="top" class="relative px-6 lg:px-10 pt-6 pb-24 overflow-hidden">
+    <div class="grid-bg" style="opacity:.5"></div>
+    <div class="relative grid lg:grid-cols-12 gap-10 items-center max-w-7xl mx-auto">
+      <div class="lg:col-span-6">
+        <div class="inline-flex items-center gap-2 glass rounded-full px-3 py-1.5 text-xs text-slate-300 mb-6">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Live on Binance &amp; Bitget USDT-M futures
         </div>
-        <svg id="heroChart" viewBox="0 0 900 360" class="w-full" preserveAspectRatio="xMidYMid meet" style="height:360px;">
-          <defs>
-            <linearGradient id="bandGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(125,211,252,0.15)"/>
-              <stop offset="100%" stop-color="rgba(125,211,252,0.0)"/>
-            </linearGradient>
-            <linearGradient id="upGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#34d399"/>
-              <stop offset="100%" stop-color="#10b981"/>
-            </linearGradient>
-            <linearGradient id="downGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f87171"/>
-              <stop offset="100%" stop-color="#ef4444"/>
-            </linearGradient>
-            <filter id="markerGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="4"/>
-            </filter>
-          </defs>
-          <!-- Bollinger band placeholder fill -->
-          <g id="bandsLayer"></g>
-          <!-- Candles inserted by JS -->
-          <g id="candleLayer"></g>
-          <!-- Marker layer -->
-          <g id="markerLayer"></g>
-          <!-- Strategy mid-line -->
-          <g id="midLayer"></g>
-        </svg>
+        <h1 class="text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight">
+          Trade on the signal,
+          <br /><span class="grad-text">not the screen.</span>
+        </h1>
+        <p class="mt-6 text-lg text-slate-300 max-w-xl">
+          SpikeWatch is a desktop trading workbench for crypto futures.
+          Backtest your strategies on real exchange data, then run them
+          live with the same code path — TP, SL, trailing stops included.
+        </p>
 
-        <div class="mt-3 grid grid-cols-3 gap-2 text-xs">
-          <div class="glass rounded-lg px-3 py-2">
-            <div class="text-slate-400">Bot status</div>
-            <div class="text-emerald-300 mono font-semibold flex items-center gap-1.5 mt-0.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ACTIVE
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <button type="button" data-waitlist
+            class="bg-white text-slate-900 hover:bg-slate-100 px-5 py-3 rounded-lg font-medium">
+            Get early access
+          </button>
+          <a href="#backtest" class="glass hover:bg-white/10 px-5 py-3 rounded-lg font-medium">
+            See the BTC backtest →
+          </a>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-400">
+          <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M20 6 9 17l-5-5" />
+            </svg> 87 tests passing</span>
+          <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M20 6 9 17l-5-5" />
+            </svg> Paper-trading only · no API keys</span>
+          <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M20 6 9 17l-5-5" />
+            </svg> Open architecture · bring your own strategy</span>
+        </div>
+      </div>
+
+      <!-- ANIMATED CANDLESTICK CHART -->
+      <div class="lg:col-span-6">
+        <div class="glass rounded-2xl p-4 relative">
+          <div class="flex items-center justify-between mb-3 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="badge pill-data">LIVE REPLAY</span>
+              <span class="mono text-slate-300">BTCUSDT · 1m · Mean Reversion</span>
+            </div>
+            <div class="flex items-center gap-2 mono text-slate-400">
+              <svg width="6" height="6">
+                <circle cx="3" cy="3" r="3" class="pulse-dot" />
+              </svg>
+              <span id="lastPrice">—</span>
             </div>
           </div>
-          <div class="glass rounded-lg px-3 py-2">
-            <div class="text-slate-400">Open trades</div>
-            <div id="heroOpenTrades" class="mono text-slate-100 font-semibold mt-0.5">0</div>
-          </div>
-          <div class="glass rounded-lg px-3 py-2">
-            <div class="text-slate-400">Session P&amp;L</div>
-            <div id="heroPnL" class="mono text-slate-100 font-semibold mt-0.5">+0.00%</div>
+          <svg id="heroChart" viewBox="0 0 900 360" class="w-full" preserveAspectRatio="xMidYMid meet"
+            style="height:360px;">
+            <defs>
+              <linearGradient id="bandGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(125,211,252,0.15)" />
+                <stop offset="100%" stop-color="rgba(125,211,252,0.0)" />
+              </linearGradient>
+              <linearGradient id="upGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#34d399" />
+                <stop offset="100%" stop-color="#10b981" />
+              </linearGradient>
+              <linearGradient id="downGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f87171" />
+                <stop offset="100%" stop-color="#ef4444" />
+              </linearGradient>
+              <filter id="markerGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" />
+              </filter>
+            </defs>
+            <!-- Bollinger band placeholder fill -->
+            <g id="bandsLayer"></g>
+            <!-- Candles inserted by JS -->
+            <g id="candleLayer"></g>
+            <!-- Marker layer -->
+            <g id="markerLayer"></g>
+            <!-- Strategy mid-line -->
+            <g id="midLayer"></g>
+          </svg>
+
+          <div class="mt-3 grid grid-cols-3 gap-2 text-xs">
+            <div class="glass rounded-lg px-3 py-2">
+              <div class="text-slate-400">Bot status</div>
+              <div class="text-emerald-300 mono font-semibold flex items-center gap-1.5 mt-0.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ACTIVE
+              </div>
+            </div>
+            <div class="glass rounded-lg px-3 py-2">
+              <div class="text-slate-400">Open trades</div>
+              <div id="heroOpenTrades" class="mono text-slate-100 font-semibold mt-0.5">0</div>
+            </div>
+            <div class="glass rounded-lg px-3 py-2">
+              <div class="text-slate-400">Session P&amp;L</div>
+              <div id="heroPnL" class="mono text-slate-100 font-semibold mt-0.5">+0.00%</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Live ticker -->
-  <div class="relative max-w-7xl mx-auto mt-12">
-    <div class="ticker-wrap glass rounded-full py-2 text-xs mono text-slate-300">
-      <div class="ticker">
-        <span class="mx-6">BTCUSDT <span class="text-emerald-300">+1.42%</span></span>
-        <span class="mx-6">ETHUSDT <span class="text-emerald-300">+0.88%</span></span>
-        <span class="mx-6">SOLUSDT <span class="text-rose-300">-2.10%</span></span>
-        <span class="mx-6">XRPUSDT <span class="text-emerald-300">+0.42%</span></span>
-        <span class="mx-6">DOGEUSDT <span class="text-rose-300">-0.95%</span></span>
-        <span class="mx-6">AVAXUSDT <span class="text-emerald-300">+3.21%</span></span>
-        <span class="mx-6">LINKUSDT <span class="text-emerald-300">+0.55%</span></span>
-        <span class="mx-6">MATICUSDT <span class="text-rose-300">-1.04%</span></span>
-        <span class="mx-6">DOTUSDT <span class="text-emerald-300">+1.78%</span></span>
-        <span class="mx-6">BNBUSDT <span class="text-emerald-300">+0.21%</span></span>
-        <span class="mx-6">ARBUSDT <span class="text-rose-300">-0.66%</span></span>
-        <span class="mx-6">OPUSDT <span class="text-emerald-300">+2.40%</span></span>
-        <span class="mx-6">ATOMUSDT <span class="text-rose-300">-0.31%</span></span>
-        <span class="mx-6">NEARUSDT <span class="text-emerald-300">+1.05%</span></span>
-        <span class="mx-6">FILUSDT <span class="text-rose-300">-1.78%</span></span>
-        <span class="mx-6">LTCUSDT <span class="text-emerald-300">+0.93%</span></span>
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- ============================================================ WHY -->
-<section class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-2xl mx-auto reveal">
-    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">The pain</div>
-    <h2 class="text-3xl md:text-4xl font-semibold mt-2">Strategies look great on paper. Then you wire one up.</h2>
-    <p class="mt-4 text-slate-400">
-      Different libraries for backtesting and live trading. TP/SL logic that drifts apart in production.
-      Hand-rolled rate limiters that 429 your account at the worst possible moment. We've been there.
-    </p>
-  </div>
-
-  <div class="mt-12 grid md:grid-cols-3 gap-4">
-    <div class="glass rounded-2xl p-5 reveal">
-      <div class="text-rose-300 text-2xl mono">01</div>
-      <div class="mt-2 font-semibold">Backtest ≠ Live</div>
-      <p class="mt-2 text-sm text-slate-400">
-        Your backtest hits TP on the next bar; production fires SL first.
-        Same idea, different code paths, different results.
-      </p>
-    </div>
-    <div class="glass rounded-2xl p-5 reveal">
-      <div class="text-rose-300 text-2xl mono">02</div>
-      <div class="mt-2 font-semibold">Cobbled-together infra</div>
-      <p class="mt-2 text-sm text-slate-400">
-        REST loops, CSV logs, Streamlit on top, hope for the best.
-        One bad weekend and the whole thing crashes silently.
-      </p>
-    </div>
-    <div class="glass rounded-2xl p-5 reveal">
-      <div class="text-rose-300 text-2xl mono">03</div>
-      <div class="mt-2 font-semibold">Three Sharpe numbers</div>
-      <p class="mt-2 text-sm text-slate-400">
-        Daily, hourly, ad-hoc. Each gives a different ratio, none of them
-        agree, and you have no idea which to trust.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================ FEATURES -->
-<section id="features" class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-3xl mx-auto reveal">
-    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">What you get</div>
-    <h2 class="text-3xl md:text-4xl font-semibold mt-2">One state machine. Live and backtest, byte-for-byte.</h2>
-    <p class="mt-4 text-slate-400">
-      Every feature is built on a single shared core. If a backtest is profitable, the live run executes the
-      exact same TP/SL/trailing logic — pinned by 15 golden tests.
-    </p>
-  </div>
-
-  <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <div class="glass glow-core rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">⚙️</div>
-      <h3 class="mt-2 font-semibold">Unified trade engine</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        <code class="kbd">trade_state.step()</code> is the single function that decides every exit —
-        live ticks and backtest candles share it.
-      </p>
-    </div>
-    <div class="glass glow-pure rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">🧠</div>
-      <h3 class="mt-2 font-semibold">Pluggable strategies</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        One file per strategy. Subclass <code class="kbd">Strategy</code>, list your params,
-        write <code class="kbd">signal()</code> — UI and engine pick it up automatically.
-      </p>
-    </div>
-    <div class="glass glow-data rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">⚡️</div>
-      <h3 class="mt-2 font-semibold">~10× faster sweeps</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        Single <code class="kbd">aiohttp.ClientSession</code> with a 20-wide
-        semaphore. ~50 s monitoring cycles dropped to 3–5 s.
-      </p>
-    </div>
-    <div class="glass glow-data rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">🚦</div>
-      <h3 class="mt-2 font-semibold">Header-driven rate limiting</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        Reads each exchange's quota header in real time. Pauses at 80%,
-        backs off exponentially on 429. Resets on the next 2xx.
-      </p>
-    </div>
-    <div class="glass glow-store rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">💾</div>
-      <h3 class="mt-2 font-semibold">SQLite trade history</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        Lifetime history in WAL-mode SQLite. Idempotent inserts keyed on
-        (symbol, exchange, open_time). CSV mirror for safe rollback.
-      </p>
-    </div>
-    <div class="glass glow-pure rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">📐</div>
-      <h3 class="mt-2 font-semibold">One Sharpe, three metrics</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        Log returns of the resampled equity curve, crypto 24/7/365 calendar.
-        Sortino &amp; Calmar reported alongside, same denominator.
-      </p>
-    </div>
-    <div class="glass glow-ui rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">🪟</div>
-      <h3 class="mt-2 font-semibold">Native desktop UI</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        PyQt + pyqtgraph. Open trades, equity curve, color-coded sweep
-        telemetry — and your last session restores on launch.
-      </p>
-    </div>
-    <div class="glass glow-ext rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">🔌</div>
-      <h3 class="mt-2 font-semibold">Multi-exchange</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        Binance USDT-M Futures and Bitget USDT Futures v2 today.
-        Add a third exchange behind the same data-layer interface.
-      </p>
-    </div>
-    <div class="glass glow-core rounded-2xl p-5 feature-card reveal">
-      <div class="text-2xl">📡</div>
-      <h3 class="mt-2 font-semibold">Qt signal bus</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        Cross-thread updates over a single signal bus. Trade opens, closes,
-        and telemetry flow into the UI without polling.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================ BACKTEST SHOWCASE -->
-<section id="backtest" class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-3xl mx-auto reveal">
-    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Backtest showcase</div>
-    <h2 id="bt-title" class="text-3xl md:text-4xl font-semibold mt-2">
-      <span id="bt-title-prefix">BTC · 1m</span> · <span class="grad-text">Mean Reversion</span>
-    </h2>
-    <p class="mt-4 text-slate-400" id="bt-subtitle">
-      Loading representative backtest…
-    </p>
-  </div>
-
-  <!-- KPI Strip -->
-  <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3" id="kpiStrip">
-    <!-- filled by JS -->
-  </div>
-
-  <div class="mt-8 grid lg:grid-cols-12 gap-4">
-    <!-- Dual-axis price + equity chart -->
-    <div class="lg:col-span-8 glass rounded-2xl p-5">
-      <div class="flex items-start justify-between mb-3 gap-4 flex-wrap">
-        <div>
-          <div class="text-xs uppercase tracking-widest text-slate-400">Price vs. equity</div>
-          <div class="mt-1 font-semibold">
-            BTC price · <span class="grad-text">strategy equity</span>
-            <span class="text-slate-400 font-normal text-sm">— same time axis</span>
-          </div>
-        </div>
-        <div class="flex items-center gap-4 text-xs">
-          <div class="flex items-center gap-2">
-            <span class="inline-block w-3 h-3 rounded-sm" style="background:rgba(125,211,252,0.55)"></span>
-            <span class="text-slate-300">BTC price <span id="legendPriceCur" class="text-slate-500 mono ml-1">—</span></span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="inline-block w-3 h-3 rounded-sm" style="background:linear-gradient(90deg,#a78bfa,#f472b6)"></span>
-            <span class="text-slate-300">Equity <span id="legendEqCur" class="text-slate-100 mono font-semibold ml-1">—</span></span>
-          </div>
-          <div class="text-slate-400 mono" id="periodLabel">—</div>
+    <!-- Live ticker -->
+    <div class="relative max-w-7xl mx-auto mt-12">
+      <div class="ticker-wrap glass rounded-full py-2 text-xs mono text-slate-300">
+        <div class="ticker">
+          <span class="mx-6">BTCUSDT <span class="text-emerald-300">+1.42%</span></span>
+          <span class="mx-6">ETHUSDT <span class="text-emerald-300">+0.88%</span></span>
+          <span class="mx-6">SOLUSDT <span class="text-rose-300">-2.10%</span></span>
+          <span class="mx-6">XRPUSDT <span class="text-emerald-300">+0.42%</span></span>
+          <span class="mx-6">DOGEUSDT <span class="text-rose-300">-0.95%</span></span>
+          <span class="mx-6">AVAXUSDT <span class="text-emerald-300">+3.21%</span></span>
+          <span class="mx-6">LINKUSDT <span class="text-emerald-300">+0.55%</span></span>
+          <span class="mx-6">MATICUSDT <span class="text-rose-300">-1.04%</span></span>
+          <span class="mx-6">DOTUSDT <span class="text-emerald-300">+1.78%</span></span>
+          <span class="mx-6">BNBUSDT <span class="text-emerald-300">+0.21%</span></span>
+          <span class="mx-6">ARBUSDT <span class="text-rose-300">-0.66%</span></span>
+          <span class="mx-6">OPUSDT <span class="text-emerald-300">+2.40%</span></span>
+          <span class="mx-6">ATOMUSDT <span class="text-rose-300">-0.31%</span></span>
+          <span class="mx-6">NEARUSDT <span class="text-emerald-300">+1.05%</span></span>
+          <span class="mx-6">FILUSDT <span class="text-rose-300">-1.78%</span></span>
+          <span class="mx-6">LTCUSDT <span class="text-emerald-300">+0.93%</span></span>
         </div>
       </div>
+    </div>
+  </header>
 
-      <!--
+  <!-- ============================================================ WHY -->
+  <section class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto reveal">
+      <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">The pain</div>
+      <h2 class="text-3xl md:text-4xl font-semibold mt-2">Strategies look great on paper. Then you wire one up.</h2>
+      <p class="mt-4 text-slate-400">
+        Different libraries for backtesting and live trading. TP/SL logic that drifts apart in production.
+        Hand-rolled rate limiters that 429 your account at the worst possible moment. We've been there.
+      </p>
+    </div>
+
+    <div class="mt-12 grid md:grid-cols-3 gap-4">
+      <div class="glass rounded-2xl p-5 reveal">
+        <div class="text-rose-300 text-2xl mono">01</div>
+        <div class="mt-2 font-semibold">Backtest ≠ Live</div>
+        <p class="mt-2 text-sm text-slate-400">
+          Your backtest hits TP on the next bar; production fires SL first.
+          Same idea, different code paths, different results.
+        </p>
+      </div>
+      <div class="glass rounded-2xl p-5 reveal">
+        <div class="text-rose-300 text-2xl mono">02</div>
+        <div class="mt-2 font-semibold">Cobbled-together infra</div>
+        <p class="mt-2 text-sm text-slate-400">
+          REST loops, CSV logs, Streamlit on top, hope for the best.
+          One bad weekend and the whole thing crashes silently.
+        </p>
+      </div>
+      <div class="glass rounded-2xl p-5 reveal">
+        <div class="text-rose-300 text-2xl mono">03</div>
+        <div class="mt-2 font-semibold">Three Sharpe numbers</div>
+        <p class="mt-2 text-sm text-slate-400">
+          Daily, hourly, ad-hoc. Each gives a different ratio, none of them
+          agree, and you have no idea which to trust.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ FEATURES -->
+  <section id="features" class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">What you get</div>
+      <h2 class="text-3xl md:text-4xl font-semibold mt-2">One state machine. Live and backtest, byte-for-byte.</h2>
+      <p class="mt-4 text-slate-400">
+        Every feature is built on a single shared core. If a backtest is profitable, the live run executes the
+        exact same TP/SL/trailing logic — pinned by 15 golden tests.
+      </p>
+    </div>
+
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="glass glow-core rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">⚙️</div>
+        <h3 class="mt-2 font-semibold">Unified trade engine</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          <code class="kbd">trade_state.step()</code> is the single function that decides every exit —
+          live ticks and backtest candles share it.
+        </p>
+      </div>
+      <div class="glass glow-pure rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">🧠</div>
+        <h3 class="mt-2 font-semibold">Pluggable strategies</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          One file per strategy. Subclass <code class="kbd">Strategy</code>, list your params,
+          write <code class="kbd">signal()</code> — UI and engine pick it up automatically.
+        </p>
+      </div>
+      <div class="glass glow-data rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">⚡️</div>
+        <h3 class="mt-2 font-semibold">~10× faster sweeps</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          Single <code class="kbd">aiohttp.ClientSession</code> with a 20-wide
+          semaphore. ~50 s monitoring cycles dropped to 3–5 s.
+        </p>
+      </div>
+      <div class="glass glow-data rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">🚦</div>
+        <h3 class="mt-2 font-semibold">Header-driven rate limiting</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          Reads each exchange's quota header in real time. Pauses at 80%,
+          backs off exponentially on 429. Resets on the next 2xx.
+        </p>
+      </div>
+      <div class="glass glow-store rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">💾</div>
+        <h3 class="mt-2 font-semibold">SQLite trade history</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          Lifetime history in WAL-mode SQLite. Idempotent inserts keyed on
+          (symbol, exchange, open_time). CSV mirror for safe rollback.
+        </p>
+      </div>
+      <div class="glass glow-pure rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">📐</div>
+        <h3 class="mt-2 font-semibold">One Sharpe, three metrics</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          Log returns of the resampled equity curve, crypto 24/7/365 calendar.
+          Sortino &amp; Calmar reported alongside, same denominator.
+        </p>
+      </div>
+      <div class="glass glow-ui rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">🪟</div>
+        <h3 class="mt-2 font-semibold">Native desktop UI</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          PyQt + pyqtgraph. Open trades, equity curve, color-coded sweep
+          telemetry — and your last session restores on launch.
+        </p>
+      </div>
+      <div class="glass glow-ext rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">🔌</div>
+        <h3 class="mt-2 font-semibold">Multi-exchange</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          Binance USDT-M Futures and Bitget USDT Futures v2 today.
+          Add a third exchange behind the same data-layer interface.
+        </p>
+      </div>
+      <div class="glass glow-core rounded-2xl p-5 feature-card reveal">
+        <div class="text-2xl">📡</div>
+        <h3 class="mt-2 font-semibold">Qt signal bus</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          Cross-thread updates over a single signal bus. Trade opens, closes,
+          and telemetry flow into the UI without polling.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ BACKTEST SHOWCASE -->
+  <section id="backtest" class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Backtest showcase</div>
+      <h2 id="bt-title" class="text-3xl md:text-4xl font-semibold mt-2">
+        <span id="bt-title-prefix">BTC · 1m</span> · <span class="grad-text">Mean Reversion</span>
+      </h2>
+      <p class="mt-4 text-slate-400" id="bt-subtitle">
+        Loading representative backtest…
+      </p>
+    </div>
+
+    <!-- KPI Strip -->
+    <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3" id="kpiStrip">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="mt-8 grid lg:grid-cols-12 gap-4">
+      <!-- Dual-axis price + equity chart -->
+      <div class="lg:col-span-8 glass rounded-2xl p-5">
+        <div class="flex items-start justify-between mb-3 gap-4 flex-wrap">
+          <div>
+            <div class="text-xs uppercase tracking-widest text-slate-400">Price vs. equity</div>
+            <div class="mt-1 font-semibold">
+              BTC price · <span class="grad-text">strategy equity</span>
+              <span class="text-slate-400 font-normal text-sm">— same time axis</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="inline-block w-3 h-3 rounded-sm" style="background:rgba(125,211,252,0.55)"></span>
+              <span class="text-slate-300">BTC price <span id="legendPriceCur"
+                  class="text-slate-500 mono ml-1">—</span></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-block w-3 h-3 rounded-sm"
+                style="background:linear-gradient(90deg,#a78bfa,#f472b6)"></span>
+              <span class="text-slate-300">Equity <span id="legendEqCur"
+                  class="text-slate-100 mono font-semibold ml-1">—</span></span>
+            </div>
+            <div class="text-slate-400 mono" id="periodLabel">—</div>
+          </div>
+        </div>
+
+        <!--
         viewBox geometry:
           0..70           reserved for left (price) axis labels
           70..880         plot area  (810 wide)
@@ -531,171 +802,173 @@
           40..280         plot area (240 high)
           280..310        x-axis labels
       -->
-      <svg id="priceEqChart" viewBox="0 0 950 310" class="w-full" style="height:320px" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <linearGradient id="eqGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="#a78bfa"/>
-            <stop offset="100%" stop-color="#f472b6"/>
-          </linearGradient>
-          <linearGradient id="eqAreaFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="rgba(167,139,250,0.25)"/>
-            <stop offset="100%" stop-color="rgba(244,114,182,0.00)"/>
-          </linearGradient>
-          <filter id="markerSoftGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2.5"/>
-          </filter>
-        </defs>
+        <svg id="priceEqChart" viewBox="0 0 950 310" class="w-full" style="height:320px"
+          preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="eqGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#a78bfa" />
+              <stop offset="100%" stop-color="#f472b6" />
+            </linearGradient>
+            <linearGradient id="eqAreaFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(167,139,250,0.25)" />
+              <stop offset="100%" stop-color="rgba(244,114,182,0.00)" />
+            </linearGradient>
+            <filter id="markerSoftGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2.5" />
+            </filter>
+          </defs>
 
-        <!-- Plot area background -->
-        <rect x="70" y="40" width="810" height="240" fill="rgba(255,255,255,0.015)"/>
+          <!-- Plot area background -->
+          <rect x="70" y="40" width="810" height="240" fill="rgba(255,255,255,0.015)" />
 
-        <!-- Horizontal grid (5 lines) -->
-        <g id="peGrid"></g>
+          <!-- Horizontal grid (5 lines) -->
+          <g id="peGrid"></g>
 
-        <!-- Initial-capital reference line -->
-        <line id="baseLine" x1="70" x2="880" y1="280" y2="280"
-              stroke="rgba(255,255,255,0.18)" stroke-dasharray="2 4"/>
+          <!-- Initial-capital reference line -->
+          <line id="baseLine" x1="70" x2="880" y1="280" y2="280" stroke="rgba(255,255,255,0.18)"
+            stroke-dasharray="2 4" />
 
-        <!-- Price track (left axis) -->
-        <path id="priceLine" class="price-track"
-              stroke="rgba(125,211,252,0.55)" stroke-width="1.4" fill="none"/>
+          <!-- Price track (left axis) -->
+          <path id="priceLine" class="price-track" stroke="rgba(125,211,252,0.55)" stroke-width="1.4" fill="none" />
 
-        <!-- Equity area fill + line (right axis) -->
-        <path id="eqArea" class="equity-fill" fill="url(#eqAreaFill)"/>
-        <path id="eqLine" class="equity-track"
-              stroke="url(#eqGrad)" stroke-width="2.4" fill="none"/>
+          <!-- Equity area fill + line (right axis) -->
+          <path id="eqArea" class="equity-fill" fill="url(#eqAreaFill)" />
+          <path id="eqLine" class="equity-track" stroke="url(#eqGrad)" stroke-width="2.4" fill="none" />
 
-        <!-- Trade markers on the price line -->
-        <g id="markerLayer"></g>
+          <!-- Trade markers on the price line -->
+          <g id="markerLayer"></g>
 
-        <!-- Y-axis labels (left = price, right = equity) -->
-        <g id="priceAxis"></g>
-        <g id="equityAxis"></g>
-        <!-- X-axis date labels -->
-        <g id="timeAxis"></g>
-      </svg>
+          <!-- Y-axis labels (left = price, right = equity) -->
+          <g id="priceAxis"></g>
+          <g id="equityAxis"></g>
+          <!-- X-axis date labels -->
+          <g id="timeAxis"></g>
+        </svg>
 
-      <div class="mt-3 grid grid-cols-3 gap-3 text-xs">
-        <div class="glass rounded-lg p-2">
-          <div class="text-slate-400">Total return</div>
-          <div class="mono font-semibold mt-0.5" id="metricReturn">—</div>
+        <div class="mt-3 grid grid-cols-3 gap-3 text-xs">
+          <div class="glass rounded-lg p-2">
+            <div class="text-slate-400">Total return</div>
+            <div class="mono font-semibold mt-0.5" id="metricReturn">—</div>
+          </div>
+          <div class="glass rounded-lg p-2">
+            <div class="text-slate-400">Max drawdown</div>
+            <div class="mono font-semibold mt-0.5 text-rose-300" id="metricDD">—</div>
+          </div>
+          <div class="glass rounded-lg p-2">
+            <div class="text-slate-400">Annualized</div>
+            <div class="mono font-semibold mt-0.5" id="metricAnn">—</div>
+          </div>
         </div>
-        <div class="glass rounded-lg p-2">
-          <div class="text-slate-400">Max drawdown</div>
-          <div class="mono font-semibold mt-0.5 text-rose-300" id="metricDD">—</div>
+      </div>
+
+      <!-- Right: Close-reason + trade stats -->
+      <div class="lg:col-span-4 space-y-4">
+        <div class="glass rounded-2xl p-5">
+          <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Exit breakdown</div>
+          <div id="reasonBars" class="space-y-3"></div>
         </div>
-        <div class="glass rounded-lg p-2">
-          <div class="text-slate-400">Annualized</div>
-          <div class="mono font-semibold mt-0.5" id="metricAnn">—</div>
+        <div class="glass rounded-2xl p-5">
+          <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Risk-adjusted</div>
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div>
+              <div class="text-2xl mono font-semibold" id="sharpeBig">—</div>
+              <div class="text-xs text-slate-400">Sharpe</div>
+            </div>
+            <div>
+              <div class="text-2xl mono font-semibold" id="sortinoBig">—</div>
+              <div class="text-xs text-slate-400">Sortino</div>
+            </div>
+            <div>
+              <div class="text-2xl mono font-semibold" id="calmarBig">—</div>
+              <div class="text-xs text-slate-400">Calmar</div>
+            </div>
+          </div>
+          <div class="text-[11px] text-slate-500 mt-3 leading-relaxed">
+            Crypto 24/7/365 annualization. One Sharpe method — log returns of
+            the hourly-resampled equity curve.
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Right: Close-reason + trade stats -->
-    <div class="lg:col-span-4 space-y-4">
-      <div class="glass rounded-2xl p-5">
-        <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Exit breakdown</div>
-        <div id="reasonBars" class="space-y-3"></div>
+    <!-- Monthly breakdown -->
+    <div class="mt-4 glass rounded-2xl p-5">
+      <div class="flex items-center justify-between mb-3">
+        <div class="text-xs uppercase tracking-widest text-slate-400">Monthly</div>
+        <div class="text-xs text-slate-500">PnL sum % · trade count · win rate</div>
       </div>
-      <div class="glass rounded-2xl p-5">
-        <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Risk-adjusted</div>
-        <div class="grid grid-cols-3 gap-3 text-center">
-          <div>
-            <div class="text-2xl mono font-semibold" id="sharpeBig">—</div>
-            <div class="text-xs text-slate-400">Sharpe</div>
-          </div>
-          <div>
-            <div class="text-2xl mono font-semibold" id="sortinoBig">—</div>
-            <div class="text-xs text-slate-400">Sortino</div>
-          </div>
-          <div>
-            <div class="text-2xl mono font-semibold" id="calmarBig">—</div>
-            <div class="text-xs text-slate-400">Calmar</div>
-          </div>
-        </div>
-        <div class="text-[11px] text-slate-500 mt-3 leading-relaxed">
-          Crypto 24/7/365 annualization. One Sharpe method — log returns of
-          the hourly-resampled equity curve.
-        </div>
+      <div class="overflow-x-auto scrollbar">
+        <table class="w-full text-sm mono">
+          <thead class="text-xs text-slate-400 border-b border-white/10">
+            <tr>
+              <th class="text-left py-2">Month</th>
+              <th class="text-right">Trades</th>
+              <th class="text-right">Win rate</th>
+              <th class="text-right">PnL (sum %)</th>
+              <th class="text-right">Bar</th>
+            </tr>
+          </thead>
+          <tbody id="monthlyBody"></tbody>
+        </table>
       </div>
     </div>
-  </div>
 
-  <!-- Monthly breakdown -->
-  <div class="mt-4 glass rounded-2xl p-5">
-    <div class="flex items-center justify-between mb-3">
-      <div class="text-xs uppercase tracking-widest text-slate-400">Monthly</div>
-      <div class="text-xs text-slate-500">PnL sum % · trade count · win rate</div>
-    </div>
-    <div class="overflow-x-auto scrollbar">
-      <table class="w-full text-sm mono">
-        <thead class="text-xs text-slate-400 border-b border-white/10">
-          <tr>
-            <th class="text-left py-2">Month</th>
-            <th class="text-right">Trades</th>
-            <th class="text-right">Win rate</th>
-            <th class="text-right">PnL (sum %)</th>
-            <th class="text-right">Bar</th>
-          </tr>
-        </thead>
-        <tbody id="monthlyBody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <p class="text-xs text-slate-500 mt-6 max-w-3xl mx-auto text-center leading-relaxed" id="disclaimerLine">
-    —
-  </p>
-</section>
-
-<!-- ============================================================ STRATEGIES -->
-<section id="strategies" class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-3xl mx-auto reveal">
-    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Built-ins (and your own)</div>
-    <h2 class="text-3xl md:text-4xl font-semibold mt-2">Three strategies ship by default.</h2>
-    <p class="mt-4 text-slate-400">
-      Each lives in <code class="kbd">strategies_pkg/</code> as ~50 lines of code.
-      Add yours the same way — zero edits to the engine.
+    <p class="text-xs text-slate-500 mt-6 max-w-3xl mx-auto text-center leading-relaxed" id="disclaimerLine">
+      —
     </p>
-  </div>
+  </section>
 
-  <div class="mt-10 grid md:grid-cols-3 gap-4">
-    <div class="glass glow-pure rounded-2xl p-6">
-      <div class="flex items-center gap-2"><span class="badge pill-pure">strategy</span><span class="text-xs text-slate-500 mono">spike_detection.py</span></div>
-      <h3 class="mt-3 font-semibold text-lg">Spike Detection</h3>
-      <p class="text-sm text-slate-400 mt-2">
-        A ±N% candle close opens a trade in the move's direction.
-        The original SpikeWatch signal — dead simple, very fast.
+  <!-- ============================================================ STRATEGIES -->
+  <section id="strategies" class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Built-ins (and your own)</div>
+      <h2 class="text-3xl md:text-4xl font-semibold mt-2">Three strategies ship by default.</h2>
+      <p class="mt-4 text-slate-400">
+        Each lives in <code class="kbd">strategies_pkg/</code> as ~50 lines of code.
+        Add yours the same way — zero edits to the engine.
       </p>
-      <div class="mt-4 mono text-xs text-slate-500">~ 33 LOC</div>
     </div>
-    <div class="glass glow-pure rounded-2xl p-6">
-      <div class="flex items-center gap-2"><span class="badge pill-pure">strategy</span><span class="text-xs text-slate-500 mono">ema_crossover.py</span></div>
-      <h3 class="mt-3 font-semibold text-lg">EMA Crossover</h3>
-      <p class="text-sm text-slate-400 mt-2">
-        Short/long EMA cross opens; the reverse cross closes.
-        Classic trend-follower with configurable periods.
-      </p>
-      <div class="mt-4 mono text-xs text-slate-500">~ 63 LOC</div>
-    </div>
-    <div class="glass glow-pure rounded-2xl p-6">
-      <div class="flex items-center gap-2"><span class="badge pill-pure">strategy</span><span class="text-xs text-slate-500 mono">mean_reversion.py</span></div>
-      <h3 class="mt-3 font-semibold text-lg">Mean Reversion</h3>
-      <p class="text-sm text-slate-400 mt-2">
-        Bollinger-style entry on a band breach; closes when price
-        touches the moving-average mean. Showcased above.
-      </p>
-      <div class="mt-4 mono text-xs text-slate-500">~ 55 LOC</div>
-    </div>
-  </div>
 
-  <!-- Code preview -->
-  <div class="mt-8 glass rounded-2xl p-5">
-    <div class="flex items-center justify-between mb-3">
-      <div class="text-xs uppercase tracking-widest text-slate-400">Write your own</div>
-      <div class="text-xs text-slate-500 mono">strategies_pkg/my_strategy.py</div>
+    <div class="mt-10 grid md:grid-cols-3 gap-4">
+      <div class="glass glow-pure rounded-2xl p-6">
+        <div class="flex items-center gap-2"><span class="badge pill-pure">strategy</span><span
+            class="text-xs text-slate-500 mono">spike_detection.py</span></div>
+        <h3 class="mt-3 font-semibold text-lg">Spike Detection</h3>
+        <p class="text-sm text-slate-400 mt-2">
+          A ±N% candle close opens a trade in the move's direction.
+          The original SpikeWatch signal — dead simple, very fast.
+        </p>
+        <div class="mt-4 mono text-xs text-slate-500">~ 33 LOC</div>
+      </div>
+      <div class="glass glow-pure rounded-2xl p-6">
+        <div class="flex items-center gap-2"><span class="badge pill-pure">strategy</span><span
+            class="text-xs text-slate-500 mono">ema_crossover.py</span></div>
+        <h3 class="mt-3 font-semibold text-lg">EMA Crossover</h3>
+        <p class="text-sm text-slate-400 mt-2">
+          Short/long EMA cross opens; the reverse cross closes.
+          Classic trend-follower with configurable periods.
+        </p>
+        <div class="mt-4 mono text-xs text-slate-500">~ 63 LOC</div>
+      </div>
+      <div class="glass glow-pure rounded-2xl p-6">
+        <div class="flex items-center gap-2"><span class="badge pill-pure">strategy</span><span
+            class="text-xs text-slate-500 mono">mean_reversion.py</span></div>
+        <h3 class="mt-3 font-semibold text-lg">Mean Reversion</h3>
+        <p class="text-sm text-slate-400 mt-2">
+          Bollinger-style entry on a band breach; closes when price
+          touches the moving-average mean. Showcased above.
+        </p>
+        <div class="mt-4 mono text-xs text-slate-500">~ 55 LOC</div>
+      </div>
     </div>
-<pre class="mono text-xs leading-relaxed overflow-x-auto scrollbar p-4 rounded-xl bg-black/40 text-slate-300"><span class="text-pink-300">from</span> ..strategy_base <span class="text-pink-300">import</span> ParamSpec, Strategy, register
+
+    <!-- Code preview -->
+    <div class="mt-8 glass rounded-2xl p-5">
+      <div class="flex items-center justify-between mb-3">
+        <div class="text-xs uppercase tracking-widest text-slate-400">Write your own</div>
+        <div class="text-xs text-slate-500 mono">strategies_pkg/my_strategy.py</div>
+      </div>
+      <pre class="mono text-xs leading-relaxed overflow-x-auto scrollbar p-4 rounded-xl bg-black/40 text-slate-300"><span class="text-pink-300">from</span> ..strategy_base <span class="text-pink-300">import</span> ParamSpec, Strategy, register
 
 <span class="text-sky-300">@register</span>
 <span class="text-pink-300">class</span> <span class="text-emerald-300">MyStrategy</span>(Strategy):
@@ -709,623 +982,651 @@
         <span class="text-slate-500"># your logic here</span>
         <span class="text-pink-300">return</span> <span class="text-amber-300">"long"</span>  <span class="text-slate-500"># or "short" / None</span>
 </pre>
-    <p class="text-xs text-slate-500 mt-3">
-      That's it. The UI builds inputs from <code class="kbd">PARAMS</code>, the engine picks
-      it up at startup, and your strategy runs through the same
-      <code class="kbd">trade_state.step()</code> as every other signal.
-    </p>
-  </div>
-</section>
-
-<!-- ============================================================ AUDIENCE -->
-<section class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-2xl mx-auto reveal">
-    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Who it's for</div>
-    <h2 class="text-3xl md:text-4xl font-semibold mt-2">Built for traders who code.</h2>
-  </div>
-  <div class="mt-10 grid md:grid-cols-3 gap-4">
-    <div class="glass glow-ui rounded-2xl p-6">
-      <div class="text-3xl">🧪</div>
-      <h3 class="mt-3 font-semibold">Quant tinkerers</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        You've got a Jupyter notebook full of ideas. Drop them into
-        <code class="kbd">strategies_pkg/</code> and see how they hold up
-        on six months of 1-minute data.
+      <p class="text-xs text-slate-500 mt-3">
+        That's it. The UI builds inputs from <code class="kbd">PARAMS</code>, the engine picks
+        it up at startup, and your strategy runs through the same
+        <code class="kbd">trade_state.step()</code> as every other signal.
       </p>
     </div>
-    <div class="glass glow-core rounded-2xl p-6">
-      <div class="text-3xl">🤖</div>
-      <h3 class="mt-3 font-semibold">Automation seekers</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        You want to stop refreshing the chart. SpikeWatch monitors
-        hundreds of symbols at once and acts when your conditions hit.
-      </p>
-    </div>
-    <div class="glass glow-data rounded-2xl p-6">
-      <div class="text-3xl">📊</div>
-      <h3 class="mt-3 font-semibold">Backtest skeptics</h3>
-      <p class="mt-2 text-sm text-slate-400">
-        Burned once by a backtest that worked in Pandas but failed in
-        production? Live and backtest share one function. No drift.
-      </p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============================================================ PRICING -->
-<section id="pricing" class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-2xl mx-auto reveal">
-    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Pricing</div>
-    <h2 class="text-3xl md:text-4xl font-semibold mt-2">Start free. Upgrade when you go live.</h2>
-    <p class="mt-4 text-slate-400">Launch pricing — locked for two years on annual plans.</p>
-  </div>
-
-  <div class="mt-12 grid md:grid-cols-3 gap-4 items-stretch">
-    <!-- FREE -->
-    <div class="glass rounded-2xl p-7 flex flex-col">
-      <div class="text-xs uppercase tracking-widest text-slate-400">Backtester</div>
-      <div class="mt-3 flex items-baseline gap-1">
-        <span class="text-4xl font-semibold">$0</span>
-        <span class="text-slate-400 text-sm">/ forever</span>
+  <!-- ============================================================ AUDIENCE -->
+  <section class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto reveal">
+      <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Who it's for</div>
+      <h2 class="text-3xl md:text-4xl font-semibold mt-2">Built for traders who code.</h2>
+    </div>
+    <div class="mt-10 grid md:grid-cols-3 gap-4">
+      <div class="glass glow-ui rounded-2xl p-6">
+        <div class="text-3xl">🧪</div>
+        <h3 class="mt-3 font-semibold">Quant tinkerers</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          You've got a Jupyter notebook full of ideas. Drop them into
+          <code class="kbd">strategies_pkg/</code> and see how they hold up
+          on six months of 1-minute data.
+        </p>
       </div>
-      <p class="mt-2 text-sm text-slate-400">For the spreadsheets-at-2am crowd.</p>
-      <ul class="mt-6 space-y-2 text-sm text-slate-300 flex-1">
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> 1 active strategy</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Backtest up to 30 days, 1m candles</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> All 3 built-in strategies</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Sharpe + Sortino + Calmar</li>
-        <li class="flex items-start gap-2"><span class="text-slate-500 mt-0.5">—</span> <span class="text-slate-500">No live automation</span></li>
-      </ul>
-      <button type="button" data-waitlist class="mt-7 text-center glass hover:bg-white/10 rounded-lg py-2.5 font-medium">
-        Get on the list <span class="text-slate-500 text-xs ml-1 font-normal">· launching soon</span>
-      </button>
+      <div class="glass glow-core rounded-2xl p-6">
+        <div class="text-3xl">🤖</div>
+        <h3 class="mt-3 font-semibold">Automation seekers</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          You want to stop refreshing the chart. SpikeWatch monitors
+          hundreds of symbols at once and acts when your conditions hit.
+        </p>
+      </div>
+      <div class="glass glow-data rounded-2xl p-6">
+        <div class="text-3xl">📊</div>
+        <h3 class="mt-3 font-semibold">Backtest skeptics</h3>
+        <p class="mt-2 text-sm text-slate-400">
+          Burned once by a backtest that worked in Pandas but failed in
+          production? Live and backtest share one function. No drift.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ PRICING -->
+  <section id="pricing" class="px-6 lg:px-10 py-20 max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto reveal">
+      <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Pricing</div>
+      <h2 class="text-3xl md:text-4xl font-semibold mt-2">Start free. Upgrade when you go live.</h2>
+      <p class="mt-4 text-slate-400">Launch pricing — locked for two years on annual plans.</p>
     </div>
 
-    <!-- PRO -->
-    <div class="glass rounded-2xl p-7 flex flex-col pricing-pop relative">
-      <div class="absolute -top-3 left-1/2 -translate-x-1/2">
-        <span class="badge pill-core" style="font-size:11px; padding:3px 10px">MOST POPULAR</span>
-      </div>
-      <div class="text-xs uppercase tracking-widest text-sky-300">Pro</div>
-      <div class="mt-3 flex items-baseline gap-1">
-        <span class="text-4xl font-semibold">$29</span>
-        <span class="text-slate-400 text-sm">/ month</span>
-      </div>
-      <p class="mt-2 text-sm text-slate-400">Full backtester + live automation.</p>
-      <ul class="mt-6 space-y-2 text-sm text-slate-300 flex-1">
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Unlimited strategies</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Live automation on Binance &amp; Bitget</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Backtest up to 2 years history</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> SQLite trade history + CSV export</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Trailing stop &amp; per-strategy params</li>
-        <li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">⊙</span> <span>Email alerts on TP / SL <span class="text-amber-300/70 text-xs">(coming soon)</span></span></li>
-      </ul>
-      <button type="button" data-waitlist class="mt-7 text-center bg-white text-slate-900 hover:bg-slate-100 rounded-lg py-2.5 font-medium">
-        Get early access <span class="text-slate-500 text-xs ml-1 font-normal">· launching soon</span>
-      </button>
-    </div>
-
-    <!-- QUANT -->
-    <div class="glass rounded-2xl p-7 flex flex-col">
-      <div class="text-xs uppercase tracking-widest text-violet-300">Quant</div>
-      <div class="mt-3 flex items-baseline gap-1">
-        <span class="text-4xl font-semibold">$99</span>
-        <span class="text-slate-400 text-sm">/ month</span>
-      </div>
-      <p class="mt-2 text-sm text-slate-400">For research teams &amp; multi-strategy desks.</p>
-      <ul class="mt-6 space-y-2 text-sm text-slate-300 flex-1">
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Everything in Pro</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Custom strategies + private repo sync</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Backtest up to 5 years, parallel runs</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Priority market-data feeds</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> REST API + webhook bridge</li>
-        <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Dedicated Slack channel</li>
-      </ul>
-      <a href="mailto:hello@spikewatch.app?subject=SpikeWatch%20Quant%20tier%20enquiry" class="mt-7 text-center glass hover:bg-white/10 rounded-lg py-2.5 font-medium">Talk to us</a>
-    </div>
-  </div>
-
-  <p class="text-xs text-slate-500 text-center mt-6">
-    Paper trading is always free. Live automation requires a Pro or Quant subscription
-    and your own exchange API keys (read+trade scopes; no withdrawal).
-  </p>
-</section>
-
-<!-- ============================================================ FAQ -->
-<section id="faq" class="px-6 lg:px-10 py-20 max-w-4xl mx-auto">
-  <div class="text-center max-w-2xl mx-auto reveal">
-    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">FAQ</div>
-    <h2 class="text-3xl md:text-4xl font-semibold mt-2">Answers, before you ask.</h2>
-  </div>
-  <div class="mt-10 space-y-3">
-    <details class="glass rounded-xl p-4 group">
-      <summary class="cursor-pointer font-medium flex justify-between items-center">
-        Does SpikeWatch hold my funds?
-        <span class="text-slate-500 group-open:rotate-90 transition">›</span>
-      </summary>
-      <p class="mt-3 text-sm text-slate-400">
-        No. SpikeWatch is a desktop app that runs on your machine. Your
-        exchange API keys stay local. Withdrawal permission is never
-        required (and should never be granted to any trading bot).
-      </p>
-    </details>
-    <details class="glass rounded-xl p-4 group">
-      <summary class="cursor-pointer font-medium flex justify-between items-center">
-        How does live trading differ from the backtest?
-        <span class="text-slate-500 group-open:rotate-90 transition">›</span>
-      </summary>
-      <p class="mt-3 text-sm text-slate-400">
-        It doesn't. Both call the same <code class="kbd">trade_state.step()</code>
-        function — backtest passes OHLC bars, live passes single-price
-        ticks. Fifteen golden tests pin the contract so they can't diverge.
-      </p>
-    </details>
-    <details class="glass rounded-xl p-4 group">
-      <summary class="cursor-pointer font-medium flex justify-between items-center">
-        Which exchanges are supported?
-        <span class="text-slate-500 group-open:rotate-90 transition">›</span>
-      </summary>
-      <p class="mt-3 text-sm text-slate-400">
-        Binance USDT-M Futures and Bitget USDT Futures v2 today. The
-        data layer is exchange-agnostic at call sites, so adding a third
-        is a one-file lift.
-      </p>
-    </details>
-    <details class="glass rounded-xl p-4 group">
-      <summary class="cursor-pointer font-medium flex justify-between items-center">
-        Can I write my own strategy?
-        <span class="text-slate-500 group-open:rotate-90 transition">›</span>
-      </summary>
-      <p class="mt-3 text-sm text-slate-400">
-        Yes — see the code snippet in the Strategies section. Subclass
-        <code class="kbd">Strategy</code>, register it, drop the file in
-        <code class="kbd">strategies_pkg/</code>. Pro and Quant tiers run
-        custom strategies in production.
-      </p>
-    </details>
-    <details class="glass rounded-xl p-4 group">
-      <summary class="cursor-pointer font-medium flex justify-between items-center">
-        Are the backtest numbers above real?
-        <span class="text-slate-500 group-open:rotate-90 transition">›</span>
-      </summary>
-      <p class="mt-3 text-sm text-slate-400">
-        Yes. They come from running the actual Mean Reversion strategy
-        in SpikeWatch against BTCUSDT 1-minute klines from Binance
-        between 1 Jan and 22 May 2026 — roughly 204k candles producing
-        7,844 trades. The numbers shown were exported straight from the
-        app's <code class="kbd">Export Backtest…</code> button, no manual
-        editing. As always, past performance doesn't guarantee future
-        results — run your own parameters in the app to compare.
-      </p>
-    </details>
-    <details class="glass rounded-xl p-4 group">
-      <summary class="cursor-pointer font-medium flex justify-between items-center">
-        Is there a free tier forever?
-        <span class="text-slate-500 group-open:rotate-90 transition">›</span>
-      </summary>
-      <p class="mt-3 text-sm text-slate-400">
-        Yes. The backtester tier is free, no credit card. We charge only
-        when you turn on live automation.
-      </p>
-    </details>
-  </div>
-</section>
-
-<!-- ============================================================ CTA -->
-<section class="px-6 lg:px-10 py-24">
-  <div class="max-w-4xl mx-auto glass rounded-3xl p-10 lg:p-16 text-center relative overflow-hidden">
-    <div class="grid-bg" style="opacity:.6"></div>
-    <div class="relative">
-      <h2 class="text-3xl md:text-5xl font-semibold leading-tight">
-        Your next strategy is one
-        <span class="grad-text">backtest</span> away.
-      </h2>
-      <p class="mt-5 text-slate-300">Download the desktop app and run your first backtest in under five minutes.</p>
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <button type="button" data-waitlist class="bg-white text-slate-900 hover:bg-slate-100 px-6 py-3 rounded-lg font-medium">
-          Get notified at launch
+    <div class="mt-12 grid md:grid-cols-3 gap-4 items-stretch">
+      <!-- FREE -->
+      <div class="glass rounded-2xl p-7 flex flex-col">
+        <div class="text-xs uppercase tracking-widest text-slate-400">Backtester</div>
+        <div class="mt-3 flex items-baseline gap-1">
+          <span class="text-4xl font-semibold">$0</span>
+          <span class="text-slate-400 text-sm">/ forever</span>
+        </div>
+        <p class="mt-2 text-sm text-slate-400">For the spreadsheets-at-2am crowd.</p>
+        <ul class="mt-6 space-y-2 text-sm text-slate-300 flex-1">
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> 1 active strategy</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Backtest up to 30 days, 1m
+            candles</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> All 3 built-in strategies
+          </li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Sharpe + Sortino + Calmar
+          </li>
+          <li class="flex items-start gap-2"><span class="text-slate-500 mt-0.5">—</span> <span
+              class="text-slate-500">No live automation</span></li>
+        </ul>
+        <button type="button" data-waitlist
+          class="mt-7 text-center glass hover:bg-white/10 rounded-lg py-2.5 font-medium">
+          Get on the list <span class="text-slate-500 text-xs ml-1 font-normal">· launching soon</span>
         </button>
-        <a href="./architecture.html" class="glass hover:bg-white/10 px-6 py-3 rounded-lg font-medium">View architecture →</a>
       </div>
-      <div class="mt-5 text-xs text-slate-500 mono">v0.2.0 · ~3,126 LOC src · 87 tests passing</div>
-    </div>
-  </div>
-</section>
 
-<!-- ============================================================ FOOTER -->
-<footer class="px-6 lg:px-10 py-12 border-t border-white/5">
-  <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 text-sm">
-    <div>
-      <div class="flex items-center gap-2">
-        <svg width="20" height="20" viewBox="0 0 28 28">
-          <rect x="1" y="1" width="26" height="26" rx="7" fill="url(#logoGrad)" opacity="0.18" stroke="#7dd3fc" />
-          <path d="M5 18 L10 13 L13 16 L18 9 L23 14" stroke="#7dd3fc" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>
-        <span class="font-semibold">SpikeWatch</span>
+      <!-- PRO -->
+      <div class="glass rounded-2xl p-7 flex flex-col pricing-pop relative">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+          <span class="badge pill-core" style="font-size:11px; padding:3px 10px">MOST POPULAR</span>
+        </div>
+        <div class="text-xs uppercase tracking-widest text-sky-300">Pro</div>
+        <div class="mt-3 flex items-baseline gap-1">
+          <span class="text-4xl font-semibold">$29</span>
+          <span class="text-slate-400 text-sm">/ month</span>
+        </div>
+        <p class="mt-2 text-sm text-slate-400">Full backtester + live automation.</p>
+        <ul class="mt-6 space-y-2 text-sm text-slate-300 flex-1">
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Unlimited strategies</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Live automation on Binance
+            &amp; Bitget</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Backtest up to 2 years
+            history</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> SQLite trade history + CSV
+            export</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Trailing stop &amp;
+            per-strategy params</li>
+          <li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">⊙</span> <span>Email alerts on TP / SL
+              <span class="text-amber-300/70 text-xs">(coming soon)</span></span></li>
+        </ul>
+        <button type="button" data-waitlist
+          class="mt-7 text-center bg-white text-slate-900 hover:bg-slate-100 rounded-lg py-2.5 font-medium">
+          Get early access <span class="text-slate-500 text-xs ml-1 font-normal">· launching soon</span>
+        </button>
       </div>
-      <p class="mt-3 text-xs text-slate-500">
-        A desktop trading workbench for crypto futures.
-        Paper-trade by default, automate when ready.
-      </p>
-    </div>
-    <div>
-      <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Product</div>
-      <ul class="space-y-2 text-slate-300">
-        <li><a href="#features" class="nav-link">Features</a></li>
-        <li><a href="#backtest" class="nav-link">Backtest</a></li>
-        <li><a href="#strategies" class="nav-link">Strategies</a></li>
-        <li><a href="#pricing" class="nav-link">Pricing</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Resources</div>
-      <ul class="space-y-2 text-slate-300">
-        <li><a href="./architecture.html" class="nav-link">Architecture map</a></li>
-        <li><a href="./CHANGELOG.md" class="nav-link">Changelog</a></li>
-        <li><a href="./README.md" class="nav-link">README</a></li>
-        <li><a href="#faq" class="nav-link">FAQ</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Legal</div>
-      <ul class="space-y-2 text-slate-300">
-        <li><a href="./legal/risk.html" class="nav-link">Risk disclosure</a></li>
-        <li><a href="./legal/terms.html" class="nav-link">Terms</a></li>
-        <li><a href="./legal/privacy.html" class="nav-link">Privacy</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="max-w-7xl mx-auto mt-10 pt-6 border-t border-white/5 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-3">
-    <div>© 2026 SpikeWatch. Crypto trading carries substantial risk.</div>
-    <div class="mono">v0.2.0</div>
-  </div>
-</footer>
 
-<script>
-// ============== Data island (inlined backtest payload) ==============
-// HERO and BACKTEST are loaded from data_island.js (sibling file)
-</script>
-<script src="./data_island.js"></script>
+      <!-- QUANT -->
+      <div class="glass rounded-2xl p-7 flex flex-col">
+        <div class="text-xs uppercase tracking-widest text-violet-300">Quant</div>
+        <div class="mt-3 flex items-baseline gap-1">
+          <span class="text-4xl font-semibold">$99</span>
+          <span class="text-slate-400 text-sm">/ month</span>
+        </div>
+        <p class="mt-2 text-sm text-slate-400">For research teams &amp; multi-strategy desks.</p>
+        <ul class="mt-6 space-y-2 text-sm text-slate-300 flex-1">
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Everything in Pro</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Custom strategies + private
+            repo sync</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Backtest up to 5 years,
+            parallel runs</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Priority market-data feeds
+          </li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> REST API + webhook bridge
+          </li>
+          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">✓</span> Dedicated Slack channel</li>
+        </ul>
+        <a href="mailto:cryptoassetsdaily@proton.me?subject=SpikeWatch%20Quant%20tier%20enquiry"
+          class="mt-7 text-center glass hover:bg-white/10 rounded-lg py-2.5 font-medium">Talk to us</a>
+      </div>
+    </div>
 
-<script>
-// ============== Reveal-on-scroll ==============
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.15 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    <p class="text-xs text-slate-500 text-center mt-6">
+      Paper trading is always free. Live automation requires a Pro or Quant subscription
+      and your own exchange API keys (read+trade scopes; no withdrawal).
+    </p>
+  </section>
 
-// ============== HERO candlestick animation ==============
-(function() {
-  const data = window.HERO;
-  if (!data) return;
-  const candleLayer = document.getElementById('candleLayer');
-  const markerLayer = document.getElementById('markerLayer');
-  const midLayer    = document.getElementById('midLayer');
-  const lastPriceEl = document.getElementById('lastPrice');
-  const openTradesEl = document.getElementById('heroOpenTrades');
-  const pnlEl = document.getElementById('heroPnL');
-  const W = data.W, H = data.H, BW = data.BW;
+  <!-- ============================================================ FAQ -->
+  <section id="faq" class="px-6 lg:px-10 py-20 max-w-4xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto reveal">
+      <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">FAQ</div>
+      <h2 class="text-3xl md:text-4xl font-semibold mt-2">Answers, before you ask.</h2>
+    </div>
+    <div class="mt-10 space-y-3">
+      <details class="glass rounded-xl p-4 group">
+        <summary class="cursor-pointer font-medium flex justify-between items-center">
+          Does SpikeWatch hold my funds?
+          <span class="text-slate-500 group-open:rotate-90 transition">›</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-400">
+          No. SpikeWatch is a desktop app that runs on your machine. Your
+          exchange API keys stay local. Withdrawal permission is never
+          required (and should never be granted to any trading bot).
+        </p>
+      </details>
+      <details class="glass rounded-xl p-4 group">
+        <summary class="cursor-pointer font-medium flex justify-between items-center">
+          How does live trading differ from the backtest?
+          <span class="text-slate-500 group-open:rotate-90 transition">›</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-400">
+          It doesn't. Both call the same <code class="kbd">trade_state.step()</code>
+          function — backtest passes OHLC bars, live passes single-price
+          ticks. Fifteen golden tests pin the contract so they can't diverge.
+        </p>
+      </details>
+      <details class="glass rounded-xl p-4 group">
+        <summary class="cursor-pointer font-medium flex justify-between items-center">
+          Which exchanges are supported?
+          <span class="text-slate-500 group-open:rotate-90 transition">›</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-400">
+          Binance USDT-M Futures and Bitget USDT Futures v2 today. The
+          data layer is exchange-agnostic at call sites, so adding a third
+          is a one-file lift.
+        </p>
+      </details>
+      <details class="glass rounded-xl p-4 group">
+        <summary class="cursor-pointer font-medium flex justify-between items-center">
+          Can I write my own strategy?
+          <span class="text-slate-500 group-open:rotate-90 transition">›</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-400">
+          Yes — see the code snippet in the Strategies section. Subclass
+          <code class="kbd">Strategy</code>, register it, drop the file in
+          <code class="kbd">strategies_pkg/</code>. Pro and Quant tiers run
+          custom strategies in production.
+        </p>
+      </details>
+      <details class="glass rounded-xl p-4 group">
+        <summary class="cursor-pointer font-medium flex justify-between items-center">
+          Are the backtest numbers above real?
+          <span class="text-slate-500 group-open:rotate-90 transition">›</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-400">
+          Yes. They come from running the actual Mean Reversion strategy
+          in SpikeWatch against BTCUSDT 1-minute klines from Binance
+          between 1 Jan and 22 May 2026 — roughly 204k candles producing
+          7,844 trades. The numbers shown were exported straight from the
+          app's <code class="kbd">Export Backtest…</code> button, no manual
+          editing. As always, past performance doesn't guarantee future
+          results — run your own parameters in the app to compare.
+        </p>
+      </details>
+      <details class="glass rounded-xl p-4 group">
+        <summary class="cursor-pointer font-medium flex justify-between items-center">
+          Is there a free tier forever?
+          <span class="text-slate-500 group-open:rotate-90 transition">›</span>
+        </summary>
+        <p class="mt-3 text-sm text-slate-400">
+          Yes. The backtester tier is free, no credit card. We charge only
+          when you turn on live automation.
+        </p>
+      </details>
+    </div>
+  </section>
 
-  // band fill (visual flair behind candles)
-  const bands = document.getElementById('bandsLayer');
-  const upperY = H * 0.20, lowerY = H * 0.80;
-  bands.innerHTML = `
-    <line x1="0" y1="${H/2}" x2="${W}" y2="${H/2}" stroke="rgba(125,211,252,0.25)" stroke-dasharray="3 4"/>
+  <!-- ============================================================ CTA -->
+  <section class="px-6 lg:px-10 py-24">
+    <div class="max-w-4xl mx-auto glass rounded-3xl p-10 lg:p-16 text-center relative overflow-hidden">
+      <div class="grid-bg" style="opacity:.6"></div>
+      <div class="relative">
+        <h2 class="text-3xl md:text-5xl font-semibold leading-tight">
+          Your next strategy is one
+          <span class="grad-text">backtest</span> away.
+        </h2>
+        <p class="mt-5 text-slate-300">Download the desktop app and run your first backtest in under five minutes.</p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <button type="button" data-waitlist
+            class="bg-white text-slate-900 hover:bg-slate-100 px-6 py-3 rounded-lg font-medium">
+            Get notified at launch
+          </button>
+          <a href="./architecture.html" class="glass hover:bg-white/10 px-6 py-3 rounded-lg font-medium">View
+            architecture →</a>
+        </div>
+        <div class="mt-5 text-xs text-slate-500 mono">v0.2.0 · ~3,126 LOC src · 87 tests passing</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ FOOTER -->
+  <footer class="px-6 lg:px-10 py-12 border-t border-white/5">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 text-sm">
+      <div>
+        <div class="flex items-center gap-2">
+          <svg width="20" height="20" viewBox="0 0 28 28">
+            <rect x="1" y="1" width="26" height="26" rx="7" fill="url(#logoGrad)" opacity="0.18" stroke="#7dd3fc" />
+            <path d="M5 18 L10 13 L13 16 L18 9 L23 14" stroke="#7dd3fc" stroke-width="2" fill="none"
+              stroke-linecap="round" />
+          </svg>
+          <span class="font-semibold">SpikeWatch</span>
+        </div>
+        <p class="mt-3 text-xs text-slate-500">
+          A desktop trading workbench for crypto futures.
+          Paper-trade by default, automate when ready.
+        </p>
+      </div>
+      <div>
+        <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Product</div>
+        <ul class="space-y-2 text-slate-300">
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#backtest" class="nav-link">Backtest</a></li>
+          <li><a href="#strategies" class="nav-link">Strategies</a></li>
+          <li><a href="#pricing" class="nav-link">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Resources</div>
+        <ul class="space-y-2 text-slate-300">
+          <li><a href="./architecture.html" class="nav-link">Architecture map</a></li>
+          <li><a href="./CHANGELOG.md" class="nav-link">Changelog</a></li>
+          <li><a href="./README.md" class="nav-link">README</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-xs uppercase tracking-widest text-slate-400 mb-3">Legal</div>
+        <ul class="space-y-2 text-slate-300">
+          <li><a href="./legal/risk.html" class="nav-link">Risk disclosure</a></li>
+          <li><a href="./legal/terms.html" class="nav-link">Terms</a></li>
+          <li><a href="./legal/privacy.html" class="nav-link">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div
+      class="max-w-7xl mx-auto mt-10 pt-6 border-t border-white/5 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-3">
+      <div>© 2026 SpikeWatch. Crypto trading carries substantial risk.</div>
+      <div class="mono">v0.2.0</div>
+    </div>
+  </footer>
+
+  <script>
+    // ============== Data island (inlined backtest payload) ==============
+    // HERO and BACKTEST are loaded from data_island.js (sibling file)
+  </script>
+  <script src="./data_island.js"></script>
+
+  <script>
+    // ============== Reveal-on-scroll ==============
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ============== HERO candlestick animation ==============
+    (function () {
+      const data = window.HERO;
+      if (!data) return;
+      const candleLayer = document.getElementById('candleLayer');
+      const markerLayer = document.getElementById('markerLayer');
+      const midLayer = document.getElementById('midLayer');
+      const lastPriceEl = document.getElementById('lastPrice');
+      const openTradesEl = document.getElementById('heroOpenTrades');
+      const pnlEl = document.getElementById('heroPnL');
+      const W = data.W, H = data.H, BW = data.BW;
+
+      // band fill (visual flair behind candles)
+      const bands = document.getElementById('bandsLayer');
+      const upperY = H * 0.20, lowerY = H * 0.80;
+      bands.innerHTML = `
+    <line x1="0" y1="${H / 2}" x2="${W}" y2="${H / 2}" stroke="rgba(125,211,252,0.25)" stroke-dasharray="3 4"/>
     <rect x="0" y="${upperY}" width="${W}" height="${lowerY - upperY}" fill="url(#bandGrad)"/>
   `;
 
-  let i = 0;
-  let openTrades = 0;
-  let pnl = 0;
-  const candles = data.candles;
-  const trades = data.trades;
+      let i = 0;
+      let openTrades = 0;
+      let pnl = 0;
+      const candles = data.candles;
+      const trades = data.trades;
 
-  function tick() {
-    if (i >= candles.length) {
-      // restart loop
-      candleLayer.innerHTML = '';
-      markerLayer.innerHTML = '';
-      i = 0; openTrades = 0; pnl = 0;
-      openTradesEl.textContent = openTrades;
-      pnlEl.textContent = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '%';
-      pnlEl.className = 'mono text-slate-100 font-semibold mt-0.5';
-    }
-    const c = candles[i];
-    const grad = c.up ? 'url(#upGrad)' : 'url(#downGrad)';
-    const bodyTop = Math.min(c.o, c.c);
-    const bodyH = Math.max(1, Math.abs(c.c - c.o));
-    const wickX = c.x;
-    const ns = 'http://www.w3.org/2000/svg';
+      function tick() {
+        if (i >= candles.length) {
+          // restart loop
+          candleLayer.innerHTML = '';
+          markerLayer.innerHTML = '';
+          i = 0; openTrades = 0; pnl = 0;
+          openTradesEl.textContent = openTrades;
+          pnlEl.textContent = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '%';
+          pnlEl.className = 'mono text-slate-100 font-semibold mt-0.5';
+        }
+        const c = candles[i];
+        const grad = c.up ? 'url(#upGrad)' : 'url(#downGrad)';
+        const bodyTop = Math.min(c.o, c.c);
+        const bodyH = Math.max(1, Math.abs(c.c - c.o));
+        const wickX = c.x;
+        const ns = 'http://www.w3.org/2000/svg';
 
-    const g = document.createElementNS(ns, 'g');
-    g.setAttribute('class', 'candle');
-    g.innerHTML = `
+        const g = document.createElementNS(ns, 'g');
+        g.setAttribute('class', 'candle');
+        g.innerHTML = `
       <line x1="${wickX}" y1="${c.h}" x2="${wickX}" y2="${c.l}" stroke="${c.up ? '#34d399' : '#f87171'}" stroke-width="1"/>
-      <rect x="${c.x - BW*0.35}" y="${bodyTop}" width="${BW*0.7}" height="${bodyH}" fill="${grad}" rx="0.5"/>
+      <rect x="${c.x - BW * 0.35}" y="${bodyTop}" width="${BW * 0.7}" height="${bodyH}" fill="${grad}" rx="0.5"/>
     `;
-    candleLayer.appendChild(g);
+        candleLayer.appendChild(g);
 
-    // Trade markers landing on this candle
-    trades.forEach(t => {
-      if (t.open_i === i) {
-        const m = document.createElementNS(ns, 'g');
-        m.setAttribute('class', 'marker');
-        const color = t.dir === 'long' ? '#34d399' : '#f87171';
-        const symbol = t.dir === 'long' ? '▲' : '▼';
-        const ty = t.dir === 'long' ? t.open_y + 14 : t.open_y - 6;
-        m.innerHTML = `
+        // Trade markers landing on this candle
+        trades.forEach(t => {
+          if (t.open_i === i) {
+            const m = document.createElementNS(ns, 'g');
+            m.setAttribute('class', 'marker');
+            const color = t.dir === 'long' ? '#34d399' : '#f87171';
+            const symbol = t.dir === 'long' ? '▲' : '▼';
+            const ty = t.dir === 'long' ? t.open_y + 14 : t.open_y - 6;
+            m.innerHTML = `
           <circle cx="${c.x}" cy="${t.open_y}" r="6" fill="${color}" opacity="0.25" filter="url(#markerGlow)"/>
           <circle cx="${c.x}" cy="${t.open_y}" r="3.5" fill="${color}"/>
           <text x="${c.x}" y="${ty}" text-anchor="middle" font-size="10" fill="${color}" font-family="ui-monospace,monospace">${symbol} ${t.dir.toUpperCase()}</text>
         `;
-        markerLayer.appendChild(m);
-        openTrades++;
-        openTradesEl.textContent = openTrades;
-      }
-      if (t.close_i === i) {
-        const m = document.createElementNS(ns, 'g');
-        m.setAttribute('class', 'marker');
-        const win = t.pnl >= 0;
-        const color = win ? '#34d399' : '#f87171';
-        const sign = win ? '+' : '';
-        m.innerHTML = `
+            markerLayer.appendChild(m);
+            openTrades++;
+            openTradesEl.textContent = openTrades;
+          }
+          if (t.close_i === i) {
+            const m = document.createElementNS(ns, 'g');
+            m.setAttribute('class', 'marker');
+            const win = t.pnl >= 0;
+            const color = win ? '#34d399' : '#f87171';
+            const sign = win ? '+' : '';
+            m.innerHTML = `
           <circle cx="${c.x}" cy="${t.close_y}" r="6" fill="${color}" opacity="0.25" filter="url(#markerGlow)"/>
           <circle cx="${c.x}" cy="${t.close_y}" r="3.5" fill="white" stroke="${color}" stroke-width="1.5"/>
           <text x="${c.x}" y="${t.close_y - 10}" text-anchor="middle" font-size="10" fill="${color}" font-family="ui-monospace,monospace">${sign}${t.pnl}%</text>
         `;
-        markerLayer.appendChild(m);
-        openTrades = Math.max(0, openTrades - 1);
-        openTradesEl.textContent = openTrades;
-        pnl += t.pnl;
-        pnlEl.textContent = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '%';
-        pnlEl.className = 'mono font-semibold mt-0.5 ' + (pnl >= 0 ? 'text-emerald-300' : 'text-rose-300');
+            markerLayer.appendChild(m);
+            openTrades = Math.max(0, openTrades - 1);
+            openTradesEl.textContent = openTrades;
+            pnl += t.pnl;
+            pnlEl.textContent = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '%';
+            pnlEl.className = 'mono font-semibold mt-0.5 ' + (pnl >= 0 ? 'text-emerald-300' : 'text-rose-300');
+          }
+        });
+
+        // Update headline price using interpolated y → price
+        const pmin = data.pmin, pmax = data.pmax;
+        const price = pmax - (c.c / H) * (pmax - pmin);
+        lastPriceEl.textContent = '$' + price.toFixed(2);
+
+        i++;
       }
-    });
 
-    // Update headline price using interpolated y → price
-    const pmin = data.pmin, pmax = data.pmax;
-    const price = pmax - (c.c / H) * (pmax - pmin);
-    lastPriceEl.textContent = '$' + price.toFixed(2);
+      // ~50ms per candle = ~12s for full loop, nice readable speed
+      setInterval(tick, 65);
+      tick();
+    })();
 
-    i++;
-  }
+    // ============== Backtest showcase ==============
+    (function () {
+      const bt = window.BACKTEST;
+      if (!bt) return;
+      const s = bt.summary;
 
-  // ~50ms per candle = ~12s for full loop, nice readable speed
-  setInterval(tick, 65);
-  tick();
-})();
+      // Title prefix — strip 'USDT' from BTCUSDT etc. for the headline
+      const tickerShort = (s.symbol || 'BTC').replace(/USDT$/i, '').toUpperCase();
+      // Render period in months if ≥ 60 days, else in days
+      const periodLabel = s.period_days >= 60
+        ? `${(s.period_days / 30).toFixed(1)} months`
+        : `${s.period_days} days`;
+      document.getElementById('bt-title-prefix').textContent =
+        `${tickerShort} · ${s.timeframe || '1m'} · ${periodLabel}`;
 
-// ============== Backtest showcase ==============
-(function() {
-  const bt = window.BACKTEST;
-  if (!bt) return;
-  const s = bt.summary;
+      // Subtitle
+      document.getElementById('bt-subtitle').textContent =
+        `${s.total_trades.toLocaleString()} trades · ${s.period_days} days · MA=${s.params.ma_period} · ${s.params.std_dev_multiplier}σ bands · TP ${s.params.tp_pct}% / SL ${s.params.sl_pct}%${s.params.trailing_sl_pct ? ' / trail ' + s.params.trailing_sl_pct + '%' : ''}`;
 
-  // Title prefix — strip 'USDT' from BTCUSDT etc. for the headline
-  const tickerShort = (s.symbol || 'BTC').replace(/USDT$/i, '').toUpperCase();
-  // Render period in months if ≥ 60 days, else in days
-  const periodLabel = s.period_days >= 60
-    ? `${(s.period_days / 30).toFixed(1)} months`
-    : `${s.period_days} days`;
-  document.getElementById('bt-title-prefix').textContent =
-    `${tickerShort} · ${s.timeframe || '1m'} · ${periodLabel}`;
-
-  // Subtitle
-  document.getElementById('bt-subtitle').textContent =
-    `${s.total_trades.toLocaleString()} trades · ${s.period_days} days · MA=${s.params.ma_period} · ${s.params.std_dev_multiplier}σ bands · TP ${s.params.tp_pct}% / SL ${s.params.sl_pct}%${s.params.trailing_sl_pct ? ' / trail '+s.params.trailing_sl_pct+'%' : ''}`;
-
-  // KPI strip
-  const fmtPct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
-  const colorOf = v => v >= 0 ? 'text-emerald-300' : 'text-rose-300';
-  const kpis = [
-    { label: 'Win rate',     value: s.win_rate_pct.toFixed(2) + '%',
-      sub: `${s.wins.toLocaleString()} wins / ${s.losses.toLocaleString()} losses`, cls: 'text-sky-300' },
-    { label: 'Total trades', value: s.total_trades.toLocaleString(),
-      sub: `${(s.total_trades / s.period_days).toFixed(1)} / day average`, cls: 'text-slate-100' },
-    { label: 'Final equity', value: '$' + s.final_equity.toLocaleString(),
-      sub: `from $${s.initial_capital.toLocaleString()} initial`, cls: colorOf(s.total_return_pct) },
-    { label: 'Profit factor', value: s.profit_factor.toFixed(2),
-      sub: 'gross wins / gross losses', cls: s.profit_factor >= 1 ? 'text-emerald-300' : 'text-amber-300' },
-  ];
-  document.getElementById('kpiStrip').innerHTML = kpis.map(k => `
+      // KPI strip
+      const fmtPct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+      const colorOf = v => v >= 0 ? 'text-emerald-300' : 'text-rose-300';
+      const kpis = [
+        {
+          label: 'Win rate', value: s.win_rate_pct.toFixed(2) + '%',
+          sub: `${s.wins.toLocaleString()} wins / ${s.losses.toLocaleString()} losses`, cls: 'text-sky-300'
+        },
+        {
+          label: 'Total trades', value: s.total_trades.toLocaleString(),
+          sub: `${(s.total_trades / s.period_days).toFixed(1)} / day average`, cls: 'text-slate-100'
+        },
+        {
+          label: 'Final equity', value: '$' + s.final_equity.toLocaleString(),
+          sub: `from $${s.initial_capital.toLocaleString()} initial`, cls: colorOf(s.total_return_pct)
+        },
+        {
+          label: 'Profit factor', value: s.profit_factor.toFixed(2),
+          sub: 'gross wins / gross losses', cls: s.profit_factor >= 1 ? 'text-emerald-300' : 'text-amber-300'
+        },
+      ];
+      document.getElementById('kpiStrip').innerHTML = kpis.map(k => `
     <div class="glass rounded-xl p-4">
       <div class="text-xs uppercase tracking-widest text-slate-400">${k.label}</div>
       <div class="mt-1 text-2xl mono font-semibold ${k.cls}">${k.value}</div>
       <div class="text-xs text-slate-500 mt-1">${k.sub}</div>
     </div>`).join('');
 
-  // Period label
-  const sd = new Date(s.period_start);
-  const ed = new Date(s.period_end);
-  const fmtDate = d => d.toISOString().slice(0, 10);
-  document.getElementById('periodLabel').textContent = `${fmtDate(sd)} → ${fmtDate(ed)}`;
+      // Period label
+      const sd = new Date(s.period_start);
+      const ed = new Date(s.period_end);
+      const fmtDate = d => d.toISOString().slice(0, 10);
+      document.getElementById('periodLabel').textContent = `${fmtDate(sd)} → ${fmtDate(ed)}`;
 
-  // Disclaimer
-  document.getElementById('disclaimerLine').textContent = bt.disclaimer;
+      // Disclaimer
+      document.getElementById('disclaimerLine').textContent = bt.disclaimer;
 
-  // ---------- Dual-axis price + equity chart ----------
-  //
-  // Geometry — must match the SVG markup above.
-  const PAD_L = 70, PAD_R = 880, PAD_T = 40, PAD_B = 280;
-  const PLOT_W = PAD_R - PAD_L;   // 810
-  const PLOT_H = PAD_B - PAD_T;   // 240
-  const TIME_AXIS_Y = 296;        // x-axis label baseline
+      // ---------- Dual-axis price + equity chart ----------
+      //
+      // Geometry — must match the SVG markup above.
+      const PAD_L = 70, PAD_R = 880, PAD_T = 40, PAD_B = 280;
+      const PLOT_W = PAD_R - PAD_L;   // 810
+      const PLOT_H = PAD_B - PAD_T;   // 240
+      const TIME_AXIS_Y = 296;        // x-axis label baseline
 
-  const eq    = bt.equity;
-  const price = bt.price  || { times: [], values: [] };
-  const markers = bt.markers || [];
+      const eq = bt.equity;
+      const price = bt.price || { times: [], values: [] };
+      const markers = bt.markers || [];
 
-  // Time domain — span the union of price + equity (they should match,
-  // but be defensive against off-by-one in build script).
-  const tMin = Math.min(
-    eq.times.length ? eq.times[0]    : Infinity,
-    price.times.length ? price.times[0]  : Infinity,
-  );
-  const tMax = Math.max(
-    eq.times.length ? eq.times[eq.times.length - 1]     : -Infinity,
-    price.times.length ? price.times[price.times.length - 1] : -Infinity,
-  );
-  const xFromT = t => PAD_L + (t - tMin) / (tMax - tMin) * PLOT_W;
+      // Time domain — span the union of price + equity (they should match,
+      // but be defensive against off-by-one in build script).
+      const tMin = Math.min(
+        eq.times.length ? eq.times[0] : Infinity,
+        price.times.length ? price.times[0] : Infinity,
+      );
+      const tMax = Math.max(
+        eq.times.length ? eq.times[eq.times.length - 1] : -Infinity,
+        price.times.length ? price.times[price.times.length - 1] : -Infinity,
+      );
+      const xFromT = t => PAD_L + (t - tMin) / (tMax - tMin) * PLOT_W;
 
-  // Price y-axis (left)
-  const pVals = price.values.length ? price.values : [0, 1];
-  const pMin = Math.min(...pVals), pMax = Math.max(...pVals);
-  const pPad = (pMax - pMin) * 0.08 || 1;
-  const pLo = pMin - pPad, pHi = pMax + pPad;
-  const yFromP = p => PAD_B - (p - pLo) / (pHi - pLo) * PLOT_H;
+      // Price y-axis (left)
+      const pVals = price.values.length ? price.values : [0, 1];
+      const pMin = Math.min(...pVals), pMax = Math.max(...pVals);
+      const pPad = (pMax - pMin) * 0.08 || 1;
+      const pLo = pMin - pPad, pHi = pMax + pPad;
+      const yFromP = p => PAD_B - (p - pLo) / (pHi - pLo) * PLOT_H;
 
-  // Equity y-axis (right)
-  const eMin = Math.min(...eq.values, s.initial_capital);
-  const eMax = Math.max(...eq.values, s.initial_capital);
-  const ePad = (eMax - eMin) * 0.10 || 1;
-  const eLo = eMin - ePad, eHi = eMax + ePad;
-  const yFromE = v => PAD_B - (v - eLo) / (eHi - eLo) * PLOT_H;
+      // Equity y-axis (right)
+      const eMin = Math.min(...eq.values, s.initial_capital);
+      const eMax = Math.max(...eq.values, s.initial_capital);
+      const ePad = (eMax - eMin) * 0.10 || 1;
+      const eLo = eMin - ePad, eHi = eMax + ePad;
+      const yFromE = v => PAD_B - (v - eLo) / (eHi - eLo) * PLOT_H;
 
-  // Build the two paths
-  const pricePath = price.times
-    .map((t, i) => `${xFromT(t).toFixed(2)},${yFromP(price.values[i]).toFixed(2)}`)
-    .join(' L ');
-  document.getElementById('priceLine').setAttribute('d',
-    price.times.length ? 'M ' + pricePath : '');
+      // Build the two paths
+      const pricePath = price.times
+        .map((t, i) => `${xFromT(t).toFixed(2)},${yFromP(price.values[i]).toFixed(2)}`)
+        .join(' L ');
+      document.getElementById('priceLine').setAttribute('d',
+        price.times.length ? 'M ' + pricePath : '');
 
-  const eqPath = eq.times
-    .map((t, i) => `${xFromT(t).toFixed(2)},${yFromE(eq.values[i]).toFixed(2)}`)
-    .join(' L ');
-  document.getElementById('eqLine').setAttribute('d', 'M ' + eqPath);
-  document.getElementById('eqArea').setAttribute('d',
-    `M ${PAD_L},${PAD_B} L ${eqPath} L ${PAD_R},${PAD_B} Z`);
+      const eqPath = eq.times
+        .map((t, i) => `${xFromT(t).toFixed(2)},${yFromE(eq.values[i]).toFixed(2)}`)
+        .join(' L ');
+      document.getElementById('eqLine').setAttribute('d', 'M ' + eqPath);
+      document.getElementById('eqArea').setAttribute('d',
+        `M ${PAD_L},${PAD_B} L ${eqPath} L ${PAD_R},${PAD_B} Z`);
 
-  // Baseline at initial capital (on the equity scale)
-  const baseY = yFromE(s.initial_capital).toFixed(2);
-  document.getElementById('baseLine').setAttribute('y1', baseY);
-  document.getElementById('baseLine').setAttribute('y2', baseY);
+      // Baseline at initial capital (on the equity scale)
+      const baseY = yFromE(s.initial_capital).toFixed(2);
+      document.getElementById('baseLine').setAttribute('y1', baseY);
+      document.getElementById('baseLine').setAttribute('y2', baseY);
 
-  // Horizontal grid (5 lines tied to the equity scale so labels line up)
-  const gridG = document.getElementById('peGrid');
-  let gridSvg = '';
-  for (let k = 0; k < 5; k++) {
-    const gy = PAD_T + (PLOT_H * k) / 4;
-    gridSvg += `<line x1="${PAD_L}" x2="${PAD_R}" y1="${gy}" y2="${gy}" stroke="rgba(255,255,255,0.05)"/>`;
-  }
-  gridG.innerHTML = gridSvg;
+      // Horizontal grid (5 lines tied to the equity scale so labels line up)
+      const gridG = document.getElementById('peGrid');
+      let gridSvg = '';
+      for (let k = 0; k < 5; k++) {
+        const gy = PAD_T + (PLOT_H * k) / 4;
+        gridSvg += `<line x1="${PAD_L}" x2="${PAD_R}" y1="${gy}" y2="${gy}" stroke="rgba(255,255,255,0.05)"/>`;
+      }
+      gridG.innerHTML = gridSvg;
 
-  // Left y-axis labels — price (rounded to a clean step)
-  const priceAxis = document.getElementById('priceAxis');
-  let priceLabels = '';
-  for (let k = 0; k < 5; k++) {
-    const gy = PAD_T + (PLOT_H * k) / 4;
-    const pv = pHi - (k / 4) * (pHi - pLo);
-    priceLabels += `<text class="axis-label axis-label-price" x="${PAD_L - 6}" y="${gy + 3}" text-anchor="end">$${Math.round(pv).toLocaleString()}</text>`;
-  }
-  priceAxis.innerHTML = priceLabels;
+      // Left y-axis labels — price (rounded to a clean step)
+      const priceAxis = document.getElementById('priceAxis');
+      let priceLabels = '';
+      for (let k = 0; k < 5; k++) {
+        const gy = PAD_T + (PLOT_H * k) / 4;
+        const pv = pHi - (k / 4) * (pHi - pLo);
+        priceLabels += `<text class="axis-label axis-label-price" x="${PAD_L - 6}" y="${gy + 3}" text-anchor="end">$${Math.round(pv).toLocaleString()}</text>`;
+      }
+      priceAxis.innerHTML = priceLabels;
 
-  // Right y-axis labels — equity
-  const equityAxis = document.getElementById('equityAxis');
-  let eqLabels = '';
-  for (let k = 0; k < 5; k++) {
-    const gy = PAD_T + (PLOT_H * k) / 4;
-    const ev = eHi - (k / 4) * (eHi - eLo);
-    eqLabels += `<text class="axis-label axis-label-equity" x="${PAD_R + 6}" y="${gy + 3}" text-anchor="start">$${Math.round(ev).toLocaleString()}</text>`;
-  }
-  equityAxis.innerHTML = eqLabels;
+      // Right y-axis labels — equity
+      const equityAxis = document.getElementById('equityAxis');
+      let eqLabels = '';
+      for (let k = 0; k < 5; k++) {
+        const gy = PAD_T + (PLOT_H * k) / 4;
+        const ev = eHi - (k / 4) * (eHi - eLo);
+        eqLabels += `<text class="axis-label axis-label-equity" x="${PAD_R + 6}" y="${gy + 3}" text-anchor="start">$${Math.round(ev).toLocaleString()}</text>`;
+      }
+      equityAxis.innerHTML = eqLabels;
 
-  // X-axis date labels — 5 evenly spaced
-  const timeAxis = document.getElementById('timeAxis');
-  let timeLabels = '';
-  for (let k = 0; k < 5; k++) {
-    const tx = PAD_L + (PLOT_W * k) / 4;
-    const tval = tMin + (k / 4) * (tMax - tMin);
-    const d = new Date(tval);
-    // Format like "Jan '26"
-    const mLabel = d.toLocaleString('en', { month: 'short' }) + " '" + String(d.getFullYear()).slice(-2);
-    timeLabels += `<text class="axis-label" x="${tx}" y="${TIME_AXIS_Y}" text-anchor="middle">${mLabel}</text>`;
-  }
-  timeAxis.innerHTML = timeLabels;
+      // X-axis date labels — 5 evenly spaced
+      const timeAxis = document.getElementById('timeAxis');
+      let timeLabels = '';
+      for (let k = 0; k < 5; k++) {
+        const tx = PAD_L + (PLOT_W * k) / 4;
+        const tval = tMin + (k / 4) * (tMax - tMin);
+        const d = new Date(tval);
+        // Format like "Jan '26"
+        const mLabel = d.toLocaleString('en', { month: 'short' }) + " '" + String(d.getFullYear()).slice(-2);
+        timeLabels += `<text class="axis-label" x="${tx}" y="${TIME_AXIS_Y}" text-anchor="middle">${mLabel}</text>`;
+      }
+      timeAxis.innerHTML = timeLabels;
 
-  // Trade markers on the price line
-  const markerLayer = document.getElementById('markerLayer');
-  let mSvg = '';
-  markers.forEach((m, idx) => {
-    const cx = xFromT(m.t_ms);
-    const cy = yFromP(m.price);
-    const color = m.dir === 'long' ? '#34d399' : '#f87171';
-    const win = m.pnl_pct >= 0;
-    const ringColor = win ? '#34d399' : '#f87171';
-    // Stagger delays so markers pop in roughly with the price-line draw.
-    const delay = (idx / markers.length) * 3.5; // seconds
-    mSvg += `
+      // Trade markers on the price line
+      const markerLayer = document.getElementById('markerLayer');
+      let mSvg = '';
+      markers.forEach((m, idx) => {
+        const cx = xFromT(m.t_ms);
+        const cy = yFromP(m.price);
+        const color = m.dir === 'long' ? '#34d399' : '#f87171';
+        const win = m.pnl_pct >= 0;
+        const ringColor = win ? '#34d399' : '#f87171';
+        // Stagger delays so markers pop in roughly with the price-line draw.
+        const delay = (idx / markers.length) * 3.5; // seconds
+        mSvg += `
       <g class="price-marker" data-delay="${delay.toFixed(2)}s">
         <circle cx="${cx}" cy="${cy}" r="6" fill="${color}" opacity="0.2" filter="url(#markerSoftGlow)"/>
         <circle cx="${cx}" cy="${cy}" r="3" fill="${ringColor}"/>
         <title>${m.dir.toUpperCase()} · ${win ? '+' : ''}${m.pnl_pct}% · ${m.close_reason || ''}</title>
       </g>`;
-  });
-  markerLayer.innerHTML = mSvg;
-
-  // Animated reveal — once per visit, when scrolled into view.
-  const chartEl = document.getElementById('priceEqChart');
-  const chartIO = new IntersectionObserver((entries, obs) => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      document.getElementById('priceLine').classList.add('draw');
-      document.getElementById('eqLine').classList.add('draw');
-      document.getElementById('eqArea').classList.add('draw');
-      // markers pop in on their staggered delays
-      document.querySelectorAll('.price-marker').forEach(el => {
-        el.style.animationDelay = el.dataset.delay;
-        el.classList.add('draw');
       });
-      // Live-tick the equity figure in the legend
-      animateEquityCounter();
-      obs.disconnect();
-    });
-  }, { threshold: 0.35 });
-  chartIO.observe(chartEl);
+      markerLayer.innerHTML = mSvg;
 
-  // Ticker: count up from initial -> final equity over 4 seconds
-  const legendEqCur = document.getElementById('legendEqCur');
-  const legendPriceCur = document.getElementById('legendPriceCur');
-  legendPriceCur.textContent = price.values.length ? '$' + Math.round(price.values[price.values.length - 1]).toLocaleString() : '';
-  function animateEquityCounter() {
-    const start = s.initial_capital;
-    const end = s.final_equity;
-    const dur = 4000;
-    const startTime = performance.now();
-    function frame(now) {
-      const t = Math.min(1, (now - startTime) / dur);
-      // Ease-out cubic — matches the draw animation feel
-      const eased = 1 - Math.pow(1 - t, 3);
-      const v = start + (end - start) * eased;
-      legendEqCur.textContent = '$' + Math.round(v).toLocaleString();
-      legendEqCur.className = 'mono font-semibold ml-1 ' + (v >= start ? 'text-emerald-300' : 'text-rose-300');
-      if (t < 1) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  }
+      // Animated reveal — once per visit, when scrolled into view.
+      const chartEl = document.getElementById('priceEqChart');
+      const chartIO = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          document.getElementById('priceLine').classList.add('draw');
+          document.getElementById('eqLine').classList.add('draw');
+          document.getElementById('eqArea').classList.add('draw');
+          // markers pop in on their staggered delays
+          document.querySelectorAll('.price-marker').forEach(el => {
+            el.style.animationDelay = el.dataset.delay;
+            el.classList.add('draw');
+          });
+          // Live-tick the equity figure in the legend
+          animateEquityCounter();
+          obs.disconnect();
+        });
+      }, { threshold: 0.35 });
+      chartIO.observe(chartEl);
 
-  // Equity metrics
-  document.getElementById('metricReturn').textContent = fmtPct(s.total_return_pct);
-  document.getElementById('metricReturn').className = 'mono font-semibold mt-0.5 ' + colorOf(s.total_return_pct);
-  document.getElementById('metricDD').textContent = '−' + Math.abs(s.max_drawdown_pct).toFixed(2) + '%';
-  document.getElementById('metricAnn').textContent = fmtPct(s.annualized_return_pct);
-  document.getElementById('metricAnn').className = 'mono font-semibold mt-0.5 ' + colorOf(s.annualized_return_pct);
+      // Ticker: count up from initial -> final equity over 4 seconds
+      const legendEqCur = document.getElementById('legendEqCur');
+      const legendPriceCur = document.getElementById('legendPriceCur');
+      legendPriceCur.textContent = price.values.length ? '$' + Math.round(price.values[price.values.length - 1]).toLocaleString() : '';
+      function animateEquityCounter() {
+        const start = s.initial_capital;
+        const end = s.final_equity;
+        const dur = 4000;
+        const startTime = performance.now();
+        function frame(now) {
+          const t = Math.min(1, (now - startTime) / dur);
+          // Ease-out cubic — matches the draw animation feel
+          const eased = 1 - Math.pow(1 - t, 3);
+          const v = start + (end - start) * eased;
+          legendEqCur.textContent = '$' + Math.round(v).toLocaleString();
+          legendEqCur.className = 'mono font-semibold ml-1 ' + (v >= start ? 'text-emerald-300' : 'text-rose-300');
+          if (t < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
 
-  // Big metrics
-  document.getElementById('sharpeBig').textContent = s.sharpe_ratio.toFixed(2);
-  document.getElementById('sortinoBig').textContent = s.sortino_ratio.toFixed(2);
-  document.getElementById('calmarBig').textContent = s.calmar_ratio.toFixed(2);
+      // Equity metrics
+      document.getElementById('metricReturn').textContent = fmtPct(s.total_return_pct);
+      document.getElementById('metricReturn').className = 'mono font-semibold mt-0.5 ' + colorOf(s.total_return_pct);
+      document.getElementById('metricDD').textContent = '−' + Math.abs(s.max_drawdown_pct).toFixed(2) + '%';
+      document.getElementById('metricAnn').textContent = fmtPct(s.annualized_return_pct);
+      document.getElementById('metricAnn').className = 'mono font-semibold mt-0.5 ' + colorOf(s.annualized_return_pct);
 
-  // Reason bars
-  const reasonOrder = ['take_profit', 'stop_loss', 'mean_reversion_exit', 'trailing_stop_loss', 'end_of_backtest'];
-  const reasonColor = { take_profit: '#34d399', stop_loss: '#f87171', mean_reversion_exit: '#7dd3fc', trailing_stop_loss: '#fbbf24', end_of_backtest: '#94a3b8' };
-  const reasonLabel = { take_profit: 'Take profit', stop_loss: 'Stop loss', mean_reversion_exit: 'Midline exit', trailing_stop_loss: 'Trailing SL', end_of_backtest: 'End of test' };
-  const total = Object.values(s.close_reasons).reduce((a,b) => a+b, 0);
-  document.getElementById('reasonBars').innerHTML = reasonOrder
-    .filter(k => s.close_reasons[k])
-    .map(k => {
-      const v = s.close_reasons[k];
-      const pct = (v / total * 100);
-      return `
+      // Big metrics
+      document.getElementById('sharpeBig').textContent = s.sharpe_ratio.toFixed(2);
+      document.getElementById('sortinoBig').textContent = s.sortino_ratio.toFixed(2);
+      document.getElementById('calmarBig').textContent = s.calmar_ratio.toFixed(2);
+
+      // Reason bars
+      const reasonOrder = ['take_profit', 'stop_loss', 'mean_reversion_exit', 'trailing_stop_loss', 'end_of_backtest'];
+      const reasonColor = { take_profit: '#34d399', stop_loss: '#f87171', mean_reversion_exit: '#7dd3fc', trailing_stop_loss: '#fbbf24', end_of_backtest: '#94a3b8' };
+      const reasonLabel = { take_profit: 'Take profit', stop_loss: 'Stop loss', mean_reversion_exit: 'Midline exit', trailing_stop_loss: 'Trailing SL', end_of_backtest: 'End of test' };
+      const total = Object.values(s.close_reasons).reduce((a, b) => a + b, 0);
+      document.getElementById('reasonBars').innerHTML = reasonOrder
+        .filter(k => s.close_reasons[k])
+        .map(k => {
+          const v = s.close_reasons[k];
+          const pct = (v / total * 100);
+          return `
         <div>
           <div class="flex justify-between text-xs mb-1">
             <span class="text-slate-300">${reasonLabel[k]}</span>
@@ -1335,20 +1636,20 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
             <div class="h-full bar-fill rounded-full" style="width:0; background:${reasonColor[k]}" data-target="${pct}%"></div>
           </div>
         </div>`;
-    }).join('');
-  // Animate bars next frame
-  requestAnimationFrame(() => {
-    document.querySelectorAll('.bar-fill').forEach(b => b.style.width = b.dataset.target);
-  });
+        }).join('');
+      // Animate bars next frame
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.bar-fill').forEach(b => b.style.width = b.dataset.target);
+      });
 
-  // Monthly table
-  const monthly = s.monthly;
-  const maxAbs = Math.max(...Object.values(monthly).map(m => Math.abs(m.pnl_pct_sum))) || 1;
-  document.getElementById('monthlyBody').innerHTML = Object.entries(monthly).map(([m, v]) => {
-    const pos = v.pnl_pct_sum >= 0;
-    const w = Math.abs(v.pnl_pct_sum) / maxAbs * 100;
-    const fmt = (v.pnl_pct_sum >= 0 ? '+' : '') + v.pnl_pct_sum.toFixed(2) + '%';
-    return `
+      // Monthly table
+      const monthly = s.monthly;
+      const maxAbs = Math.max(...Object.values(monthly).map(m => Math.abs(m.pnl_pct_sum))) || 1;
+      document.getElementById('monthlyBody').innerHTML = Object.entries(monthly).map(([m, v]) => {
+        const pos = v.pnl_pct_sum >= 0;
+        const w = Math.abs(v.pnl_pct_sum) / maxAbs * 100;
+        const fmt = (v.pnl_pct_sum >= 0 ? '+' : '') + v.pnl_pct_sum.toFixed(2) + '%';
+        return `
       <tr class="border-b border-white/5">
         <td class="py-2 text-slate-200">${m}</td>
         <td class="text-right text-slate-300">${v.trades}</td>
@@ -1360,64 +1661,68 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
           </div>
         </td>
       </tr>`;
-  }).join('');
-})();
-</script>
+      }).join('');
+    })();
+  </script>
 
-<!-- ============================================================ WAITLIST MODAL -->
-<div id="waitlistOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-  <div role="dialog" aria-modal="true" aria-labelledby="wlTitle"
-       class="glass rounded-2xl p-7 max-w-md w-full relative">
-    <button id="waitlistClose" aria-label="Close" type="button"
-            class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 text-xl leading-none">×</button>
-    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Early access</div>
-    <h3 id="wlTitle" class="mt-2 text-2xl font-semibold">Get on the SpikeWatch waitlist</h3>
-    <p class="mt-2 text-sm text-slate-400">
-      We're rolling out access in small batches. Drop your email and we'll send a download link the moment your spot opens up.
-    </p>
-    <form id="waitlistForm" class="mt-5 flex gap-2">
-      <input type="email" required name="email" placeholder="you@example.com" autocomplete="email"
-             class="flex-1 bg-black/30 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-400/60"/>
-      <button type="submit" class="bg-white text-slate-900 hover:bg-slate-100 px-4 py-2.5 rounded-lg font-medium text-sm">Send it</button>
-    </form>
-    <p id="waitlistMsg" class="mt-3 text-xs text-slate-400 hidden"></p>
-    <p class="mt-4 text-[11px] text-slate-500">No marketing emails. One launch notification, then silence.</p>
+  <!-- ============================================================ WAITLIST MODAL -->
+  <div id="waitlistOverlay"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="wlTitle"
+      class="glass rounded-2xl p-7 max-w-md w-full relative">
+      <button id="waitlistClose" aria-label="Close" type="button"
+        class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 text-xl leading-none">×</button>
+      <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Early access</div>
+      <h3 id="wlTitle" class="mt-2 text-2xl font-semibold">Get on the SpikeWatch waitlist</h3>
+      <p class="mt-2 text-sm text-slate-400">
+        We're rolling out access in small batches. Drop your email and we'll send a download link the moment your spot
+        opens up.
+      </p>
+      <form id="waitlistForm" class="mt-5 flex gap-2">
+        <input type="email" required name="email" placeholder="you@example.com" autocomplete="email"
+          class="flex-1 bg-black/30 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-400/60" />
+        <button type="submit"
+          class="bg-white text-slate-900 hover:bg-slate-100 px-4 py-2.5 rounded-lg font-medium text-sm">Send it</button>
+      </form>
+      <p id="waitlistMsg" class="mt-3 text-xs text-slate-400 hidden"></p>
+      <p class="mt-4 text-[11px] text-slate-500">No marketing emails. One launch notification, then silence.</p>
+    </div>
   </div>
-</div>
-<script>
-(function() {
-  const overlay = document.getElementById('waitlistOverlay');
-  const closeBtn = document.getElementById('waitlistClose');
-  const form = document.getElementById('waitlistForm');
-  const msg = document.getElementById('waitlistMsg');
-  function open() {
-    overlay.classList.remove('hidden');
-    overlay.classList.add('flex');
-    setTimeout(() => overlay.querySelector('input[type=email]')?.focus(), 50);
-    document.body.style.overflow = 'hidden';
-  }
-  function close() {
-    overlay.classList.add('hidden');
-    overlay.classList.remove('flex');
-    document.body.style.overflow = '';
-    msg.classList.add('hidden');
-    form.reset();
-  }
-  document.querySelectorAll('[data-waitlist]').forEach(el => el.addEventListener('click', open));
-  closeBtn.addEventListener('click', close);
-  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.classList.contains('hidden')) close(); });
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const email = form.elements.email.value.trim();
-    // No backend yet — open mailto so the email gets to us, and acknowledge in-page.
-    window.location.href = `mailto:hello@spikewatch.app?subject=SpikeWatch%20waitlist&body=Please%20add%20${encodeURIComponent(email)}%20to%20the%20waitlist.`;
-    msg.textContent = `Thanks — opening your email client to confirm. (We'll wire a real signup form once the backend is up.)`;
-    msg.classList.remove('hidden');
-    msg.className = 'mt-3 text-xs text-emerald-300';
-  });
-})();
-</script>
+  <script>
+    (function () {
+      const overlay = document.getElementById('waitlistOverlay');
+      const closeBtn = document.getElementById('waitlistClose');
+      const form = document.getElementById('waitlistForm');
+      const msg = document.getElementById('waitlistMsg');
+      function open() {
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+        setTimeout(() => overlay.querySelector('input[type=email]')?.focus(), 50);
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+        document.body.style.overflow = '';
+        msg.classList.add('hidden');
+        form.reset();
+      }
+      document.querySelectorAll('[data-waitlist]').forEach(el => el.addEventListener('click', open));
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.classList.contains('hidden')) close(); });
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const email = form.elements.email.value.trim();
+        // No backend yet — open mailto so the email gets to us, and acknowledge in-page.
+        window.location.href = `mailto:cryptoassetsdaily@proton.me?subject=SpikeWatch%20waitlist&body=Please%20add%20${encodeURIComponent(email)}%20to%20the%20waitlist.`;
+        msg.textContent = `Thanks — opening your email client to confirm. (We'll wire a real signup form once the backend is up.)`;
+        msg.classList.remove('hidden');
+        msg.className = 'mt-3 text-xs text-emerald-300';
+      });
+    })();
+  </script>
 
 </body>
+
 </html>
