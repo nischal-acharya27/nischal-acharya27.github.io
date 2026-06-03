@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Risk disclosure — SpikeWatch</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root { --bg:#0b1020; --txt:#e6ecff; --muted:#8da0c8; --line:rgba(255,255,255,0.12); }
+  html,body{background:radial-gradient(1200px 800px at 20% -10%,#1b254e 0%,var(--bg) 55%) fixed,var(--bg);color:var(--txt);}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;}
+  .glass{background:rgba(255,255,255,0.04);border:1px solid var(--line);}
+  a.nav{color:#7dd3fc;}
+</style>
+</head>
+<body class="min-h-screen px-6 py-10">
+<main class="max-w-3xl mx-auto">
+  <a href="../index.html" class="nav text-sm">← Back to SpikeWatch</a>
+  <h1 class="mt-6 text-3xl font-semibold">Risk disclosure</h1>
+  <p class="mt-2 text-sm text-slate-400">Last updated: 2026-05-23</p>
+
+  <div class="mt-8 glass rounded-2xl p-7 space-y-5 text-slate-300 leading-relaxed">
+    <p><strong class="text-rose-300">Trading cryptocurrency derivatives carries substantial risk of loss
+    and is not suitable for every investor.</strong> You can lose your entire deposit, and in some
+    cases more, in a very short period. Past performance — including any backtest results shown on the
+    SpikeWatch website or in the application — does not guarantee future results.</p>
+
+    <p>SpikeWatch is a desktop trading tool. It does not provide investment advice, does not custody
+    your funds, and does not place orders on its own. When you enable live automation, the application
+    sends orders to an exchange you have authorised with your own API keys. <strong>You are solely
+    responsible for the trades it places.</strong></p>
+
+    <p>Backtests in SpikeWatch are honest historical simulations of the strategy code on past kline
+    data. They do not model slippage, exchange downtime, funding-rate changes, partial fills, queue
+    position, or the impact of your own orders on thin order books. <strong>A backtest that performs
+    well will not necessarily perform the same way in live trading.</strong></p>
+
+    <p>Before enabling live automation, you should:</p>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Trade only with capital you can afford to lose entirely.</li>
+      <li>Run the strategy in paper-trading mode first, for at least the same duration as the backtest
+        window you trust.</li>
+      <li>Set position sizes that respect your overall risk budget — not the maximum the exchange will
+        allow you to take.</li>
+      <li>Never grant withdrawal permission to API keys used by any trading bot, SpikeWatch included.</li>
+      <li>Understand the regulatory status of derivatives trading in your jurisdiction. Some
+        jurisdictions prohibit residents from trading on offshore exchanges.</li>
+    </ul>
+
+    <p>SpikeWatch makes no representation or warranty as to the accuracy of market data fetched from
+    third-party exchange APIs, the correctness of strategy implementations, or the suitability of any
+    strategy for any particular trading goal. You agree that you use the application at your own risk.</p>
+  </div>
+
+  <p class="text-xs text-slate-500 mt-8 text-center">
+    This document is intended to make risks explicit. It is not legal advice and does not create a
+    fiduciary, advisory, or any other regulated relationship.
+  </p>
+</main>
+</body>
+</html>

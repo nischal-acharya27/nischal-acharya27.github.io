@@ -1,0 +1,16 @@
+# macOS folder metadata — never ship.
+.DS_Store
+
+# Raw backtest exports live in data/ — the relevant numbers are already
+# inlined into data_island.js, so the multi-megabyte source files don't
+# need to ship to the web.
+data/
+
+# Build-time scripts aren't part of the live site.
+build_data_island.py
+
+# Editor / OS noise.
+*.swp
+*.swo
+*~
+Thumbs.db

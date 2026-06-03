@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SpikeWatch v0.2.0 — Architecture Map</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: rgba(255,255,255,0.04);
+    --panel-2: rgba(255,255,255,0.07);
+    --line: rgba(255,255,255,0.12);
+    --txt: #e6ecff;
+    --muted: #8da0c8;
+    --accent: #7dd3fc;
+    --ui: #a78bfa;
+    --core: #f472b6;
+    --data: #34d399;
+    --ext: #fbbf24;
+    --store: #60a5fa;
+    --pure: #2dd4bf;
+    --legacy: #94a3b8;
+  }
+  html, body { background: radial-gradient(1200px 800px at 20% -10%, #1b254e 0%, var(--bg) 55%) fixed; color: var(--txt); }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+  .glass { background: var(--panel); border: 1px solid var(--line); backdrop-filter: blur(6px); }
+  .glass:hover { background: var(--panel-2); }
+  .node { transition: transform .15s ease, box-shadow .15s ease, background .15s ease; cursor: pointer; }
+  .node:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.45); }
+  .node.selected { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .badge { font-size: 10px; padding: 2px 6px; border-radius: 999px; border: 1px solid var(--line); }
+  .pill-ui     { background: rgba(167,139,250,.16); color: #d6cbff; border-color: rgba(167,139,250,.4); }
+  .pill-core   { background: rgba(244,114,182,.14); color: #ffd2ec; border-color: rgba(244,114,182,.4); }
+  .pill-data   { background: rgba(52,211,153,.14); color: #c7f6e1; border-color: rgba(52,211,153,.4); }
+  .pill-ext    { background: rgba(251,191,36,.14); color: #ffe7b3; border-color: rgba(251,191,36,.4); }
+  .pill-store  { background: rgba(96,165,250,.14); color: #cfe2ff; border-color: rgba(96,165,250,.4); }
+  .pill-pure   { background: rgba(45,212,191,.14); color: #b8fff1; border-color: rgba(45,212,191,.4); }
+  .pill-legacy { background: rgba(148,163,184,.14); color: #e2e8f0; border-color: rgba(148,163,184,.4); }
+
+  .canvas-wrap { position: relative; height: 80vh; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background:
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 40%),
+      radial-gradient(800px 500px at 70% 10%, rgba(125,211,252,0.08), transparent 50%),
+      #0a0f24;
+  }
+  .canvas { position: absolute; inset: 0; transform-origin: 0 0; will-change: transform; }
+  .grid-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .edge { stroke-width: 1.6; fill: none; }
+  .edge.flow { stroke-dasharray: 6 4; animation: dash 1.4s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset: -40; } }
+
+  .legend-dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
+  .sev-high { background: #ef4444; } .sev-med { background: #f59e0b; } .sev-low { background: #22c55e; } .sev-done { background: #2dd4bf; }
+  .scrollbar::-webkit-scrollbar { width: 8px; }
+  .scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 8px; }
+  .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,0.08); border: 1px solid var(--line); }
+
+  .node-card { width: 220px; padding: 12px 14px; border-radius: 14px; }
+  .node-card .title { font-weight: 600; font-size: 13px; letter-spacing: .2px; }
+  .node-card .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .node-card .meta { font-size: 10px; color: var(--muted); margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .glow-ui     { box-shadow: inset 0 0 0 1px rgba(167,139,250,.5), 0 0 0 1px rgba(167,139,250,.15); background: linear-gradient(180deg, rgba(167,139,250,.10), rgba(167,139,250,.02)); }
+  .glow-core   { box-shadow: inset 0 0 0 1px rgba(244,114,182,.5), 0 0 0 1px rgba(244,114,182,.15); background: linear-gradient(180deg, rgba(244,114,182,.10), rgba(244,114,182,.02)); }
+  .glow-data   { box-shadow: inset 0 0 0 1px rgba(52,211,153,.5),  0 0 0 1px rgba(52,211,153,.15);  background: linear-gradient(180deg, rgba(52,211,153,.10), rgba(52,211,153,.02)); }
+  .glow-ext    { box-shadow: inset 0 0 0 1px rgba(251,191,36,.5),  0 0 0 1px rgba(251,191,36,.15);  background: linear-gradient(180deg, rgba(251,191,36,.10), rgba(251,191,36,.02)); }
+  .glow-store  { box-shadow: inset 0 0 0 1px rgba(96,165,250,.5),  0 0 0 1px rgba(96,165,250,.15);  background: linear-gradient(180deg, rgba(96,165,250,.10), rgba(96,165,250,.02)); }
+  .glow-pure   { box-shadow: inset 0 0 0 1px rgba(45,212,191,.5),  0 0 0 1px rgba(45,212,191,.15);  background: linear-gradient(180deg, rgba(45,212,191,.10), rgba(45,212,191,.02)); }
+
+  .swatch { width: 24px; height: 24px; border-radius: 8px; display:inline-flex; align-items:center; justify-content:center; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<header class="px-6 pt-6 pb-3 flex flex-wrap items-end gap-4 justify-between">
+  <div>
+    <div class="text-xs uppercase tracking-[0.2em] text-sky-300/80">Architecture Map</div>
+    <h1 class="text-3xl md:text-4xl font-semibold leading-tight">
+      SpikeWatch
+      <span class="ml-2 px-2 py-0.5 rounded text-base align-middle" style="background:rgba(45,212,191,.18); color:#b8fff1; border:1px solid rgba(45,212,191,.4);">v0.2.0</span>
+      <span class="text-slate-400 font-normal text-2xl"> — modular crypto monitor &amp; backtester</span>
+    </h1>
+    <div class="text-sm text-slate-400 mt-1">~3,126 LOC src · 17 Python files · 89 tests passing · aiohttp + asyncio · SQLite store · pluggable strategies</div>
+  </div>
+  <div class="flex flex-wrap items-center gap-2 text-xs text-slate-300">
+    <span class="badge pill-ui">UI</span>
+    <span class="badge pill-core">Engine / Signals</span>
+    <span class="badge pill-pure">Pure (strategy/state/metrics)</span>
+    <span class="badge pill-data">Data layer</span>
+    <span class="badge pill-store">Store</span>
+    <span class="badge pill-ext">External</span>
+  </div>
+</header>
+
+<main class="px-6 pb-10 grid grid-cols-12 gap-4">
+
+  <!-- Canvas -->
+  <section class="col-span-12 lg:col-span-9">
+    <div class="flex items-center justify-between mb-2">
+      <div class="text-xs text-slate-400">Drag to pan · scroll to zoom · click a node to inspect</div>
+      <div class="flex items-center gap-2">
+        <button id="zoomOut" class="glass rounded-lg px-2 py-1 text-sm">−</button>
+        <button id="zoomReset" class="glass rounded-lg px-3 py-1 text-sm">Reset</button>
+        <button id="zoomIn" class="glass rounded-lg px-2 py-1 text-sm">+</button>
+        <button id="toggleFlows" class="glass rounded-lg px-3 py-1 text-sm">Animate flows</button>
+      </div>
+    </div>
+
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="grid-bg"></div>
+      <div class="canvas" id="canvas">
+        <svg id="edgeLayer" width="1800" height="1300" viewBox="0 0 1800 1300" style="position:absolute; left:0; top:0; pointer-events:none;">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 Z" fill="rgba(125,211,252,0.75)"></path>
+            </marker>
+            <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 Z" fill="rgba(52,211,153,0.85)"></path>
+            </marker>
+            <marker id="arrowPink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 Z" fill="rgba(244,114,182,0.85)"></path>
+            </marker>
+          </defs>
+        </svg>
+
+        <!-- ENTRY -->
+        <div class="node node-card glow-ui absolute" style="left:40px; top:40px;" data-id="entry.main">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(167,139,250,.2)">🚀</div>
+            <div>
+              <div class="title">main.py</div>
+              <div class="sub">App entry · sets app version</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-ui">entry</span><span class="badge">37 LOC</span></div>
+        </div>
+
+        <!-- UI LAYER -->
+        <div class="node node-card glow-ui absolute" style="left:40px; top:200px;" data-id="ui.main_window">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(167,139,250,.2)">🪟</div>
+            <div>
+              <div class="title">ui.main_window</div>
+              <div class="sub">SpikeWatchApp · QSettings · status bar</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-ui">ui</span><span class="badge">609 LOC</span></div>
+        </div>
+
+        <div class="node node-card glow-ui absolute" style="left:40px; top:360px;" data-id="ui.widgets">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(167,139,250,.2)">🧩</div>
+            <div>
+              <div class="title">ui.widgets</div>
+              <div class="sub">TradeItemWidget row</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-ui">ui</span><span class="badge">68 LOC</span></div>
+        </div>
+
+        <div class="node node-card glow-ui absolute" style="left:40px; top:500px;" data-id="ui.charts">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(167,139,250,.2)">📈</div>
+            <div>
+              <div class="title">ui.charts</div>
+              <div class="sub">pyqtgraph windows</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-ui">ui</span><span class="badge">82 LOC</span></div>
+        </div>
+
+        <!-- ENGINE + SIGNALS -->
+        <div class="node node-card glow-core absolute" style="left:340px; top:200px;" data-id="core.engine">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(244,114,182,.2)">⚙️</div>
+            <div>
+              <div class="title">core.engine</div>
+              <div class="sub">1 asyncio loop · aiohttp · Sem(20)</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-core">core</span><span class="badge">441 LOC</span><span class="badge">typed open trades</span></div>
+        </div>
+
+        <div class="node node-card glow-core absolute" style="left:340px; top:360px;" data-id="core.signals">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(244,114,182,.2)">📡</div>
+            <div>
+              <div class="title">core.signals</div>
+              <div class="sub">Qt bus · 9 signals</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-core">core</span><span class="badge">38 LOC</span></div>
+        </div>
+
+        <!-- PURE LAYER -->
+        <div class="node node-card glow-pure absolute" style="left:660px; top:60px;" data-id="core.trade_state">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(45,212,191,.2)">🧬</div>
+            <div>
+              <div class="title">core.trade_state</div>
+              <div class="sub">step(trade,bar,params) · shared</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-pure">pure</span><span class="badge">291 LOC</span><span class="badge">15 golden tests</span></div>
+        </div>
+
+        <div class="node node-card glow-pure absolute" style="left:660px; top:210px;" data-id="core.strategy_base">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(45,212,191,.2)">🧠</div>
+            <div>
+              <div class="title">core.strategy_base</div>
+              <div class="sub">Strategy ABC · @register · run_backtest</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-pure">pure</span><span class="badge">255 LOC</span></div>
+        </div>
+
+        <div class="node node-card glow-pure absolute" style="left:660px; top:360px;" data-id="core.strategies_pkg">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(45,212,191,.2)">📦</div>
+            <div>
+              <div class="title">core.strategies_pkg</div>
+              <div class="sub">3 built-ins · auto-register</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-pure">strategies</span><span class="badge">160 LOC</span></div>
+        </div>
+
+        <div class="node node-card glow-pure absolute" style="left:660px; top:500px;" data-id="core.utils">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(45,212,191,.2)">📐</div>
+            <div>
+              <div class="title">core.utils</div>
+              <div class="sub">MetricsResult · Sharpe·Sortino·Calmar</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-pure">pure</span><span class="badge">296 LOC</span></div>
+        </div>
+
+        <!-- DATA LAYER -->
+        <div class="node node-card glow-data absolute" style="left:980px; top:200px;" data-id="data.exchange_api">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(52,211,153,.2)">🔌</div>
+            <div>
+              <div class="title">data.exchange_api</div>
+              <div class="sub">aiohttp · fetch_klines · paginate</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-data">data</span><span class="badge">289 LOC</span></div>
+        </div>
+
+        <div class="node node-card glow-data absolute" style="left:980px; top:360px;" data-id="data.rate_limit">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(52,211,153,.2)">🚦</div>
+            <div>
+              <div class="title">data.rate_limit</div>
+              <div class="sub">RateLimiter · 429 backoff</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-data">data</span><span class="badge">184 LOC</span></div>
+        </div>
+
+        <div class="node node-card glow-store absolute" style="left:980px; top:520px;" data-id="data.trade_store">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(96,165,250,.2)">💾</div>
+            <div>
+              <div class="title">data.trade_store</div>
+              <div class="sub">SQLite WAL · CSV mirror · filters</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-store">store</span><span class="badge">318 LOC</span><span class="badge">UNIQUE idem</span></div>
+        </div>
+
+        <!-- EXTERNAL -->
+        <div class="node node-card glow-ext absolute" style="left:1320px; top:200px;" data-id="ext.binance">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(251,191,36,.2)">🟡</div>
+            <div>
+              <div class="title">Binance USDT-M Futures</div>
+              <div class="sub">fapi.binance.com · public</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-ext">REST</span><span class="badge">budget 2400/60s</span></div>
+        </div>
+
+        <div class="node node-card glow-ext absolute" style="left:1320px; top:360px;" data-id="ext.bitget">
+          <div class="flex items-center gap-2">
+            <div class="swatch" style="background:rgba(251,191,36,.2)">🟠</div>
+            <div>
+              <div class="title">Bitget USDT Futures v2</div>
+              <div class="sub">api.bitget.com · public</div>
+            </div>
+          </div>
+          <div class="meta"><span class="badge pill-ext">REST</span><span class="badge">budget 600/60s</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+      <div class="glass rounded-xl p-3"><div class="font-semibold mb-1 text-slate-200">Imports / dependency</div><div class="text-slate-400">Solid sky-blue arrow → static import / instantiation.</div></div>
+      <div class="glass rounded-xl p-3"><div class="font-semibold mb-1 text-slate-200">Runtime data flow</div><div class="text-slate-400">Dashed green arrow → REST / DB / runtime data movement.</div></div>
+      <div class="glass rounded-xl p-3"><div class="font-semibold mb-1 text-slate-200">Qt signal</div><div class="text-slate-400">Dashed pink arrow → SignalEmitter → UI slot (cross-thread).</div></div>
+    </div>
+  </section>
+
+  <!-- Inspector -->
+  <aside class="col-span-12 lg:col-span-3">
+    <div class="glass rounded-2xl p-4 sticky top-4 scrollbar" id="inspector" style="max-height: 88vh; overflow:auto;">
+      <div class="text-xs uppercase tracking-widest text-slate-400">Inspector</div>
+      <div id="inspectorBody" class="mt-2">
+        <div class="text-slate-300 text-sm">Click any node on the map for its responsibilities, dependencies, and tests.</div>
+
+        <hr class="my-4 border-white/10" />
+        <div class="text-xs uppercase tracking-widest text-slate-400 mb-2">v0.2.0 in one glance</div>
+        <ul class="text-sm text-slate-300 list-disc pl-5 space-y-1">
+          <li>Single asyncio loop on one daemon thread.</li>
+          <li>aiohttp + Semaphore(20) ⇒ ~50s sweep → ~3–5s.</li>
+          <li>One <code class="kbd">trade_state.step</code> shared live + backtest.</li>
+          <li>Pluggable Strategy registry (3 built-ins, file-per-strategy).</li>
+          <li>SQLite trade history; lifetime view loads on launch.</li>
+          <li>One log-returns Sharpe + Sortino + Calmar (crypto calendar).</li>
+          <li>Header-driven rate limiter; 429 backoff.</li>
+          <li>QSettings persists all inputs + window geometry.</li>
+          <li>Status bar w/ per-exchange sweep telemetry.</li>
+          <li>89 tests passing; CHANGELOG-gated version bumps.</li>
+        </ul>
+
+        <hr class="my-4 border-white/10" />
+        <div class="text-xs uppercase tracking-widest text-slate-400 mb-2">Resolved &amp; remaining</div>
+        <div id="issueList" class="space-y-2 text-sm"></div>
+
+        <hr class="my-4 border-white/10" />
+        <div class="text-xs uppercase tracking-widest text-slate-400 mb-2">Tech stack</div>
+        <div class="flex flex-wrap gap-1.5 text-xs">
+          <span class="badge">Python 3.10+</span>
+          <span class="badge">PyQt5</span>
+          <span class="badge">pyqtgraph</span>
+          <span class="badge">numpy</span>
+          <span class="badge">aiohttp</span>
+          <span class="badge">requests</span>
+          <span class="badge">sqlite3 (WAL)</span>
+          <span class="badge">pytest</span>
+          <span class="badge">PyInstaller</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</main>
+
+<footer class="px-6 pb-10 text-xs text-slate-500">
+  Generated from v0.2.0 of the codebase. Machine-readable view: <a class="text-sky-300 hover:underline" href="./architecture.json">architecture.json</a>. Full release notes: <a class="text-sky-300 hover:underline" href="./CHANGELOG.md">CHANGELOG.md</a>.
+</footer>
+
+<script>
+/* ----------------------------- Node metadata ---------------------------- */
+const NODES = {
+  "entry.main": {
+    title: "main.py", layer: "Entry", color: "ui", loc: 37,
+    role: "Application entry point.",
+    responsibilities: [
+      "Set Windows asyncio event-loop policy.",
+      "Configure logging.basicConfig so module loggers surface to terminal.",
+      "Set QApplication name + version (used by OS dock / About).",
+      "Wire engine.beep_signal → QApplication.beep.",
+      "Instantiate SpikeWatchApp, run Qt loop."
+    ],
+    imports: ["src.__version__", "src.ui.main_window.SpikeWatchApp"],
+  },
+  "ui.main_window": {
+    title: "src/ui/main_window.py", layer: "UI", color: "ui", loc: 609,
+    role: "Top-level Qt window.",
+    responsibilities: [
+      "Compose grid (logs, open trades, closed trades, backtest controls).",
+      "QSettings persist + restore: threshold, TP/SL, EMA, MR params, timeframe, last strategy, window geom.",
+      "Status bar with colour-coded per-exchange sweep telemetry.",
+      "Closed-trades panel preloaded from SQLite history.",
+      "closeEvent persists settings and calls engine.shutdown()."
+    ],
+    imports: ["core.engine", "core.utils", "ui.widgets", "ui.charts", "data.exchange_api"],
+  },
+  "ui.widgets": {
+    title: "src/ui/widgets.py", layer: "UI", color: "ui", loc: 68,
+    role: "Single open-trade row widget (PnL, TP/SL, close button).",
+  },
+  "ui.charts": {
+    title: "src/ui/charts.py", layer: "UI", color: "ui", loc: 82,
+    role: "pyqtgraph chart windows (price + equity curve).",
+  },
+  "core.engine": {
+    title: "src/core/engine.py", layer: "Core", color: "core", loc: 441,
+    role: "Trading engine. One asyncio loop on one background thread.",
+    responsibilities: [
+      "Two _monitor tasks (binance/bitget) sharing one aiohttp.ClientSession each.",
+      "Per-cycle fetch_prices_batch with Semaphore(20); rate-limit gated.",
+      "open_trade / update_trade_pnl / close_trade — typed dict[str, Trade].",
+      "Backtest task delegates pagination to data.exchange_api.",
+      "Preloads all_closed_trades from trade_store on init.",
+      "Emits sweep_telemetry_signal per cycle."
+    ],
+    imports: ["core.signals", "core.strategy_base", "core.strategies_pkg (auto-register)", "core.trade_state", "core.utils", "data.exchange_api", "data.trade_store"],
+  },
+  "core.signals": {
+    title: "src/core/signals.py", layer: "Core", color: "core", loc: 38,
+    role: "Qt signal bus.",
+    responsibilities: ["9 pyqtSignal channels: per-exchange logs, trade-status dicts, backtest log/finished, beep, sweep_telemetry_signal(dict)."],
+  },
+  "core.trade_state": {
+    title: "src/core/trade_state.py", layer: "Pure", color: "pure", loc: 291,
+    role: "Shared TP/SL/trailing-SL state machine.",
+    responsibilities: [
+      "Trade @dataclass, Bar @dataclass (from_candle / from_tick), StepParams.",
+      "step(trade, bar, params) → StepResult — used by live engine AND backtest simulators.",
+      "open_trade / force_close.",
+      "Pinned invariants: TP > SL within bar; trailing ratchets monotonically."
+    ],
+    imports: ["dataclasses"],
+  },
+  "core.strategy_base": {
+    title: "src/core/strategy_base.py", layer: "Pure", color: "pure", loc: 255,
+    role: "Pluggable strategy framework + backtest driver.",
+    responsibilities: [
+      "Strategy ABC: NAME, PARAMS, signal(), exit_signal().",
+      "ParamSpec for typed configurable params (UI builds inputs from this).",
+      "@register decorator + STRATEGIES global dict.",
+      "run_backtest(name, raw_params, ...) drives the unified state machine."
+    ],
+  },
+  "core.strategies_pkg": {
+    title: "src/core/strategies_pkg/", layer: "Pure", color: "pure", loc: 160,
+    role: "Built-in strategies, one per file (auto-registered on package import).",
+    responsibilities: [
+      "spike_detection.py (33 LOC) — ±threshold% candle close opens a trade.",
+      "ema_crossover.py (63 LOC) — short/long EMA cross; reverse_signal exit.",
+      "mean_reversion.py (55 LOC) — Bollinger band entry; MA-touch exit."
+    ],
+    notes: "Adding a new strategy = one new file + import in __init__.py. Zero edits to engine or UI."
+  },
+  "core.utils": {
+    title: "src/core/utils.py", layer: "Pure", color: "pure", loc: 296,
+    role: "Backtest performance metrics + equity curve.",
+    responsibilities: [
+      "calculate_equity_curve(klines, trades, initial_capital) → (times, values).",
+      "calculate_advanced_metrics → MetricsResult dataclass.",
+      "ONE Sharpe method: log returns of resampled curve, crypto 24/7/365 annualisation.",
+      "Sortino (downside std) + Calmar (annualised / max DD).",
+      "Auto-picks periodicity from median sample interval."
+    ],
+  },
+  "data.exchange_api": {
+    title: "src/data/exchange_api.py", layer: "Data", color: "data", loc: 289,
+    role: "Async REST clients (aiohttp).",
+    responsibilities: [
+      "fetch_klines normalises Bitget's newest-first string payloads to Binance shape.",
+      "fetch_prices_batch fans out with Semaphore(20); rate-limit gated.",
+      "paginate_historical_klines: Binance forward, Bitget backward.",
+      "Single source of truth for BITGET_TIMEFRAME_MAP."
+    ],
+    imports: ["aiohttp", "requests (sync startup only)", "data.rate_limit"],
+  },
+  "data.rate_limit": {
+    title: "src/data/rate_limit.py", layer: "Data", color: "data", loc: 184,
+    role: "Header-driven rate limiter, one per exchange.",
+    responsibilities: [
+      "LimitConfig per exchange (header name, budget, window, thresholds).",
+      "record_response: Binance 'used' direct; Bitget 'remaining' inverted.",
+      "pause_if_needed: short pause ≥80%, full window pause ≥95%.",
+      "Exponential 429 backoff (2^streak, capped 30s); resets on next 2xx.",
+      "Module-level LIMITERS registry."
+    ],
+  },
+  "data.trade_store": {
+    title: "src/data/trade_store.py", layer: "Store", color: "store", loc: 318,
+    role: "SQLite-backed lifetime trade history.",
+    responsibilities: [
+      "WAL mode; one connection per thread (threading.local).",
+      "record_close idempotent on UNIQUE(symbol, exchange, open_time).",
+      "filtered() — symbol substring, exchange, close_reason, date range.",
+      "ORDER BY whitelist (injection guard).",
+      "import_csv() one-shot migration from legacy demo_trade_results.csv.",
+      "dual_write_csv mirror for safe rollback to <0.2.0."
+    ],
+  },
+  "ext.binance": {
+    title: "Binance USDT-M Futures REST", layer: "External", color: "ext", loc: 0,
+    role: "Public market-data endpoint (no auth).",
+    responsibilities: [
+      "GET /fapi/v1/exchangeInfo → symbol list.",
+      "GET /fapi/v1/klines → candles. Rate-limit header X-MBX-USED-WEIGHT-1M (budget 2400/60s)."
+    ],
+  },
+  "ext.bitget": {
+    title: "Bitget USDT Futures v2 REST", layer: "External", color: "ext", loc: 0,
+    role: "Public market-data endpoint (no auth).",
+    responsibilities: [
+      "GET /api/v2/mix/market/tickers.",
+      "GET /api/v2/mix/market/candles. Rate-limit header X-RateLimit-Remaining (budget ~600/60s)."
+    ],
+  },
+};
+
+/* ----------------------------- Edges ---------------------------- */
+const EDGES = [
+  {from:"entry.main",        to:"ui.main_window",     type:"import"},
+  {from:"ui.main_window",    to:"core.engine",        type:"import"},
+  {from:"ui.main_window",    to:"core.utils",         type:"import"},
+  {from:"ui.main_window",    to:"ui.widgets",         type:"import"},
+  {from:"ui.main_window",    to:"ui.charts",          type:"import"},
+  {from:"ui.main_window",    to:"data.exchange_api",  type:"import"},
+  {from:"core.engine",       to:"core.signals",       type:"import"},
+  {from:"core.engine",       to:"core.trade_state",   type:"import"},
+  {from:"core.engine",       to:"core.strategy_base", type:"import"},
+  {from:"core.engine",       to:"core.strategies_pkg",type:"import"},
+  {from:"core.engine",       to:"core.utils",         type:"import"},
+  {from:"core.engine",       to:"data.exchange_api",  type:"import"},
+  {from:"core.engine",       to:"data.trade_store",   type:"flow"},
+  {from:"core.strategy_base",to:"core.trade_state",   type:"import"},
+  {from:"core.strategies_pkg",to:"core.strategy_base",type:"import"},
+  {from:"data.exchange_api", to:"data.rate_limit",    type:"import"},
+  {from:"data.exchange_api", to:"ext.binance",        type:"flow"},
+  {from:"data.exchange_api", to:"ext.bitget",         type:"flow"},
+  {from:"core.signals",      to:"ui.main_window",     type:"signal"},
+];
+
+/* ----------------------------- Status list ---------------------------- */
+const ISSUES = [
+  {sev:"done", title:"Monolith retired", note:"SpikeWatch.py → legacy/. README + PyInstaller now target main.py."},
+  {sev:"done", title:"Live ↔ backtest divergence killed", note:"One trade_state.step shared by both paths; pinned by 15 golden tests."},
+  {sev:"done", title:"Async story rewritten (~10× faster sweeps)", note:"One asyncio loop, aiohttp.ClientSession reuse, Semaphore(20)."},
+  {sev:"done", title:"Data layer cleaned", note:"BITGET_TIMEFRAME_MAP single SoT; paginate_historical_klines moved out of engine."},
+  {sev:"done", title:"CSV → SQLite store", note:"Lifetime history loads on startup; CSV mirror kept for rollback."},
+  {sev:"done", title:"Metrics rewritten", note:"One Sharpe (log returns, crypto calendar) + Sortino + Calmar."},
+  {sev:"done", title:"Pluggable Strategy ABC", note:"New strategy = one file in strategies_pkg/."},
+  {sev:"done", title:"Open-trade dicts typed dict[str, Trade]", note:"Attribute access; typos fail at edit time."},
+  {sev:"done", title:"Errors routed via logging + Qt signals", note:"Bare except: gone; print() in data layer gone."},
+  {sev:"done", title:"QSettings persistence", note:"Threshold, TP/SL, EMA, MR, timeframe, strategy, window geom."},
+  {sev:"done", title:"Status bar telemetry", note:"Per-exchange cycle / coverage / elapsed, colour-coded."},
+  {sev:"done", title:"Rate limiter (header-driven)", note:"Backoff before 429; resets on 2xx."},
+  {sev:"done", title:"Versioning + CHANGELOG-gated bumps", note:"src/__init__.py is SoT; test_version.py enforces CHANGELOG entry."},
+  {sev:"low",  title:"FU-1: ExchangeClient Protocol subclasses", note:"Defer until a 3rd exchange shows up."},
+  {sev:"low",  title:"FU-2: Async startup symbol fetch", note:"Sync requests path briefly blocks UI on launch; not painful enough to fix yet."},
+  {sev:"low",  title:"FU-3: DB schema migrations", note:"CREATE TABLE IF NOT EXISTS is fine for additive changes; add a versions table before the first column drop."},
+];
+
+/* ----------------------------- Wiring ---------------------------- */
+function colorClass(c){ return {ui:"pill-ui",core:"pill-core",data:"pill-data",ext:"pill-ext",legacy:"pill-legacy",store:"pill-store",pure:"pill-pure"}[c]||"badge"; }
+
+function renderIssues() {
+  const root = document.getElementById("issueList");
+  root.innerHTML = ISSUES.map(i => `
+    <div class="rounded-lg p-2 border border-white/5 bg-white/5">
+      <div class="flex items-start gap-2">
+        <span class="legend-dot ${i.sev==='done'?'sev-done':i.sev==='high'?'sev-high':i.sev==='med'?'sev-med':'sev-low'} mt-1"></span>
+        <div>
+          <div class="text-slate-100">${i.sev==='done'?'<span class="kbd mr-1" style="background:rgba(45,212,191,.18);color:#b8fff1;border-color:rgba(45,212,191,.4)">DONE</span>':''}${i.title}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">${i.note}</div>
+        </div>
+      </div>
+    </div>`).join("");
+}
+renderIssues();
+
+function showInspector(id) {
+  const n = NODES[id]; if (!n) return;
+  document.getElementById("inspectorBody").innerHTML = `
+    <div class="flex items-center gap-2">
+      <span class="badge ${colorClass(n.color)}">${n.layer}</span>
+      ${n.loc ? `<span class="badge">${n.loc} LOC</span>` : ""}
+    </div>
+    <h3 class="text-lg font-semibold mt-2">${n.title}</h3>
+    <p class="text-sm text-slate-300 mt-1">${n.role}</p>
+    ${n.responsibilities ? `
+    <div class="mt-3">
+      <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Responsibilities</div>
+      <ul class="list-disc pl-5 text-sm text-slate-200 space-y-1">
+        ${n.responsibilities.map(r=>`<li>${r}</li>`).join("")}
+      </ul>
+    </div>` : ""}
+    ${n.imports && n.imports.length ? `
+    <div class="mt-3">
+      <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Imports</div>
+      <div class="flex flex-wrap gap-1.5">${n.imports.map(i=>`<span class="badge">${i}</span>`).join("")}</div>
+    </div>` : ""}
+    ${n.notes ? `<p class="text-xs text-slate-400 mt-3"><b>Notes:</b> ${n.notes}</p>` : ""}
+    <button class="mt-4 text-xs text-sky-300 hover:underline" onclick="resetInspector()">← Back</button>
+  `;
+  document.querySelectorAll('.node').forEach(el => el.classList.remove('selected'));
+  document.querySelector(`.node[data-id="${id}"]`)?.classList.add('selected');
+}
+function resetInspector() { location.reload(); }
+document.querySelectorAll('.node').forEach(el => el.addEventListener('click', e => { e.stopPropagation(); showInspector(el.dataset.id); }));
+
+/* ----------------------------- Edge drawing ---------------------------- */
+function nodeAnchor(el, side){
+  const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
+  if (side === "right") return { x: x + w, y: y + h/2 };
+  if (side === "left")  return { x: x,     y: y + h/2 };
+  if (side === "top")   return { x: x + w/2, y: y };
+  return { x: x + w/2, y: y + h };
+}
+function pathBetween(a, b) {
+  const dx = Math.max(60, Math.abs(b.x - a.x) * 0.5);
+  return `M ${a.x},${a.y} C ${a.x + dx},${a.y} ${b.x - dx},${b.y} ${b.x},${b.y}`;
+}
+function drawEdges() {
+  const svg = document.getElementById("edgeLayer");
+  [...svg.querySelectorAll("path.edge")].forEach(p => p.remove());
+  EDGES.forEach(e => {
+    const from = document.querySelector(`.node[data-id="${e.from}"]`);
+    const to   = document.querySelector(`.node[data-id="${e.to}"]`);
+    if (!from || !to) return;
+    const a = nodeAnchor(from, "right");
+    const b = nodeAnchor(to, "left");
+    let cls = "edge", stroke = "rgba(125,211,252,0.55)", marker = "url(#arrow)";
+    if (e.type === "flow")   { cls += " flow"; stroke = "rgba(52,211,153,0.7)";  marker = "url(#arrowGreen)"; }
+    if (e.type === "signal") { cls += " flow"; stroke = "rgba(244,114,182,0.85)"; marker = "url(#arrowPink)"; }
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("d", pathBetween(a, b));
+    p.setAttribute("class", cls);
+    p.setAttribute("stroke", stroke);
+    p.setAttribute("marker-end", marker);
+    svg.appendChild(p);
+  });
+}
+drawEdges();
+window.addEventListener('resize', drawEdges);
+
+/* ----------------------------- Pan & Zoom ---------------------------- */
+const canvas = document.getElementById('canvas');
+const wrap = document.getElementById('canvasWrap');
+let tx = 20, ty = 20, scale = 0.90;
+function applyTransform(){ canvas.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`; }
+applyTransform();
+
+let dragging = false, lastX = 0, lastY = 0;
+wrap.addEventListener('mousedown', e => {
+  if (e.target.closest('.node')) return;
+  dragging = true; lastX = e.clientX; lastY = e.clientY;
+  wrap.style.cursor = 'grabbing';
+});
+window.addEventListener('mouseup', () => { dragging = false; wrap.style.cursor = ''; });
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  tx += (e.clientX - lastX); ty += (e.clientY - lastY);
+  lastX = e.clientX; lastY = e.clientY;
+  applyTransform();
+});
+wrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = wrap.getBoundingClientRect();
+  const px = (e.clientX - rect.left - tx) / scale;
+  const py = (e.clientY - rect.top - ty) / scale;
+  const factor = e.deltaY < 0 ? 1.1 : 1/1.1;
+  const next = Math.min(2.5, Math.max(0.35, scale * factor));
+  tx -= (px * (next - scale)); ty -= (py * (next - scale));
+  scale = next; applyTransform();
+}, { passive:false });
+document.getElementById('zoomIn').onclick = () => { scale = Math.min(2.5, scale*1.15); applyTransform(); };
+document.getElementById('zoomOut').onclick = () => { scale = Math.max(0.35, scale/1.15); applyTransform(); };
+document.getElementById('zoomReset').onclick = () => { tx=20; ty=20; scale=0.90; applyTransform(); };
+let flowsOn = true;
+document.getElementById('toggleFlows').onclick = () => {
+  flowsOn = !flowsOn;
+  document.querySelectorAll('path.edge.flow').forEach(p => { p.style.animationPlayState = flowsOn ? 'running' : 'paused'; });
+};
+</script>
+</body>
+</html>

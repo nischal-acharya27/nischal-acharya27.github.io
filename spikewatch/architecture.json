@@ -1,0 +1,465 @@
+{
+  "schema_version": "1.1",
+  "generated_at": "2026-05-23",
+  "app_version": "0.2.0",
+  "project": {
+    "name": "SpikeWatch",
+    "type": "desktop_application",
+    "domain": "crypto_trading",
+    "purpose": "PyQt5 desktop app for monitoring price spikes on Binance & Bitget USDT perpetual futures, opening simulated (paper) trades on spikes with configurable TP/SL/trailing-SL, and backtesting pluggable strategies against historical klines.",
+    "entry_point": "main.py",
+    "build_command": "pyinstaller --windowed --onefile main.py",
+    "size": {
+      "loc_src_total": 3126,
+      "loc_tests_total": 1300,
+      "python_files_src": 17,
+      "python_files_tests": 9,
+      "tests_passing": 89,
+      "tests_skipped_without_pyqt5": 3
+    }
+  },
+  "tech_stack": {
+    "language": "Python 3.10+",
+    "ui_framework": "PyQt5",
+    "charting": "pyqtgraph",
+    "numerics": "numpy",
+    "http_client": "aiohttp (live + backtest); requests (only two sync startup calls)",
+    "concurrency": "Single background daemon thread hosting one asyncio event loop; cooperative cancellation via asyncio.Event",
+    "persistence": "SQLite (WAL mode) with CSV mirror for rollback compatibility",
+    "packaging": "PyInstaller (--windowed --onefile)",
+    "testing": "pytest; 9 test files; no real network (FakeSession mocks aiohttp)",
+    "external_apis": [
+      {
+        "name": "Binance USDT-M Futures REST",
+        "base_url": "https://fapi.binance.com",
+        "auth": "none (public market data only)",
+        "endpoints_used": ["/fapi/v1/exchangeInfo", "/fapi/v1/klines"],
+        "rate_limit_header": "X-MBX-USED-WEIGHT-1M",
+        "budget": "2400 weight / 60s"
+      },
+      {
+        "name": "Bitget USDT Futures v2 REST",
+        "base_url": "https://api.bitget.com",
+        "auth": "none (public market data only)",
+        "endpoints_used": ["/api/v2/mix/market/tickers", "/api/v2/mix/market/candles"],
+        "rate_limit_header": "X-RateLimit-Remaining",
+        "budget": "~600 / 60s (conservative)"
+      }
+    ]
+  },
+  "architecture_pattern": {
+    "style": "Layered: UI (PyQt) ⇄ Qt signal bus ⇄ Engine (single asyncio loop) ⇄ Data layer (async REST + rate limiter + SQLite store) + pure-function strategies & trade-state machine",
+    "decisions": [
+      {
+        "id": "AD-1",
+        "title": "Single asyncio loop on one background thread",
+        "rationale": "Replaces the legacy 3-thread / 3-asyncio.run / blocking-requests model. One thread is enough for our throughput; cooperative cancellation via asyncio.Event is simpler than threading.Event coordination.",
+        "evidence": "src/core/engine.py:_ensure_loop; live monitors + backtester run as tasks on the same loop"
+      },
+      {
+        "id": "AD-2",
+        "title": "Pure trade-state machine shared by live + backtest",
+        "rationale": "Live update_trade_pnl and all backtest simulators run through the same step(trade, bar, params) function. Live/backtest divergence is now structurally impossible.",
+        "evidence": "src/core/trade_state.py; tests/test_trade_state.py (15 golden tests); tests/test_strategies.py (registry path == legacy shim, byte-identical)"
+      },
+      {
+        "id": "AD-3",
+        "title": "Pluggable Strategy registry",
+        "rationale": "Strategy ABC with self-registering subclasses. Adding a strategy = one new file in strategies_pkg/, zero edits to engine or UI.",
+        "evidence": "src/core/strategy_base.py STRATEGIES dict; src/core/strategies_pkg/*.py; tests/test_strategy_registry.py:test_user_can_register_a_new_strategy_without_touching_engine"
+      },
+      {
+        "id": "AD-4",
+        "title": "SQLite-backed lifetime trade history with CSV mirror",
+        "rationale": "WAL mode for safe concurrent reads. Idempotent on (symbol, exchange, open_time) so a retried close cannot double-count. CSV mirror preserved so rolling back to <0.2.0 doesn't lose data.",
+        "evidence": "src/data/trade_store.py; tests/test_trade_store.py:test_record_close_is_idempotent_on_same_open_time"
+      },
+      {
+        "id": "AD-5",
+        "title": "Header-driven rate limiter, not a fixed throttle",
+        "rationale": "Both exchanges publish remaining budget in response headers. Reading them lets us slow down BEFORE we get 429s. Far cheaper than recovering from an IP ban.",
+        "evidence": "src/data/rate_limit.py; module-level LIMITERS keyed by exchange"
+      },
+      {
+        "id": "AD-6",
+        "title": "Open-trade state typed; closed-trade records stay dicts",
+        "rationale": "Open trades are read frequently by the engine — attribute access on a Trade dataclass means typos fail at edit time. Closed trades are the persistence boundary (SQLite rows, CSV mirror, Qt signal payloads); keeping them as dicts means the wire format is stable.",
+        "evidence": "engine.binance_open_trades: dict[str, Trade]; close_trade writes dict to trade_store"
+      },
+      {
+        "id": "AD-7",
+        "title": "Crypto 24/7/365 calendar for metric annualisation",
+        "rationale": "The legacy code used 252 trading days (equity markets). Crypto never closes; using 365 (or 24*365, etc.) is honest. One Sharpe method, one resampled equity curve.",
+        "evidence": "src/core/utils.py:PERIODICITY_TO_PERIODS_PER_YEAR; tests/test_metrics.py:test_periods_per_year_table_uses_crypto_calendar"
+      },
+      {
+        "id": "AD-8",
+        "title": "Versioning via single __version__ + CHANGELOG-gated bumps",
+        "rationale": "src/__init__.py.__version__ is the only place the number lives. test_version.py fails if you bump without writing a matching CHANGELOG section, so the bump is always intentional and documented.",
+        "evidence": "src/__init__.py; CHANGELOG.md; tests/test_version.py"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "entry.main",
+      "path": "main.py",
+      "loc": 37,
+      "role": "Application entry point",
+      "responsibilities": [
+        "Set Windows asyncio event-loop policy",
+        "Configure logging.basicConfig so module-level loggers surface to the terminal",
+        "Set QApplication name + version (used by OS dock / About dialog)",
+        "Wire engine.signals.beep_signal -> QApplication.beep",
+        "Instantiate SpikeWatchApp and run the Qt loop"
+      ],
+      "depends_on": ["src", "ui.main_window"],
+      "exported_symbols": ["main"]
+    },
+    {
+      "id": "src.__init__",
+      "path": "src/__init__.py",
+      "loc": 19,
+      "role": "Package init; single source of truth for app version",
+      "exported_symbols": ["__version__"]
+    },
+    {
+      "id": "ui.main_window",
+      "path": "src/ui/main_window.py",
+      "loc": 609,
+      "role": "Top-level Qt window — owns the engine, all widgets, and the status bar",
+      "responsibilities": [
+        "Compose the grid (logs, open trades, closed trades, backtest controls)",
+        "Persist + restore inputs via QSettings (threshold, TP/SL, EMA params, MR params, timeframe, last strategy, window geometry)",
+        "Surface engine sweep telemetry in a colour-coded status bar (red <80%, amber <95%, green ≥95%)",
+        "Render closed-trades panel from the engine's preloaded lifetime history (SQLite)",
+        "Handle backtest completion: format MetricsResult, enable chart buttons",
+        "closeEvent persists settings and shuts the engine's asyncio loop cleanly"
+      ],
+      "depends_on": ["core.engine", "core.utils", "ui.widgets", "ui.charts", "data.exchange_api"]
+    },
+    {
+      "id": "ui.widgets",
+      "path": "src/ui/widgets.py",
+      "loc": 68,
+      "role": "TradeItemWidget — one open-trade row with live PnL + close button",
+      "depends_on": []
+    },
+    {
+      "id": "ui.charts",
+      "path": "src/ui/charts.py",
+      "loc": 82,
+      "role": "Standalone chart windows (pyqtgraph)",
+      "responsibilities": [
+        "PriceChartWindow: close-price line + entry/exit markers",
+        "EquityCurveChartWindow: cumulative capital over time"
+      ]
+    },
+    {
+      "id": "core.engine",
+      "path": "src/core/engine.py",
+      "loc": 441,
+      "role": "Trading engine — orchestrates live monitoring, trade management, backtest execution",
+      "responsibilities": [
+        "Lazily start one background daemon thread with one asyncio loop",
+        "Live monitors run as cooperative asyncio tasks (NOT separate threads)",
+        "Each monitor owns one aiohttp.ClientSession (TCP/TLS reuse across cycles)",
+        "Per-cycle: fan out fetch_prices_batch with Semaphore(20); on signal -> open_trade; on every result -> update_trade_pnl through trade_state.step",
+        "Emit sweep_telemetry_signal per cycle for the status bar",
+        "Backtest runs as a third task on the same loop; pagination delegated to data.exchange_api",
+        "Holds open trades as dict[str, Trade] (dataclass); closed trades persisted via trade_store"
+      ],
+      "depends_on": ["core.signals", "core.strategies_pkg (auto-register)", "core.strategy_base", "core.trade_state", "core.utils", "data.exchange_api", "data.trade_store"]
+    },
+    {
+      "id": "core.signals",
+      "path": "src/core/signals.py",
+      "loc": 38,
+      "role": "Qt signal bus connecting engine -> UI",
+      "signals": [
+        "binance_log_signal(str)",
+        "bitget_log_signal(str)",
+        "binance_trade_status_signal(dict)",
+        "bitget_trade_status_signal(dict)",
+        "closed_trade_display_signal()",
+        "backtest_log_signal(str)",
+        "backtest_finished_signal(tuple)",
+        "beep_signal()",
+        "sweep_telemetry_signal(dict)"
+      ]
+    },
+    {
+      "id": "core.trade_state",
+      "path": "src/core/trade_state.py",
+      "loc": 291,
+      "role": "Pure TP/SL/trailing-SL state machine — single source of truth shared by live engine and backtest simulators",
+      "responsibilities": [
+        "Trade @dataclass: symbol, direction, prices, trailing state",
+        "Bar @dataclass with from_candle / from_tick constructors",
+        "StepParams: tp_pct, sl_pct, trailing_sl_pct, activation_pct",
+        "step(trade, bar, params) -> StepResult: applies one observation, returns updated trade + maybe closure",
+        "open_trade(...) creates Trade with TP/SL derived from StepParams",
+        "force_close(trade, price, reason) for manual / end-of-backtest closures"
+      ],
+      "depends_on": [],
+      "constants": {
+        "TRAILING_SL_ACTIVATION_PCT": 0.5
+      },
+      "pinned_invariants": [
+        "TP wins over SL within one candle",
+        "Trailing SL ratchets only in the favourable direction",
+        "Activation can fire the new trailing SL on the SAME bar (legacy convention)"
+      ]
+    },
+    {
+      "id": "core.strategy_base",
+      "path": "src/core/strategy_base.py",
+      "loc": 255,
+      "role": "Pluggable strategy framework + backtest driver",
+      "responsibilities": [
+        "Strategy ABC with NAME, PARAMS (list[ParamSpec]), signal(i, bars), exit_signal(...)",
+        "ParamSpec: name, label, default, kind (int/float/str), help text",
+        "@register decorator + STRATEGIES global dict",
+        "run_backtest(name, raw_params, symbol, klines, ...) drives the unified state machine"
+      ]
+    },
+    {
+      "id": "core.strategies_pkg",
+      "path": "src/core/strategies_pkg/",
+      "loc": 160,
+      "role": "Built-in strategies, one per file (auto-registered on import)",
+      "modules": [
+        {"path": "strategies_pkg/spike_detection.py", "loc": 33, "name": "Spike Detection"},
+        {"path": "strategies_pkg/ema_crossover.py", "loc": 63, "name": "EMA Crossover", "exit": "reverse_signal"},
+        {"path": "strategies_pkg/mean_reversion.py", "loc": 55, "name": "Simple Mean Reversion", "exit": "mean_reversion_exit"}
+      ]
+    },
+    {
+      "id": "core.strategies",
+      "path": "src/core/strategies.py",
+      "loc": 58,
+      "role": "Backwards-compat shim — simulate_*_trades(...) delegates to run_backtest",
+      "notes": "Kept so any external callers of v0.1.0 still work. Tests pin byte-identical output vs the registry path."
+    },
+    {
+      "id": "core.utils",
+      "path": "src/core/utils.py",
+      "loc": 296,
+      "role": "Backtest performance metrics + equity curve",
+      "responsibilities": [
+        "calculate_equity_curve(klines, trades, initial_capital) -> (times, values)",
+        "calculate_advanced_metrics(...) -> MetricsResult (Sharpe, Sortino, Calmar, max DD, profit factor, win rate, annualised return)",
+        "Single Sharpe method: log returns of resampled equity curve, annualized with crypto 24/7/365 calendar",
+        "Auto-picks periodicity from median sample interval"
+      ]
+    },
+    {
+      "id": "data.exchange_api",
+      "path": "src/data/exchange_api.py",
+      "loc": 289,
+      "role": "Async REST clients for Binance + Bitget public market data",
+      "responsibilities": [
+        "fetch_klines(session, exchange, ...) — normalises Bitget's newest-first string payloads to Binance's ascending numeric shape",
+        "fetch_prices_batch(...) — fans out a batch with Semaphore(20); records every response to the rate limiter; awaits limiter.pause_if_needed before/after",
+        "paginate_historical_klines — Binance forward (startTime), Bitget backward (endTime); returns chronological list",
+        "Single source of truth for BITGET_TIMEFRAME_MAP",
+        "Sync startup helpers (get_*_symbols_sync) kept for the UI's blocking startup path"
+      ]
+    },
+    {
+      "id": "data.rate_limit",
+      "path": "src/data/rate_limit.py",
+      "loc": 184,
+      "role": "Header-driven rate limiter (one per exchange)",
+      "responsibilities": [
+        "LimitConfig per exchange (header name, budget, window, soft/hard thresholds)",
+        "RateLimiter.record_response(headers, status_code) — Binance 'used so far' direct; Bitget 'remaining' inverted",
+        "RateLimiter.pause_if_needed() — short pause at >=80%, full-window pause at >=95%",
+        "Exponential 429 backoff (2^streak, capped 30s); reset on next 2xx",
+        "Module-level LIMITERS dict so one limiter is shared per exchange across the session"
+      ]
+    },
+    {
+      "id": "data.trade_store",
+      "path": "src/data/trade_store.py",
+      "loc": 318,
+      "role": "SQLite-backed trade history with CSV mirror",
+      "responsibilities": [
+        "Schema: id, symbol, direction, exchange, open_time, close_time, open_price, close_price, pnl_percent, close_reason; UNIQUE(symbol, exchange, open_time)",
+        "WAL journal mode; one connection per thread via threading.local",
+        "record_close(trade) — idempotent on the UNIQUE key",
+        "recent(limit) / filtered(symbol/exchange/close_reason/since/until/order/limit) / count()",
+        "ORDER BY whitelist defends against injection",
+        "import_csv() one-shot migration from legacy demo_trade_results.csv",
+        "dual_write_csv=True mirrors every insert (rollback safety)"
+      ]
+    }
+  ],
+  "dependencies_graph": {
+    "edges": [
+      { "from": "entry.main",         "to": "src.__init__",         "type": "imports" },
+      { "from": "entry.main",         "to": "ui.main_window",       "type": "imports" },
+      { "from": "ui.main_window",     "to": "src.__init__",         "type": "imports __version__" },
+      { "from": "ui.main_window",     "to": "core.engine",          "type": "owns_instance" },
+      { "from": "ui.main_window",     "to": "core.utils",           "type": "imports" },
+      { "from": "ui.main_window",     "to": "ui.widgets",           "type": "imports" },
+      { "from": "ui.main_window",     "to": "ui.charts",            "type": "imports" },
+      { "from": "ui.main_window",     "to": "data.exchange_api",    "type": "imports (sync startup)" },
+      { "from": "core.engine",        "to": "core.signals",         "type": "owns_instance" },
+      { "from": "core.engine",        "to": "core.strategy_base",   "type": "imports" },
+      { "from": "core.engine",        "to": "core.strategies_pkg",  "type": "imports (auto-register)" },
+      { "from": "core.engine",        "to": "core.trade_state",     "type": "imports" },
+      { "from": "core.engine",        "to": "core.utils",           "type": "imports" },
+      { "from": "core.engine",        "to": "data.exchange_api",    "type": "imports" },
+      { "from": "core.engine",        "to": "data.trade_store",     "type": "owns_instance" },
+      { "from": "core.strategy_base", "to": "core.trade_state",     "type": "imports" },
+      { "from": "core.strategies_pkg","to": "core.strategy_base",   "type": "imports (registers)" },
+      { "from": "data.exchange_api",  "to": "data.rate_limit",      "type": "imports" },
+      { "from": "core.signals",       "to": "ui.main_window",       "type": "emits_to (Qt signal/slot)" }
+    ]
+  },
+  "data_flows": [
+    {
+      "id": "flow.live_monitoring",
+      "name": "Live spike monitoring & paper-trade execution",
+      "trigger": "User clicks Start Monitoring with threshold/timeframe/TP/SL/trailing-SL",
+      "steps": [
+        "main_window.start_monitoring() -> engine.start_monitoring()",
+        "engine._ensure_loop() lazily spins up the background asyncio thread",
+        "Two _monitor(exchange, ...) tasks scheduled on the loop",
+        "Each task opens one aiohttp.ClientSession reused across cycles",
+        "Per cycle: fetch_prices_batch fans out with Semaphore(20); rate_limit.pause_if_needed wraps the batch",
+        "For each symbol w/ data: if currently open -> update_trade_pnl through trade_state.step; if pct >= threshold -> open_trade",
+        "Closures go through close_trade -> trade_store.record_close (SQLite + CSV mirror)",
+        "Per cycle: sweep_telemetry_signal emitted with {exchange, cycle, symbols_ok, symbols_seen, elapsed_s}",
+        "UI slots run on the Qt main thread; status bar reflects telemetry colour-coded"
+      ],
+      "data_in": "Binance/Bitget kline arrays via aiohttp",
+      "data_out": "trades table rows + UI list updates + status bar"
+    },
+    {
+      "id": "flow.backtest",
+      "name": "Historical backtest of a registered strategy",
+      "trigger": "User picks symbol/exchange/strategy/date-range and clicks Run Backtest",
+      "steps": [
+        "engine.run_backtest schedules _execute_backtest on the same asyncio loop",
+        "paginate_historical_klines streams pages from the exchange (Binance forward, Bitget backward)",
+        "strategy_base.run_backtest(name, params, ...) walks bars; signal() opens trades; trade_state.step handles TP/SL/trailing; exit_signal() handles strategy-driven exits",
+        "core.utils.calculate_equity_curve compounds PnL across the kline timeline",
+        "backtest_finished_signal((klines, results, symbol, exchange, equity)) emitted",
+        "UI computes MetricsResult, logs Sharpe / Sortino / Calmar / drawdown / profit factor / annualised return",
+        "Price Chart + Equity Chart buttons enabled"
+      ]
+    },
+    {
+      "id": "flow.startup_history_load",
+      "name": "Lifetime trade history available immediately on launch",
+      "trigger": "App startup",
+      "steps": [
+        "TradeStore.__init__: opens SQLite (creates schema if missing), then runs import_csv() to absorb any legacy demo_trade_results.csv rows",
+        "engine.all_closed_trades = trade_store.recent(limit=2000)",
+        "main_window.refresh_closed_trades_display renders the panel"
+      ]
+    }
+  ],
+  "concurrency_model": {
+    "description": "One background daemon thread runs one asyncio event loop. Was: three daemon threads each calling asyncio.run() with blocking requests.",
+    "threads": [
+      { "name": "Qt main",            "duty": "UI events, slot execution, widget updates" },
+      { "name": "SpikeWatch-asyncio", "daemon": true, "duty": "Hosts the single asyncio loop running monitor + backtest tasks" }
+    ],
+    "tasks_on_loop": [
+      "_monitor('binance', ...)",
+      "_monitor('bitget', ...)",
+      "_execute_backtest(...)"
+    ],
+    "synchronization": [
+      "asyncio.Event (stop_event) signalled from Qt via loop.call_soon_threadsafe",
+      "asyncio.Semaphore(20) caps in-flight fetches per exchange",
+      "RateLimiter (per exchange) gates additional requests via pause_if_needed",
+      "TradeStore: one sqlite3 connection per thread via threading.local; WAL journal mode supports concurrent reads"
+    ]
+  },
+  "tests": [
+    { "path": "tests/test_trade_state.py",          "count": 15, "covers": "Pure step() machine: TP/SL precedence, trailing activation, ratchet, force_close, live-tick mode" },
+    { "path": "tests/test_strategies.py",           "count":  6, "covers": "Each built-in simulator end-to-end on synthetic klines" },
+    { "path": "tests/test_strategy_registry.py",    "count":  9, "covers": "Registry, ParamSpec casts, legacy-shim byte-identical equivalence, user-defined Strategy" },
+    { "path": "tests/test_exchange_api.py",         "count": 10, "covers": "Async client behaviour against a FakeSession: Binance/Bitget normalisation, batch pct/current, pagination" },
+    { "path": "tests/test_rate_limit.py",           "count": 14, "covers": "Header parsing, soft/hard thresholds, 429 backoff + reset, rolling window" },
+    { "path": "tests/test_trade_store.py",          "count": 14, "covers": "Round-trip, idempotency, filters, ORDER BY whitelist, CSV mirror, legacy import" },
+    { "path": "tests/test_metrics.py",              "count": 19, "covers": "Equity curve compounding, hand-computed drawdown, Sharpe/Sortino/Calmar properties, crypto calendar" },
+    { "path": "tests/test_engine_typed_trades.py",  "count":  6, "covers": "Engine open-trades hold Trade dataclass; open/update/close round-trip (PyQt5 only)" },
+    { "path": "tests/test_signals.py",              "count":  2, "covers": "SignalEmitter declares expected signals; telemetry payload shape (PyQt5 only)" },
+    { "path": "tests/test_version.py",              "count":  2, "covers": "SemVer format + CHANGELOG entry exists for current version" }
+  ],
+  "data_stores": [
+    {
+      "name": "trade_history.db",
+      "kind": "sqlite",
+      "tables": ["trades (PK id, UNIQUE on symbol+exchange+open_time)"],
+      "writers": ["core.engine.close_trade via TradeStore.record_close"],
+      "readers": ["engine startup (TradeStore.recent); UI filters (TradeStore.filtered)"]
+    },
+    {
+      "name": "demo_trade_results.csv",
+      "kind": "file",
+      "format": "CSV",
+      "writers": ["TradeStore.record_close (mirror)"],
+      "readers": ["TradeStore.import_csv on app startup, once"]
+    }
+  ],
+  "constraints": [
+    "PyQt5 only — bumping to PyQt6 will need signal/slot syntax + QDate API updates.",
+    "Public endpoints only. The product is a paper-trading simulator; no authenticated order endpoints without a secrets layer + explicit user confirmation.",
+    "trade_state behaviours pinned by tests/test_trade_state.py — TP-vs-SL precedence and trailing ratchet are intentional and shared across live + backtest.",
+    "trade_store schema is UNIQUE on (symbol, exchange, open_time). Any future re-entry on the same minute will be silently deduped.",
+    "BITGET_TIMEFRAME_MAP is the single source of truth — adding a timeframe means adding to that one constant.",
+    "test_version.py forces a CHANGELOG entry for any version bump."
+  ],
+  "removed_in_0_2_0": [
+    "SpikeWatch.py monolith (moved to legacy/)",
+    "Engine's _init_trade_history_file + inline csv writes (TradeStore owns the file)",
+    "Engine's _trade_to_dict / _dict_to_trade adapters (open-trades are now typed)",
+    "Duplicated Bitget timeframe map (was in engine + exchange_api)",
+    "Inline backtest pagination in engine.execute_backtest (now in data.exchange_api.paginate_historical_klines)",
+    "Three independent simulate_*_trades implementations (collapsed to one driver + 3 strategy classes)",
+    "Engine's three-thread / three-asyncio.run model"
+  ],
+  "outstanding_followups": [
+    {
+      "id": "FU-1",
+      "severity": "low",
+      "title": "ExchangeClient Protocol full subclasses",
+      "where": "data/exchange_api.py",
+      "note": "Data layer is exchange-agnostic at call sites now, but a full Protocol-and-subclass split was deferred. Worth doing when a third exchange arrives."
+    },
+    {
+      "id": "FU-2",
+      "severity": "low",
+      "title": "Async startup symbol fetch",
+      "where": "ui/main_window._fetch_all_symbols_at_startup",
+      "note": "Still uses the sync requests-based path, which briefly blocks the UI thread on launch. A splash screen or one-shot asyncio.to_thread would smooth this out."
+    },
+    {
+      "id": "FU-3",
+      "severity": "low",
+      "title": "DB schema migrations",
+      "where": "data/trade_store.py",
+      "note": "Today's CREATE TABLE IF NOT EXISTS is fine for additive changes (new column with default) but doesn't handle removed/renamed columns. Add a versions table + applied migrations list before the first column drop."
+    }
+  ],
+  "agent_hints": {
+    "good_starting_points_for_changes": [
+      "Add a strategy: write src/core/strategies_pkg/<name>.py with a Strategy subclass + @register; import it from strategies_pkg/__init__.py. Zero edits to engine or UI.",
+      "Add a column to the trade history: ALTER TABLE in TradeStore._SCHEMA (additive only), update record_close + _row_to_dict, document in CHANGELOG, bump MINOR.",
+      "Add a metric: extend MetricsResult and calculate_advanced_metrics; add a golden test in tests/test_metrics.py; surface in main_window._handle_backtest_completion."
+    ],
+    "do_not_touch_without_care": [
+      "trade_state.step's TP-before-SL precedence — every simulator and the live engine rely on it; changing it invalidates all historical backtests.",
+      "TradeStore's UNIQUE(symbol, exchange, open_time) — relied on for idempotency.",
+      "paginate_historical_klines direction asymmetry (Binance forward, Bitget backward) — the reassembly logic is order-sensitive.",
+      "SignalEmitter signatures — UI slots depend on argument shapes; test_signals.py pins them."
+    ],
+    "where_versioning_lives": "src/__init__.py.__version__ is the single source of truth; CHANGELOG.md must have a matching ## [x.y.z] entry or test_version.py fails."
+  }
+}

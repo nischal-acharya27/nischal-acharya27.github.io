@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Privacy — SpikeWatch</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root { --bg:#0b1020; --txt:#e6ecff; --muted:#8da0c8; --line:rgba(255,255,255,0.12); }
+  html,body{background:radial-gradient(1200px 800px at 20% -10%,#1b254e 0%,var(--bg) 55%) fixed,var(--bg);color:var(--txt);}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;}
+  .glass{background:rgba(255,255,255,0.04);border:1px solid var(--line);}
+  a.nav{color:#7dd3fc;}
+  h2{font-weight:600;margin-top:1.5rem;color:#cfe2ff;}
+</style>
+</head>
+<body class="min-h-screen px-6 py-10">
+<main class="max-w-3xl mx-auto">
+  <a href="../index.html" class="nav text-sm">← Back to SpikeWatch</a>
+  <h1 class="mt-6 text-3xl font-semibold">Privacy policy</h1>
+  <p class="mt-2 text-sm text-slate-400">Last updated: 2026-05-23 · Draft for review</p>
+
+  <div class="mt-8 glass rounded-2xl p-7 space-y-4 text-slate-300 leading-relaxed text-sm">
+
+    <h2>The short version</h2>
+    <p>SpikeWatch is a desktop application. <strong>Your trade history, API keys, and
+    backtest data stay on your computer.</strong> We do not transmit your strategy code,
+    your trades, or your exchange credentials to any server we operate.</p>
+
+    <h2>What stays on your computer</h2>
+    <p>Configured strategy parameters, your exchange API keys, the SQLite trade history
+    database (<span class="font-mono">trade_history.db</span>), exported backtest JSONs,
+    application logs, and your last-used window position and field values
+    (Qt <span class="font-mono">QSettings</span>).</p>
+
+    <h2>What we collect on this website</h2>
+    <p>If you visit our website we collect anonymous, aggregated visit counts via a
+    privacy-respecting analytics provider (no cookies, no fingerprinting). When you create
+    a paid account we collect the email address you sign up with and, if you subscribe, the
+    payment-processor token that lets us bill you.</p>
+
+    <h2>What our payment processor sees</h2>
+    <p>Payments are processed by a third-party PCI-compliant processor. We never see or
+    store your card details — only a token that lets us charge you for the subscription
+    you signed up for.</p>
+
+    <h2>Third-party APIs the desktop app talks to</h2>
+    <p>By default the application connects directly to public market-data endpoints at
+    Binance (fapi.binance.com) and Bitget (api.bitget.com). When you enable live automation,
+    the application uses the API keys you supplied to connect to your account at those
+    same exchanges. Those exchanges have their own privacy policies.</p>
+
+    <h2>Crash reports &amp; telemetry</h2>
+    <p>The desktop app does not send crash reports or telemetry to us by default. If we
+    ever add opt-in error reporting, it will be off by default and clearly labelled.</p>
+
+    <h2>Your data, your control</h2>
+    <p>You can delete the application and everything it stored by removing the SpikeWatch
+    folder from your home directory and (on Windows / macOS) the QSettings file maintained
+    by the operating system. We have no copy.</p>
+
+    <h2>Contact</h2>
+    <p>Privacy questions: <span class="font-mono">privacy@spikewatch.app</span>.</p>
+  </div>
+
+  <p class="text-xs text-slate-500 mt-8 text-center">
+    This is a draft template intended for legal review before public release.
+  </p>
+</main>
+</body>
+</html>
