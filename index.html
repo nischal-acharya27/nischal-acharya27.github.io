@@ -40,6 +40,7 @@
             --emerald: #34d399;
             --amber: #fbbf24;
             --lilac: #b7a5ff;
+            --navy: #6f8fff;
             --paper: #ece9e0;
             --radius: 16px;
             --ease: cubic-bezier(.16, 1, .3, 1);
@@ -180,14 +181,14 @@
             width: 30px;
             height: 30px;
             border-radius: 9px;
-            background: conic-gradient(from 140deg, var(--emerald), var(--lilac), var(--amber), var(--emerald));
+            background: linear-gradient(150deg, #1e3a8a, #3b5bd6);
             display: grid;
             place-items: center;
             font-family: 'Fraunces', serif;
             font-size: .95rem;
             font-weight: 600;
-            color: #0a0a0c;
-            box-shadow: 0 6px 20px -8px var(--emerald);
+            color: #eef2ff;
+            box-shadow: 0 6px 20px -8px #3b5bd6;
         }
 
         nav ul {
@@ -283,8 +284,8 @@
         }
 
         .sec-title em {
-            font-style: italic;
-            color: var(--emerald);
+            font-style: normal;
+            color: inherit;
         }
 
         .rule {
@@ -341,23 +342,25 @@
 
         .hero h1 {
             font-family: 'Fraunces', serif;
-            font-weight: 350;
+            font-weight: 400;
             font-size: clamp(3rem, 9vw, 7rem);
             line-height: .98;
-            letter-spacing: -.035em;
+            letter-spacing: -.02em;
             margin-bottom: 1.8rem;
         }
 
         .hero h1 .it {
-            font-style: italic;
+            font-style: normal;
             font-weight: 400;
         }
 
         .hero h1 .accent {
-            background: linear-gradient(100deg, var(--emerald), var(--lilac) 55%, var(--amber));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--navy);
+        }
+
+        .accent {
+            color: var(--navy);
+            font-style: normal;
         }
 
         .hero-body {
@@ -914,8 +917,8 @@
         }
 
         .contact-card h2 em {
-            font-style: italic;
-            color: var(--emerald);
+            font-style: normal;
+            color: var(--navy);
         }
 
         .contact-card p {
@@ -1082,7 +1085,7 @@
                     </div>
                     <div class="hero-cta">
                         <a href="#work" class="btn btn-primary magnetic">View my work →</a>
-                        <a href="Nischal_Acharya_CV.pdf" download class="btn btn-ghost magnetic">↓ Download CV</a>
+                        <a href="mailto:acharya.nischal3270@gmail.com?subject=Let%27s%20connect&body=Hola%20Nischal%2C%0A%0AI%20came%20across%20your%20work%20and%20I%27d%20love%20to%20connect.%20Could%20you%20share%20your%20CV%20and%20a%20good%20time%20to%20talk%3F%0A%0AThanks%21" class="btn btn-ghost magnetic">✉ Request my CV</a>
                     </div>
                 </div>
             </div>
@@ -1270,7 +1273,7 @@
                     <div class="spotlight"></div>
                     <div class="pj-top"><span class="pj-icon">🔭</span></div>
                     <h3>miniJPAS Faint X-ray AGN Pipeline</h3>
-                    <p>End-to-end Bayesian inference pipeline filtering 100k+ sources into a high-quality scientific
+                    <p>End-to-end Bayesian inference pipeline filtering 64k+ sources into a high-quality scientific
                         sample. First-author publication in <em>Astronomy &amp; Astrophysics</em>.</p>
                     <div class="tags"><span class="tag">Bayesian</span><span class="tag">Python</span><span
                             class="tag">MCMC</span></div>
@@ -1279,8 +1282,8 @@
                     <div class="spotlight"></div>
                     <div class="pj-top"><span class="pj-icon">🧩</span></div>
                     <h3>CIGALE: Open-Source Module</h3>
-                    <p>Co-developed and released a reusable module for probabilistic SED modelling, with version
-                        control, code review, and packaging best practices.</p>
+                    <p>Co-authored a paper introducing a reusable module for probabilistic SED modelling, contributing
+                        to its development, code review, and packaging best practices.</p>
                     <div class="tags"><span class="tag">Open Source</span><span class="tag">Python</span><span
                             class="tag">Packaging</span></div>
                 </article>
@@ -1307,7 +1310,7 @@
                 <a class="pub" href="https://orcid.org/0000-0001-9738-3594" target="_blank" rel="noopener">
                     <span class="venue">A&amp;A</span>
                     <span>
-                        <span class="ptitle">Faint X-ray AGN selection across 100k+ miniJPAS sources via Bayesian
+                        <span class="ptitle">Faint X-ray AGN selection across 64k+ miniJPAS sources via Bayesian
                             inference</span>
                         <span class="pmeta">First author · Astronomy &amp; Astrophysics</span>
                     </span>
@@ -1369,7 +1372,7 @@
         <!-- CONTACT -->
         <section class="shell" id="contact">
             <div class="contact-card reveal">
-                <h2>Let's build something<br>with your <em>data</em>.</h2>
+                <h2>Let's build something<br>with your <em class="accent">data</em>.</h2>
                 <p>The fastest way to reach me is email. I reply quickly.</p>
                 <div class="socials">
                     <a class="social" href="mailto:nischal.acharya02@gmail.com">✉ Email</a>
@@ -1381,7 +1384,7 @@
                         rel="noopener">Instagram</a>
                     <a class="social" href="https://orcid.org/0000-0001-9738-3594" target="_blank"
                         rel="noopener">ORCID</a>
-                    <a class="social" href="Nischal_Acharya_CV.pdf" download>↓ CV (PDF)</a>
+                    <a class="social" href="mailto:acharya.nischal3270@gmail.com?subject=Let%27s%20connect&body=Hola%20Nischal%2C%0A%0AI%20came%20across%20your%20work%20and%20I%27d%20love%20to%20connect.%20Could%20you%20share%20your%20CV%20and%20a%20good%20time%20to%20talk%3F%0A%0AThanks%21">✉ Request CV</a>
                 </div>
             </div>
         </section>
