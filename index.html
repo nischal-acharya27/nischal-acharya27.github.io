@@ -505,6 +505,13 @@
             margin-top: .5rem;
         }
 
+        .stat .lab-sub {
+            font-size: .68rem;
+            color: var(--ink-3);
+            opacity: .75;
+            margin-top: .15rem;
+        }
+
         @media (max-width: 640px) {
             .stats-row {
                 grid-template-columns: repeat(2, 1fr);
@@ -594,6 +601,19 @@
             border-color: var(--emerald);
             color: var(--emerald);
             transform: translateY(-3px);
+        }
+
+        .chip.ghost {
+            background: transparent;
+            border-style: dashed;
+            color: var(--ink-2);
+        }
+
+        .grp-note {
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--ink-3);
+            font-weight: 400;
         }
 
         /* ---------- Experience ---------- */
@@ -884,6 +904,59 @@
         }
 
         /* ---------- Contact ---------- */
+        /* ---------- Other services (understated) ---------- */
+        .services {
+            border-top: 1px solid var(--line-soft);
+            padding-top: 2.6rem;
+            margin-top: 1rem;
+        }
+
+        .services .svc-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--ink-3);
+            margin-bottom: 1.4rem;
+        }
+
+        .svc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.6rem;
+        }
+
+        @media (max-width: 720px) {
+            .svc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .svc {
+            font-size: .92rem;
+            color: var(--ink-3);
+            line-height: 1.6;
+        }
+
+        .svc h5 {
+            font-family: 'Fraunces', serif;
+            font-weight: 400;
+            font-size: 1.05rem;
+            color: var(--ink-2);
+            margin-bottom: .35rem;
+        }
+
+        .svc a {
+            color: var(--ink-2);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: var(--line);
+        }
+
+        .svc a:hover {
+            color: var(--navy);
+        }
+
         .contact-card {
             border: 1px solid var(--line);
             border-radius: 28px;
@@ -1105,6 +1178,7 @@
                 <div class="stat">
                     <div class="num"><span data-count="4">0</span></div>
                     <div class="lab">Languages spoken</div>
+                    <div class="lab-sub">English, Spanish, German A1</div>
                 </div>
             </div>
         </header>
@@ -1120,13 +1194,18 @@
                 <div class="about-text reveal">
                     <p class="drop">I'm a <strong>PhD-trained data scientist</strong> based in Madrid, and a
                         former <strong>Marie-Curie Fellow</strong>. My doctoral work pushed Bayesian modelling and
-                        statistical inference across terabyte-scale survey data, the same rigour I now bring to
-                        industry problems.</p>
+                        statistical inference across terabyte-scale survey data on high-performance computing clusters,
+                        the same rigour, and distributed-computing instincts, I now bring to industry problems. That
+                        cluster experience transfers directly to <strong>Spark, Databricks, and Azure</strong>.</p>
                     <p>Most recently I built a <strong>production algorithmic-trading stack</strong> as a quantitative
                         developer: back-testing engines, multi-exchange data feeds, strategy back-testing, and
                         risk-management analytics across crypto and equities.</p>
+                    <p>That same statistical foundation makes me well equipped for <strong>product and business
+                        analytics</strong>: designing A/B tests and experiments, defining KPIs, building dashboards, and
+                        modelling churn and fraud, work I'm especially keen to bring to <strong>fintech</strong>,
+                        <strong>consulting</strong>, and data-driven teams more broadly.</p>
                     <p>Whether the data is satellite imagery, financial ticks, or 100,000 multi-wavelength sources, I
-                        care about the same things: <strong>reproducibility, sound statistics, and a clear story</strong>
+                        care about the same things: reproducibility, sound statistics, and a clear story
                         that decision-makers can act on. Fluent in English and Spanish, A1 German, and currently
                         building Italian and Portuguese on Duolingo. Picking up new languages is a habit I enjoy.</p>
                 </div>
@@ -1150,13 +1229,27 @@
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>Data Eng & Cloud</h4>
+                        <h4>Product & Business Analytics</h4>
                         <div class="chips">
-                            <span class="chip">Spark / PySpark</span><span class="chip">Databricks</span><span
-                                class="chip">Azure</span><span class="chip">Pandas</span><span
-                                class="chip">NumPy</span><span class="chip">ETL</span><span class="chip">REST
-                                APIs</span><span class="chip">Docker</span><span class="chip">MLOps / CI</span><span
-                                class="chip">GenAI / Agents</span>
+                            <span class="chip">A/B Testing</span><span class="chip">Experimentation</span><span
+                                class="chip">KPIs & Metrics</span><span class="chip">Dashboards</span><span
+                                class="chip">Churn Prediction</span><span class="chip">Fraud Detection</span><span
+                                class="chip">Risk Analytics</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Data Engineering</h4>
+                        <div class="chips">
+                            <span class="chip">Pandas</span><span class="chip">NumPy</span><span
+                                class="chip">ETL</span><span class="chip">REST APIs</span><span
+                                class="chip">Docker</span><span class="chip">GenAI / Agents</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Distributed & Cloud <span class="grp-note">— transferable from HPC</span></h4>
+                        <div class="chips">
+                            <span class="chip ghost">Spark / PySpark</span><span class="chip ghost">Databricks</span><span
+                                class="chip ghost">Azure</span><span class="chip ghost">HPC / SLURM clusters</span>
                         </div>
                     </div>
                     <div class="skill-group">
@@ -1165,6 +1258,13 @@
                             <span class="chip">Power BI</span><span class="chip">QlikSense</span><span
                                 class="chip">Plotly</span><span class="chip">Tableau</span><span
                                 class="chip">Matplotlib</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Languages Spoken</h4>
+                        <div class="chips">
+                            <span class="chip">English (fluent)</span><span class="chip">Spanish (fluent)</span><span
+                                class="chip">German (A1)</span>
                         </div>
                     </div>
                 </aside>
@@ -1190,8 +1290,10 @@
                             <li>Apply classification and probabilistic models to identify rare ionisation signatures
                                 (LINER AGN); turn complex spectral data into evidence-based conclusions for international
                                 stakeholders.</li>
-                            <li>Publish in peer-reviewed journals and present to non-specialist audiences, sharpening
-                                data storytelling for technical and executive audiences alike.</li>
+                            <li>Extract fluxes from James Webb Space Telescope (JWST) data and analyse their flux ratios
+                                to separate low-luminosity AGN (LLAGN) from Seyfert populations.</li>
+                            <li>Publish in peer-reviewed journals and present to both specialist and non-specialist
+                                audiences, sharpening data storytelling for technical and executive audiences alike.</li>
                         </ul>
                     </div>
                 </div>
@@ -1203,8 +1305,6 @@
                         <ul>
                             <li>Designed and back-tested CFD trading strategies on crypto and equities, with systematic
                                 evaluation of win rate, profit factor, and drawdown.</li>
-                            <li>Built a production Python app for real-time market monitoring, multi-exchange (Binance,
-                                Bitget) data ingestion, strategy back-testing, and risk management.</li>
                             <li>Engineered the full quant stack: data-feed handlers, strategy engine, equity-curve &
                                 Sharpe analytics, and a Qt dashboard.</li>
                         </ul>
@@ -1249,7 +1349,8 @@
                     <div class="spotlight"></div>
                     <div class="pj-top"><span class="pj-icon">📈</span></div>
                     <h3>Spikewatch: Algorithmic Trading Platform</h3>
-                    <p>Multi-exchange back-testing & live-monitoring application with a strategy library, parameter
+                    <p>A production Python app for real-time market monitoring, multi-exchange (Binance, Bitget) data
+                        ingestion, strategy back-testing, and risk management, with a strategy library, parameter
                         sweeps, and Sharpe/drawdown reporting.</p>
                     <div class="tags"><span class="tag">Python</span><span class="tag">Qt</span><span
                             class="tag">WebSocket</span><span class="tag">REST</span></div>
@@ -1362,6 +1463,28 @@
                     <div class="note">Key coursework: Statistics I & II, Integral Calculus & Differential Equations,
                         Real Analysis, Advanced Algebra & Matrices, Quantum & Mathematical Physics, Classical
                         Mechanics, Electronics, and Research Methodology.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OTHER SERVICES (understated) -->
+        <section class="shell">
+            <div class="services reveal">
+                <div class="svc-label">Also available for</div>
+                <div class="svc-grid">
+                    <div class="svc">
+                        <h5>Independent consulting</h5>
+                        <p>Selective freelance and advisory work for companies of any size, large and very large
+                            included, on forecasting models, demand and risk modelling, experimentation, and KPI
+                            dashboards. <a href="mailto:acharya.nischal3270@gmail.com?subject=Consulting%20enquiry">Enquire
+                                →</a></p>
+                    </div>
+                    <div class="svc">
+                        <h5>AI-powered content for media</h5>
+                        <p>I also build automated, AI-generated content pipelines for news and media. <a
+                                href="mailto:acharya.nischal3270@gmail.com?subject=AI%20content%20enquiry">Enquire
+                                →</a></p>
+                    </div>
                 </div>
             </div>
         </section>
