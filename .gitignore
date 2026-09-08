@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# CV drafts and reference files — not part of the deployed site
+Nischal_Acharya_CV*.pdf
+Nischal_Acharya_CV*.docx
+Nischal_Acharya_CV*.png
