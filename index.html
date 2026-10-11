@@ -13,6 +13,27 @@
     <meta property="og:description"
         content="Astrophysicist (PhD) working in data science and AI engineering: 7+ years turning massive, noisy data into reliable insight, now with machine learning and LLMs.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nischal-acharya27.github.io/">
+    <meta property="og:image" content="https://nischal-acharya27.github.io/ProfilePic.jpg">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://nischal-acharya27.github.io/">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0c'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' text-anchor='middle' fill='%2334d399'%3EN%3C/text%3E%3C/svg%3E">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Nischal Acharya",
+        "honorificSuffix": "PhD",
+        "jobTitle": "Data Scientist & AI Engineer",
+        "description": "Astrophysicist (PhD) working in data science and AI engineering.",
+        "url": "https://nischal-acharya27.github.io/",
+        "image": "https://nischal-acharya27.github.io/ProfilePic.jpg",
+        "address": {"@type": "PostalAddress", "addressLocality": "Madrid", "addressCountry": "ES"},
+        "alumniOf": ["University of the Basque Country", "University of Turku"],
+        "knowsAbout": ["Machine Learning", "Large Language Models", "Generative AI", "Data Science", "Astrophysics", "Python"],
+        "sameAs": ["https://www.linkedin.com/in/nischal-acharya27/", "https://github.com/nischal-acharya27", "https://orcid.org/0000-0001-9738-3594"]
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -169,6 +190,7 @@
         }
 
         .brand {
+            white-space: nowrap;
             display: flex;
             align-items: center;
             gap: .6rem;
@@ -234,6 +256,7 @@
             text-decoration: none;
             font-size: .88rem;
             font-weight: 500;
+            white-space: nowrap;
             transition: all .25s;
         }
 
@@ -1131,6 +1154,42 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--emerald);
         }
+        /* ---------- Featured project ---------- */
+        @media (min-width: 720px) {
+            .proj.feature {
+                grid-column: span 2;
+            }
+        }
+
+        .proj.feature {
+            border-color: rgba(52, 211, 153, .35);
+        }
+
+        .proj .pj-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            color: var(--emerald);
+            border: 1px solid rgba(52, 211, 153, .35);
+            border-radius: 999px;
+            padding: .25rem .65rem;
+        }
+
+        .proj .pj-badge .live {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--emerald);
+            box-shadow: 0 0 0 4px rgba(52, 211, 153, .18);
+        }
+
+        .proj .pj-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
     </style>
 </head>
 
@@ -1154,14 +1213,14 @@
 
         <!-- HERO -->
         <header class="hero shell">
-            <span class="tagline"><span class="live"></span> Data Scientist · Madrid, Spain</span>
+            <span class="tagline"><span class="live"></span> Astrophysicist · Data Scientist · AI Engineer · Madrid</span>
             <h1>I turn <span class="it accent">data</span><br>into models, answers<br><span class="it">&amp;
                     decisions.</span></h1>
             <div class="hero-body">
-                <p class="lede">7+ years turning analysis, forecasting, and modeling into
-                    executive-ready insight, spanning financial, scientific, and geospatial domains. I own problems
-                    end-to-end: from ingestion and feature engineering to modeling, validation, and clear
-                    communication to stakeholders.</p>
+                <p class="lede">PhD astrophysicist with 7+ years turning massive, noisy datasets into reliable
+                    results, from 100,000-source sky surveys to JWST spectroscopy. Today I build
+                    <strong>machine-learning and LLM systems</strong> end to end: data pipelines, models,
+                    evaluation, and automated deployment.</p>
                 <div class="hero-side">
                     <div class="id-card">
                         <img src="ProfilePic.jpg" alt="Nischal Acharya">
@@ -1185,8 +1244,9 @@
                     <div class="lab">Sources modelled</div>
                 </div>
                 <div class="stat">
-                    <div class="num serif">End-to-end</div>
-                    <div class="lab">Data to decisions</div>
+                    <div class="num"><span data-count="6">0</span></div>
+                    <div class="lab">Peer-reviewed papers</div>
+                    <div class="lab-sub">A&amp;A and ApJ, one as first author</div>
                 </div>
                 <div class="stat">
                     <div class="num"><span data-count="4">0</span></div>
@@ -1205,75 +1265,59 @@
             </div>
             <div class="about-grid">
                 <div class="about-text reveal">
-                    <p class="drop">I am a PhD-trained data scientist based in Madrid, and a
-                        former Marie-Curie Fellow. My doctoral work pushed Bayesian modelling and
-                        statistical inference across terabyte-scale survey data on high-performance computing clusters,
-                        the same rigour, and distributed-computing instincts, I now bring to industry problems.</p>
-                    <p>Most recently I built a production algorithmic-trading stack as a quantitative
-                        developer: back-testing engines, multi-exchange data feeds, strategy back-testing, and
-                        risk-management analytics across crypto and equities.</p>
-                    <p>That same statistical foundation makes me well equipped for product and business
-                        analytics: designing A/B tests and experiments, defining KPIs, building executive
-                        dashboards, and modelling churn and fraud, connecting technical metrics to business outcomes
-                        and using AI pragmatically to accelerate analysis and insight generation.
-                        This is work I'm especially keen to bring to fintech,
-                        consulting, and data-driven teams more broadly.</p>
-                    <p>Whether the data is satellite imagery, financial ticks, or 100,000 multi-wavelength sources, I
-                        care about the same things: reproducibility, sound statistics, and a clear story
-                        that decision-makers can act on. Native Nepali speaker, fluent in English and Spanish, A1
-                        German, and currently building Italian and Portuguese on Duolingo. Picking up new languages is
-                        a habit I enjoy.</p>
+                    <p class="drop">I'm an astrophysicist based in Madrid and a former Marie Skłodowska-Curie
+                        Fellow. My research used large sky surveys and JWST spectroscopy to study active galactic
+                        nuclei: terabyte-scale data, statistical modelling, and reproducible Python pipelines
+                        running on high-performance computing clusters.</p>
+                    <p>Today I bring the same rigour to machine learning and AI engineering. I've built an
+                        autonomous AI agent that picks the news, then writes, designs, narrates and publishes a daily
+                        news page with no human in the loop; a retrieval-augmented Q&amp;A system with its own evaluation
+                        set; and ML emulators that predict the output of slow physical simulations.</p>
+                    <p>Whatever the data, whether it's satellite imagery, market ticks or 100,000 galaxies, I care
+                        about the same things: reproducibility, honest evaluation, and results that people can
+                        act on.</p>
+                    <p>Native Nepali speaker, fluent in English and Spanish, A1 German, and currently building
+                        Italian and Portuguese on Duolingo. Picking up new languages is a habit I enjoy.</p>
                 </div>
                 <aside class="skills-stack reveal">
                     <div class="skill-group">
-                        <h4>Languages & Databases</h4>
+                        <h4>AI &amp; LLMs</h4>
                         <div class="chips">
-                            <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span><span
-                                class="chip">Bash</span><span class="chip">PostgreSQL</span><span
-                                class="chip">MySQL</span>
+                            <span class="chip">LLM APIs</span><span class="chip">RAG</span><span
+                                class="chip">LangChain</span><span class="chip">Vector Databases</span><span
+                                class="chip">Prompt Engineering</span><span class="chip">Structured Outputs</span><span
+                                class="chip">AI Agents</span><span class="chip">Image, Voice &amp; Video
+                                Generation</span><span class="chip">Speech-to-Text</span>
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>ML & Statistics</h4>
+                        <h4>Machine Learning &amp; Statistics</h4>
                         <div class="chips">
-                            <span class="chip">Forecasting / Time Series</span><span class="chip">XGBoost</span><span
-                                class="chip">scikit-learn</span><span class="chip">PyTorch</span><span
-                                class="chip">Keras</span><span class="chip">Random Forest</span><span
-                                class="chip">SVM</span><span class="chip">Bayesian / MCMC</span><span
-                                class="chip">Clustering</span>
+                            <span class="chip">scikit-learn</span><span class="chip">XGBoost</span><span
+                                class="chip">PyTorch</span><span class="chip">Keras</span><span
+                                class="chip">Random Forest</span><span class="chip">Forecasting / Time Series</span><span
+                                class="chip">Clustering</span><span class="chip">Statistical Modelling</span><span
+                                class="chip">A/B Testing</span>
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>Product & Business Analytics</h4>
+                        <h4>Data Engineering &amp; Deployment</h4>
                         <div class="chips">
-                            <span class="chip">A/B Testing</span><span class="chip">Experimentation</span><span
-                                class="chip">KPIs & Metrics</span><span class="chip">Dashboards</span><span
-                                class="chip">Churn Prediction</span><span class="chip">Fraud Detection</span><span
-                                class="chip">Risk Analytics</span><span class="chip">Executive Reporting</span><span
-                                class="chip">Stakeholder Communication</span>
+                            <span class="chip">Python</span><span class="chip">SQL</span><span
+                                class="chip">PostgreSQL</span><span class="chip">pandas</span><span
+                                class="chip">NumPy</span><span class="chip">ETL Pipelines</span><span
+                                class="chip">REST APIs</span><span class="chip">Docker</span><span
+                                class="chip">Git</span><span class="chip">GitHub Actions (CI/CD)</span><span
+                                class="chip">HPC / SLURM</span><span class="chip">R</span><span
+                                class="chip">Bash</span>
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>Data Engineering</h4>
+                        <h4>Visualisation</h4>
                         <div class="chips">
-                            <span class="chip">Pandas</span><span class="chip">NumPy</span><span
-                                class="chip">ETL</span><span class="chip">REST APIs</span><span
-                                class="chip">Docker</span><span class="chip">GenAI / Agents</span>
-                        </div>
-                    </div>
-                    <div class="skill-group">
-                        <h4>Distributed & Cloud <span class="grp-note">— transferable from HPC</span></h4>
-                        <div class="chips">
-                            <span class="chip ghost">Spark / PySpark</span><span class="chip ghost">Databricks</span><span
-                                class="chip ghost">Azure</span><span class="chip ghost">HPC / SLURM clusters</span>
-                        </div>
-                    </div>
-                    <div class="skill-group">
-                        <h4>Visualisation & BI</h4>
-                        <div class="chips">
-                            <span class="chip">Power BI</span><span class="chip">QlikSense</span><span
-                                class="chip">Plotly</span><span class="chip">Tableau</span><span
-                                class="chip">Matplotlib</span>
+                            <span class="chip">Plotly</span><span class="chip">Streamlit</span><span
+                                class="chip">Matplotlib</span><span class="chip">Power BI</span><span
+                                class="chip">Tableau</span>
                         </div>
                     </div>
                     <div class="skill-group">
@@ -1295,58 +1339,85 @@
                 <span class="rule"></span>
             </div>
             <div class="xp-list">
-                <div class="xp now reveal">
-                    <div class="when">Feb 2025 - Present</div>
+                <div class="xp reveal">
+                    <div class="when">Apr 2025 - Jul 2026</div>
                     <div>
-                        <div class="role">Postdoctoral Researcher & Data Analyst</div>
-                        <div class="org">CEFCA, Teruel <span class="badge-now">Current</span></div>
+                        <div class="role">Postdoctoral Researcher</div>
+                        <div class="org">CEFCA, Teruel</div>
                         <ul>
-                            <li>Lead end-to-end analysis of multi-wavelength survey data on 100,000+ sources with
-                                reproducible Python pipelines for ingestion, cleaning, and statistical modelling.</li>
-                            <li>Apply classification and probabilistic models to identify rare ionisation signatures
-                                (LINER AGN); turn complex spectral data into evidence-based conclusions for international
-                                stakeholders.</li>
-                            <li>Extract fluxes from James Webb Space Telescope (JWST) data and analyse their flux ratios
-                                to separate low-luminosity AGN (LLAGN) from Seyfert populations.</li>
-                            <li>Publish in peer-reviewed journals and present to both specialist and non-specialist
-                                audiences, sharpening data storytelling for technical and executive audiences alike.</li>
+                            <li>Searched for low-luminosity active galactic nuclei in the J-PAS survey, working with
+                                multi-wavelength data on 100,000+ sources.</li>
+                            <li>Built reproducible Python pipelines for ingestion, cleaning, and statistical modelling
+                                of survey photometry.</li>
+                            <li>Measured emission-line fluxes from JWST observations and used their ratios to separate
+                                weakly accreting nuclei from Seyfert and star-forming populations.</li>
+                            <li>Presented results to specialist and non-specialist audiences at international
+                                meetings.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="xp reveal">
                     <div class="when">Jun 2025 - Nov 2025</div>
                     <div>
-                        <div class="role">Quantitative Developer & Researcher</div>
-                        <div class="org">QuantumScaleMunich GmbH, Munich (remote)</div>
+                        <div class="role">Quantitative Developer &amp; Researcher</div>
+                        <div class="org">QuantumScaleMunich GmbH · Freelance, remote</div>
                         <ul>
-                            <li>Designed and back-tested CFD trading strategies on crypto and equities, with systematic
-                                evaluation of win rate, profit factor, and drawdown.</li>
-                            <li>Engineered the full quant stack: data-feed handlers, strategy engine, equity-curve &
-                                Sharpe analytics, and a Qt dashboard.</li>
+                            <li>Designed and back-tested trading strategies on crypto and equities, evaluating win
+                                rate, profit factor, and drawdown across thousands of trades.</li>
+                            <li>Built the supporting Python stack: data-feed handlers, a strategy engine, and
+                                equity-curve and Sharpe analytics.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xp reveal">
+                    <div class="when">Sep 2020 - Feb 2025</div>
+                    <div>
+                        <div class="role">PhD Researcher, Astrophysics (Marie Skłodowska-Curie Fellow)</div>
+                        <div class="org">Donostia International Physics Center (DIPC), San Sebastián</div>
+                        <ul>
+                            <li>Doctoral thesis connecting AGN to the properties of their host galaxies with the
+                                miniJPAS survey, funded by the EU Horizon 2020 MSCA programme.</li>
+                            <li>Designed a probabilistic selection pipeline that filtered 64,000+ sources into a
+                                high-purity sample of faint X-ray AGN, published as first author in
+                                <em>Astronomy &amp; Astrophysics</em>.</li>
+                            <li>Image processing, model fitting, and MCMC sampling on survey-scale data; talks at
+                                conferences and institutes across Europe.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="xp reveal">
                     <div class="when">Nov 2023 - Jan 2024</div>
                     <div>
-                        <div class="role">Quantitative Data Analyst (Internship)</div>
-                        <div class="org">LMU Munich</div>
+                        <div class="role">Research Data Analyst (Secondment)</div>
+                        <div class="org">Ludwig-Maximilians-Universität München</div>
                         <ul>
-                            <li>Processed terabyte-scale simulation outputs (MAGNETICUM); built Python pipelines to
-                                extract, transform, and statistically characterise structural properties.</li>
+                            <li>Built Python pipelines to extract, transform, and statistically characterise
+                                structural properties from the Magneticum cosmological simulations, with results used
+                                by a 10+ person research group.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="xp reveal">
                     <div class="when">Jul - Sep 2022</div>
                     <div>
-                        <div class="role">Data Scientist (Internship)</div>
+                        <div class="role">Data Scientist (Secondment)</div>
                         <div class="org">OmegaLambdaTec GmbH, Garching</div>
                         <ul>
-                            <li>Built supervised ML models (Random Forest, SVM) on EU Sentinel satellite imagery for
-                                automated land-cover classification.</li>
-                            <li>Implemented end-to-end, version-controlled pipelines (scikit-learn, pandas, rasterio);
-                                contributed to code reviews.</li>
+                            <li>Trained in machine-learning classification of crop and land-cover types from
+                                European Sentinel satellite imagery.</li>
+                            <li>Processed the multi-band rasters in Python (rasterio, pandas) and characterised the
+                                classified regions statistically.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xp reveal">
+                    <div class="when">Apr - Jun 2022</div>
+                    <div>
+                        <div class="role">Visiting Researcher</div>
+                        <div class="org">Max Planck Institute for Extraterrestrial Physics, Garching</div>
+                        <ul>
+                            <li>Multi-wavelength counterpart identification and classification of X-ray-selected
+                                galaxies in the high-energy group.</li>
                         </ul>
                     </div>
                 </div>
@@ -1361,64 +1432,140 @@
                 <span class="rule"></span>
             </div>
             <div class="proj-grid stagger">
-                <article class="proj">
+                <article class="proj feature">
                     <div class="spotlight"></div>
-                    <div class="pj-top"><span class="pj-icon img-icon"><img src="swipe_card.svg" alt="WortSwipe icon"></span></div>
-                    <h3>WortSwipe: German Flashcard App</h3>
-                    <p>A swipe-based flashcard app for learning German vocabulary, currently in development. Built
-                        end-to-end using Claude Code (CLI), exercising AI-assisted design, architecture, and
-                        product-decision workflows.</p>
-                    <div class="tags"><span class="tag">Kotlin</span><span class="tag">HTML</span><span
-                            class="tag">JavaScript</span><span class="tag">Python</span></div>
+                    <div class="pj-top"><span class="pj-icon">🤖</span><span class="pj-badge"><span
+                                class="live"></span> Live</span></div>
+                    <h3>CryptoAssetsDaily: Autonomous AI News Agent</h3>
+                    <p>An AI agent that runs an Instagram news page with no human in the loop. Every four hours it
+                        ranks the latest crypto stories, writes a 4-slide carousel with an LLM, generates the artwork,
+                        and publishes it. Three times a day it also turns a story into a narrated Reel with
+                        synthesised voice, word-synced captions and music. It runs on scheduled GitHub Actions,
+                        entirely on free tiers, and tracks each Reel's voice and design variant for A/B analysis.</p>
+                    <div class="tags"><span class="tag">Python</span><span class="tag">Gemini</span><span
+                            class="tag">FLUX</span><span class="tag">Text-to-Speech</span><span
+                            class="tag">Whisper</span><span class="tag">ffmpeg</span><span class="tag">GitHub
+                            Actions</span><span class="tag">Instagram Graph API</span></div>
+                    <div class="pj-links">
+                        <a href="https://www.instagram.com/cryptoassetsdaily/" class="pj-link" target="_blank"
+                            rel="noopener">See it live →</a>
+                    </div>
                 </article>
                 <article class="proj">
                     <div class="spotlight"></div>
-                    <div class="pj-top"><span class="pj-icon">📈</span></div>
-                    <h3>Spikewatch: Algorithmic Trading Platform</h3>
-                    <p>A production Python app for real-time market monitoring, multi-exchange (Binance, Bitget) data
-                        ingestion, strategy back-testing, and risk management, with a strategy library, parameter
-                        sweeps, and Sharpe/drawdown reporting.</p>
-                    <div class="tags"><span class="tag">Python</span><span class="tag">Qt</span><span
-                            class="tag">WebSocket</span><span class="tag">REST</span></div>
-                    <a href="https://nischal-acharya27.github.io/spikewatch" class="pj-link" target="_blank"
-                        rel="noopener noreferrer">Early Access →</a>
+                    <div class="pj-top"><span class="pj-icon">📚</span></div>
+                    <h3>RAG Pipeline: Document Q&amp;A</h3>
+                    <p>Retrieval-augmented generation over PDFs and text: chunking, embeddings, vector search and
+                        answers with cited sources, plus a benchmark that measures retrieval recall and answer
+                        quality.</p>
+                    <div class="tags"><span class="tag">LangChain</span><span class="tag">ChromaDB</span><span
+                            class="tag">sentence-transformers</span><span class="tag">LLMs</span></div>
+                    <div class="pj-links">
+                        <a href="https://github.com/nischal-acharya27/rag-pipeline" class="pj-link" target="_blank"
+                            rel="noopener">Code →</a>
+                    </div>
+                </article>
+                <article class="proj">
+                    <div class="spotlight"></div>
+                    <div class="pj-top"><span class="pj-icon">🧪</span></div>
+                    <h3>AstroLineRatios: ML Simulation Emulator</h3>
+                    <p>Gradient-boosted models trained on Cloudy photoionisation grids that predict JWST
+                        emission-line ratios for any physical conditions, without rerunning the simulations
+                        (validation R² 0.93).</p>
+                    <div class="tags"><span class="tag">scikit-learn</span><span class="tag">Gradient
+                            Boosting</span><span class="tag">Python</span></div>
+                    <div class="pj-links">
+                        <a href="https://github.com/nischal-acharya27/AstroLineRatios" class="pj-link"
+                            target="_blank" rel="noopener">Code →</a>
+                    </div>
+                </article>
+                <article class="proj">
+                    <div class="spotlight"></div>
+                    <div class="pj-top"><span class="pj-icon">🔭</span></div>
+                    <h3>JWST IFU Pipeline</h3>
+                    <p>Turns James Webb Space Telescope NIRSpec and MIRI integral-field data cubes into
+                        science-ready emission-line maps and diagnostics.</p>
+                    <div class="tags"><span class="tag">Python</span><span class="tag">Astropy</span><span
+                            class="tag">Spectroscopy</span></div>
+                    <div class="pj-links">
+                        <a href="https://github.com/nischal-acharya27/jwst-ifu-pipeline" class="pj-link"
+                            target="_blank" rel="noopener">Code →</a>
+                    </div>
                 </article>
                 <article class="proj">
                     <div class="spotlight"></div>
                     <div class="pj-top"><span class="pj-icon">🧬</span></div>
                     <h3>palfitology: Python Package</h3>
-                    <p>An open-source Python package for fitting and modeling, with a documented, modular architecture.
-                        Built for reproducible, scalable analysis workflows.</p>
-                    <div class="tags"><span class="tag">Python</span><span class="tag">Package</span><span
-                            class="tag">Modeling</span></div>
-                    <a href="https://nischal-acharya27.github.io/palfitology/architecture.html" class="pj-link"
-                        target="_blank" rel="noopener">View architecture →</a>
+                    <p>A tested Python package and CLI for PSF-aware isophote fitting across 12 J-PLUS bands, with
+                        per-object diagnostics, mosaics and GALFIT-ready outputs.</p>
+                    <div class="tags"><span class="tag">Python</span><span class="tag">Astropy</span><span
+                            class="tag">photutils</span><span class="tag">pytest</span></div>
+                    <div class="pj-links">
+                        <a href="https://nischal-acharya27.github.io/palfitology/architecture.html" class="pj-link"
+                            target="_blank" rel="noopener">Architecture →</a>
+                        <a href="https://github.com/nischal-acharya27/palfitology" class="pj-link" target="_blank"
+                            rel="noopener">Code →</a>
+                    </div>
                 </article>
                 <article class="proj">
                     <div class="spotlight"></div>
-                    <div class="pj-top"><span class="pj-icon">🔭</span></div>
-                    <h3>miniJPAS Faint X-ray AGN Pipeline</h3>
-                    <p>End-to-end Bayesian inference pipeline filtering 64k+ sources into a high-quality scientific
-                        sample. First-author publication in <em>Astronomy &amp; Astrophysics</em>.</p>
-                    <div class="tags"><span class="tag">Bayesian</span><span class="tag">Python</span><span
-                            class="tag">MCMC</span></div>
+                    <div class="pj-top"><span class="pj-icon">🌌</span></div>
+                    <h3>Faint X-ray AGN in miniJPAS</h3>
+                    <p>A probabilistic selection pipeline that filtered 64,000+ survey sources into a high-purity
+                        sample of faint X-ray AGN. First-author paper in <em>Astronomy &amp; Astrophysics</em>.</p>
+                    <div class="tags"><span class="tag">Python</span><span class="tag">MCMC</span><span
+                            class="tag">SED Fitting</span></div>
+                    <div class="pj-links">
+                        <a href="https://doi.org/10.1051/0004-6361/202449287" class="pj-link" target="_blank"
+                            rel="noopener">Paper →</a>
+                    </div>
+                </article>
+                <article class="proj">
+                    <div class="spotlight"></div>
+                    <div class="pj-top"><span class="pj-icon">📈</span></div>
+                    <h3>Spikewatch: Real-Time Market Data Platform</h3>
+                    <p>A Python app for real-time monitoring of crypto markets: multi-exchange (Binance, Bitget)
+                        data ingestion, strategy back-testing with parameter sweeps, and Sharpe and drawdown
+                        reporting.</p>
+                    <div class="tags"><span class="tag">Python</span><span class="tag">Qt</span><span
+                            class="tag">WebSocket</span><span class="tag">REST</span></div>
+                    <div class="pj-links">
+                        <a href="https://nischal-acharya27.github.io/spikewatch" class="pj-link" target="_blank"
+                            rel="noopener noreferrer">Early access →</a>
+                    </div>
+                </article>
+                <article class="proj">
+                    <div class="spotlight"></div>
+                    <div class="pj-top"><span class="pj-icon">⚔️</span></div>
+                    <h3>sombra: Browser Action Game</h3>
+                    <p>A 2.5D hack-and-slash in the browser where every 3D model, sound and particle is generated in
+                        code, with no build step and no asset files.</p>
+                    <div class="tags"><span class="tag">JavaScript</span><span class="tag">three.js</span><span
+                            class="tag">WebGL</span></div>
+                    <div class="pj-links">
+                        <a href="https://nischal-acharya27.github.io/sombra/" class="pj-link" target="_blank"
+                            rel="noopener">Play →</a>
+                        <a href="https://github.com/nischal-acharya27/sombra" class="pj-link" target="_blank"
+                            rel="noopener">Code →</a>
+                    </div>
+                </article>
+                <article class="proj">
+                    <div class="spotlight"></div>
+                    <div class="pj-top"><span class="pj-icon img-icon"><img src="swipe_card.svg" alt="WortSwipe icon"></span></div>
+                    <h3>WortSwipe: German Flashcard App</h3>
+                    <p>A swipe-based Android app for learning German vocabulary, in development. Built end to end
+                        with Claude Code, from design and architecture to product decisions.</p>
+                    <div class="tags"><span class="tag">Kotlin</span><span class="tag">Android</span><span
+                            class="tag">AI-assisted development</span></div>
                 </article>
                 <article class="proj">
                     <div class="spotlight"></div>
                     <div class="pj-top"><span class="pj-icon">🧩</span></div>
                     <h3>CIGALE: Open-Source Module</h3>
-                    <p>Co-authored a paper introducing a reusable module for probabilistic SED modelling.</p>
+                    <p>Co-authored a paper introducing a reusable module for probabilistic SED modelling in the
+                        open-source CIGALE code.</p>
                     <div class="tags"><span class="tag">Open Source</span><span class="tag">Python</span><span
                             class="tag">Packaging</span></div>
-                </article>
-                <article class="proj">
-                    <div class="spotlight"></div>
-                    <div class="pj-top"><span class="pj-icon">🛰️</span></div>
-                    <h3>Satellite Land-Cover Classifier</h3>
-                    <p>Supervised ML on EU Sentinel imagery for automated land-cover classification, a reproducible
-                        rasterio + scikit-learn pipeline.</p>
-                    <div class="tags"><span class="tag">scikit-learn</span><span class="tag">rasterio</span><span
-                            class="tag">Geospatial</span></div>
                 </article>
             </div>
         </section>
@@ -1431,28 +1578,48 @@
                 <span class="rule"></span>
             </div>
             <div class="pub-list reveal">
-                <a class="pub" href="https://orcid.org/0000-0001-9738-3594" target="_blank" rel="noopener">
+                <a class="pub" href="https://doi.org/10.1051/0004-6361/202449287" target="_blank" rel="noopener">
                     <span class="venue">A&amp;A</span>
                     <span>
-                        <span class="ptitle">Faint X-ray AGN selection across 64k+ miniJPAS sources via Bayesian
-                            inference</span>
-                        <span class="pmeta">First author · Astronomy &amp; Astrophysics</span>
+                        <span class="ptitle">The miniJPAS Survey: The radial distribution of star formation rates in
+                            faint X-ray active galactic nuclei</span>
+                        <span class="pmeta">First author · Astronomy &amp; Astrophysics · 2024</span>
                     </span>
                     <span class="arrow">↗</span>
                 </a>
-                <a class="pub" href="https://orcid.org/0000-0001-9738-3594" target="_blank" rel="noopener">
+                <a class="pub" href="https://doi.org/10.3847/1538-4357/ae4bdd" target="_blank" rel="noopener">
                     <span class="venue">ApJ</span>
                     <span>
-                        <span class="ptitle">Statistical characterisation of multi-wavelength source populations</span>
-                        <span class="pmeta">Co-author · The Astrophysical Journal</span>
+                        <span class="ptitle">ReveaLLAGN 1: JWST emission-line spectra reveal low-luminosity AGN with
+                            ultraviolet-deficient SEDs and warm molecular gas</span>
+                        <span class="pmeta">Co-author · The Astrophysical Journal · 2026</span>
+                    </span>
+                    <span class="arrow">↗</span>
+                </a>
+                <a class="pub" href="https://doi.org/10.3847/1538-4357/ae2798" target="_blank" rel="noopener">
+                    <span class="venue">ApJ</span>
+                    <span>
+                        <span class="ptitle">Galaxy and Mass Assembly (GAMA): The properties of quasar host galaxies,
+                            star formation histories and stellar populations</span>
+                        <span class="pmeta">Co-author · The Astrophysical Journal · 2026</span>
+                    </span>
+                    <span class="arrow">↗</span>
+                </a>
+                <a class="pub" href="https://arxiv.org/abs/2302.01358" target="_blank" rel="noopener">
+                    <span class="venue">A&amp;A</span>
+                    <span>
+                        <span class="ptitle">The miniJPAS survey: AGN and host galaxy co-evolution of X-ray selected
+                            sources</span>
+                        <span class="pmeta">Co-author · Astronomy &amp; Astrophysics · 2023</span>
                     </span>
                     <span class="arrow">↗</span>
                 </a>
                 <a class="pub" href="https://orcid.org/0000-0001-9738-3594" target="_blank" rel="noopener">
                     <span class="venue">ORCID</span>
                     <span>
-                        <span class="ptitle">Full publication record & 7+ invited talks across Europe</span>
-                        <span class="pmeta">View complete list on ORCID</span>
+                        <span class="ptitle">Full publication record, including GAMA quasar-environment papers in
+                            ApJ</span>
+                        <span class="pmeta">Complete list on ORCID</span>
                     </span>
                     <span class="arrow">↗</span>
                 </a>
@@ -1469,48 +1636,26 @@
             <div class="edu-grid stagger">
                 <div class="edu">
                     <div class="yr">2020 - 2025</div>
-                    <div class="deg serif">PhD, Astronomy</div>
-                    <div class="place">Donostia International Physics Center, San Sebastián</div>
-                    <div class="note">Marie-Curie Fellow. Large-scale survey data, Bayesian modelling, statistical
-                        inference, reproducible Python pipelines. Published in A&A and ApJ; 7+ invited talks across
-                        Europe.</div>
+                    <div class="deg serif">PhD, Astronomy &amp; Astrophysics</div>
+                    <div class="place">University of the Basque Country (EHU), research at DIPC, San Sebastián</div>
+                    <div class="note">Marie Skłodowska-Curie Fellow. Thesis connecting AGN to the properties of
+                        their host galaxies: large-scale survey data, statistical modelling, reproducible Python
+                        pipelines. Published in A&amp;A and ApJ.</div>
                 </div>
                 <div class="edu">
-                    <div class="yr">2020</div>
-                    <div class="deg serif">MSc, Astronomy & Space Physics</div>
+                    <div class="yr">2017 - 2020</div>
+                    <div class="deg serif">MSc, Astronomy &amp; Space Physics</div>
                     <div class="place">University of Turku, Finland</div>
                     <div class="note">Thesis: statistical analysis of 200,000+ galaxies: feature engineering,
                         hypothesis testing, MCMC.</div>
                 </div>
                 <div class="edu">
-                    <div class="yr">2015</div>
+                    <div class="yr">2011 - 2015</div>
                     <div class="deg serif">BSc, Physics</div>
                     <div class="place">St. Xavier's College, Kathmandu</div>
-                    <div class="note">Key coursework: Statistics I & II, Integral Calculus & Differential Equations,
-                        Real Analysis, Advanced Algebra & Matrices, Quantum & Mathematical Physics, Classical
-                        Mechanics, Electronics, and Research Methodology.</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- OTHER SERVICES (understated) -->
-        <section class="shell">
-            <div class="services reveal">
-                <div class="svc-label">Also available for</div>
-                <div class="svc-grid">
-                    <div class="svc">
-                        <h5>Independent consulting</h5>
-                        <p>Selective freelance and advisory work for companies of any size, large and very large
-                            included, on forecasting models, demand and risk modelling, experimentation, and KPI
-                            dashboards. <a href="mailto:acharya.nischal3270@gmail.com?subject=Consulting%20enquiry">Enquire
-                                →</a></p>
-                    </div>
-                    <div class="svc">
-                        <h5>AI-powered content for media</h5>
-                        <p>I also build automated, AI-generated content pipelines for news and media. <a
-                                href="mailto:acharya.nischal3270@gmail.com?subject=AI%20content%20enquiry">Enquire
-                                →</a></p>
-                    </div>
+                    <div class="note">Key coursework: Statistics I &amp; II, Integral Calculus &amp; Differential
+                        Equations, Real Analysis, Advanced Algebra &amp; Matrices, Quantum &amp; Mathematical Physics,
+                        Classical Mechanics, Electronics, and Research Methodology.</div>
                 </div>
             </div>
         </section>
